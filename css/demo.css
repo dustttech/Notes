@@ -1,0 +1,283 @@
+:root {
+    --ff-title:  'Redressed', cursive;
+    --ff-normal: 'Poppins', sans-serif;
+
+    --fw-thin: 200;
+    --fw-light-normal: 300;
+    --fw-normal: 400;
+    --fw-extra-normal: 500;
+    --fw-light-bold: 600;
+    --fw-bold: 700;
+    --fw-extra-bold: 800;
+    --fw-max-bold: 900;
+
+    --fs-h1: 3.5rem;
+    --fs-h2: 3rem;
+    --fs-h3: 2.5rem;
+    --fs-h4: 2rem;
+    --fs-h5: 1.5rem;
+
+    --fs-logo: 1.8rem;
+    --fs-page-title:7rem;
+    --fs-body-small: 0.8rem;
+    --fs-body: 1rem;
+    --fs-body-big: 1.2rem;
+    --fs-header:1.2rem;
+    --fs-icon: 5rem;
+    /* COLOR */
+    --cl-btn: rgb(94, 94, 119);
+    --cl-btn-bg: #16151f;
+    --cl-btn-active: rgb(255, 255, 255);
+    --cl-btn-bg-active: #504f6b;
+    
+    --cl-tag: rgb(72, 180, 121);
+
+    /* BOX SHADOW */
+    --bs-neu: -6px -6px 20px rgba(255, 255, 255, 0.1),
+               6px  6px 20px rgba(0, 0, 0, 0.5);
+    --bs-neu-inset: -6px -6px 20px rgba(255, 255, 255, 0.1) inset,
+                     6px  6px 20px rgba(0, 0, 0, 0.5) inset;
+    --ts-tag: 0px 0px 5px rgb(92, 230, 154);
+}
+*   {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body {
+    width: 100%;
+    height: 100%;
+}
+body {
+    font-size: var(--fs-body);
+    font-family: var(--ff-normal);
+    line-height: 1.5;
+}
+a {
+    display: inline-block;
+    text-decoration: none;
+    color: #9695a7;
+}
+/* BTN STYLE */
+.btn-wrapper {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    border-radius: 50%;
+    box-shadow: var(--bs-neu);
+}
+.btn-wrapper + .btn-wrapper {
+    margin-left: 20px;
+}
+.btn {
+    -webkit-tap-highlight-color: transparent;
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    text-align: center;
+    font-size: var(--fs-body-big);
+    color: var(--cl-btn);
+    border-radius: 50%;
+    background-color: var(--cl-btn-bg);
+    border: 2px solid var(--cl-btn-bg);
+    box-shadow: var(--bs-neu-inset);
+    pointer-events: none;
+}
+.btn > i {
+    line-height: 50px;
+}
+.btn-active {
+    color: var(--cl-btn-active);
+    background-color: var(--cl-btn-bg-active);
+    border: 2px solid var(--cl-btn-bg-active);
+    pointer-events: unset;
+}
+
+.close {
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    color: transparent;
+    pointer-events: unset;
+}
+.close::after,
+.close::before {
+    content: "";
+    display: inline-block;
+    background: rgb(10, 214, 250);
+    width: 2px;
+    height: 20px;
+    position: absolute;
+    left: 50%;top: 12px;
+    opacity: 0;
+}
+.show_close::before {
+    animation: show_close_before 0.5s forwards ease-in-out;
+}
+.show_close::after {
+    animation: show_close_after 0.5s forwards ease-in-out;
+}
+.hide_close::before {
+    animation: hide_close_before 0.5s forwards ease-in-out;
+}
+.hide_close::after {
+    animation: hide_close_after 0.5s forwards ease-in-out;
+}
+@keyframes show_close_after {
+    0% {
+        opacity: 1;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 1;
+        transform: rotate(-40deg);
+    }
+}
+@keyframes show_close_before {
+    0% {
+        opacity: 1;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 1;
+        transform: rotate(40deg);
+    }
+}
+@keyframes hide_close_after {
+    0% {
+        opacity: 1;
+        transform: rotate(-40deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(0);
+    }
+}
+@keyframes hide_close_before {
+    0% {
+        opacity: 1;
+        transform: rotate(40deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(0);
+    }
+}
+
+/* END BTN STYLE */
+
+ul {
+    list-style-type: none;
+}
+
+/* MAIN WRAPPER */
+#main {
+    width: 100%;
+    min-height: 100%;
+    padding: 0 20px 5vh;
+    background: #1f1d2b;
+    position: relative;
+}
+/* SEARCH OVERLAY*/
+.search-overlay {
+    width: 100%;
+    height: 100%;
+    background: #1f1d2b;
+    position: absolute;
+    top: 0;left: 0;
+    z-index: -1;
+    overflow-y: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.4s ease-in-out;
+
+    text-align: center;
+    padding: 3vh 20px 0;
+}
+.show_search {
+    z-index: 50;
+    opacity: 1;
+    visibility: visible;
+}
+/* HEADER */
+.header {
+    padding: 5vh 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+    /* APP TITLE */
+    .title {
+        color: rgb(255, 255, 255);
+        font-weight: 600;
+        letter-spacing: 2px;
+        font-family: var(--ff-title);
+    }
+    .nav-bar {
+        display: flex;
+    }
+
+    /* ADD NOTE BTN */
+    #add {
+        position: fixed;
+        bottom: 50px;right: 40px;
+        z-index: 10;
+        background: #3369ff;
+        border: none;
+        box-shadow: 0px 0px 60px #3369ff9a,
+                    0px 0px 30px #3369ff,
+                    0px 0px 10px #3369ffe1;
+    }
+    /* NOTE STYLE */
+    .note {
+        background-color: #272636;
+        padding: 20px;
+        border-radius: 20px;
+        color: #9695a7;
+        box-shadow: var(--bs-neu);
+        margin-bottom: 5vh;
+        transition: 0.4s ease-in-out;
+    }
+    /* SELECTED NOTE */
+    .note-wrapper .selected {
+        background-image: linear-gradient(#3b3b4d, #2e2e3d);
+        transition: 0.4s ease-in-out;
+    }
+        .note__bottom {
+            display: flex;
+            justify-content: space-between;
+        }
+        /* NOTE TITLE */
+        .note__title {
+            color: #f6f6f6;
+            padding-bottom: 15px;
+            text-align: center;
+        }
+
+
+        /* END NOTE TOP */
+        .note__content {
+            padding-bottom: 20px;
+        }
+        /* NOTE BOTTOM */
+        .note__tag {
+            color: var(--cl-tag);
+            /* text-shadow: var(--ts-tag); */
+            font-weight: var(--fw-extra-normal);
+        }
