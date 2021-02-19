@@ -17,11 +17,6 @@
 </head>
 <body>
     <div id="main" class="wrapper">
-        <section class="search-overlay">
-            <div class="btn-wrapper">
-                <a class="btn close" href="#"></a>
-            </div>  
-        </section>
         <header class="header">
             <h1 class="title">Notes</h1>
             <nav class="nav-bar">
@@ -43,7 +38,10 @@
             </nav>
         </header>
         <ul class="note-wrapper">
-            <li class="note">
+            <li class="message">
+                <span>There isn't any note yet !</span>
+            </li>
+            <!-- <li class="note">
                 <h1 class="note__title">Title</h1>
                 <p class="note__content">
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi debitis dolorum esse dolorem odio! Enim ullam qui saepe voluptate exercitationem libero minima dolor optio. Quasi repellat ipsa facere reiciendis cumque!
@@ -52,31 +50,47 @@
                     <span class="note__time">12 Jan</span>
                     <a href="#" class="note__tag">Tag</a>
                 </div>
-            </li>
-            <li class="note">
-                <h1 class="note__title">Title</h1>
-                <p class="note__content">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi debitis dolorum esse dolorem odio! Enim ullam qui saepe voluptate exercitationem libero minima dolor optio. Quasi repellat ipsa facere reiciendis cumque!
-                </p>
-                <div class="note__bottom">
-                    <span class="note__time">12 Jan</span>
-                    <a href="#" class="note__tag">Tag</a>
-                </div>
-            </li>
-            <li class="note">
-                <h1 class="note__title">Title</h1>
-                <p class="note__content">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi debitis dolorum esse dolorem odio! Enim ullam qui saepe voluptate exercitationem libero minima dolor optio. Quasi repellat ipsa facere reiciendis cumque!
-                </p>
-                <div class="note__bottom">
-                    <span class="note__time">12 Jan</span>
-                    <a href="#" class="note__tag">Tag</a>
-                </div>
-            </li>
+            </li> -->
         </ul>
-        <a id="add" class="btn btn-active" href="#">
+        <a id="add-note" class="btn btn-active" href="#">
             <i class="fa fa-plus" aria-hidden="true"></i>
         </a>
+        <section class="search-overlay">
+            <div class="btn-wrapper">
+                <a class="btn close" href="#"></a>
+            </div>      
+        </section>
+        <section class="add-note-overlay">
+            <h1 class="title">Notes</h1>
+            <form action="" class="add-note-form">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <div class="input-field__wrapper">
+                        <input id="note-title" type="text" name="title" class="input-field">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="content">Content</label>
+                    <div class="input-field__wrapper">
+                        <textarea id="note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tag">Tag</label>
+                    <div class="input-field__wrapper">
+                        <input id="note-tag"  type="text" name="tag" class="input-field">
+                    </div>
+                </div>
+                <div class="form-group btn-group">
+                    <div class="form-btn__wrapper">
+                        <input id="add_form" type="submit" class="submit-content form-btn" value="Add">
+                    </div>
+                    <div class="form-btn__wrapper">
+                        <input id="close_form" type="button" class="close-form form-btn" value="Cancel">
+                    </div>
+                </div>
+            </form>
+        </section>
     </div>
     
     <script src="js/demo.js"></script>
