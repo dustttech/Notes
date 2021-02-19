@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded',function(){
-    const notes = document.querySelectorAll('.note');
     const edit = document.querySelector('.edit');
-    const del = document.querySelector('.delete');
     const close_btn = document.querySelector('.close');
+    const del = document.querySelector('.delete');
 
     // SEARCH
     const search = document.querySelector('.search');
@@ -27,16 +26,9 @@ document.addEventListener('DOMContentLoaded',function(){
     })
     // END SEARCH
     // NOTE 
-    notes.forEach(note => {
-        note.addEventListener('click',function () {
-                for (let i = 0; i < notes.length; i++) {
-                    notes[i].classList.remove('selected');
-                }
-                note.classList.add('selected');
-                edit.classList.add('btn-active');
-                del.classList.add('btn-active');
-        })
-    });
+    // notes.forEach(note => {
+
+    // });
     // END NOTE
 
 
@@ -51,12 +43,65 @@ document.addEventListener('DOMContentLoaded',function(){
     })
 
     // CLOSE ADD NOTE
-    const closeAddNote = document.querySelector('#close_form');
+    const closeAddNote = document.querySelector('#close_add_form');
 
     closeAddNote.addEventListener('click',function() {
         addNoteForm.classList.remove('show_overlay');
     })
-    // ADD NOTE 
+
+    //EDIT NOTE SECTION
+    const editNoteForm = document.querySelector('.edit-note-overlay');
+    // SHOW EDIT NOTE
+    edit.addEventListener('click', function () {
+        editNoteForm.classList.add('show_overlay');
+
+        var key = document.querySelector('li.selected').getAttribute('id');
+        addFormEdit(key);
+    })
+    const editNote = document.querySelector('#add_edit_form');
+    editNote.addEventListener('click', function () {
+        updateEditNote();
+    })
+
+
+    function addFormEdit(key) {
+        // var selected = document.querySelector('li.selected');
+        // var title = document.querySelector('li h1').innerHTML;
+        // var content = document.querySelector('li p').innerHTML;
+        // var time = document.querySelector('li span').innerHTML;
+        // var tag = document.querySelector('li a').innerHTML;
+        var note = JSON.parse(localStorage[key]);
+
+        const noteTitle = document.querySelector('#edit-note-title');
+        const noteContent = document.querySelector('#edit-note-content');
+        const noteTag = document.querySelector('#edit-note-tag');
+        
+        noteTitle.value = note.title;
+        noteContent.value = note.content;
+        noteTag.value = note.tag;
+    }
+    function updateEditNote() {
+        var key = document.querySelector('li.selected').getAttribute('id');
+        var note = JSON.parse(localStorage[key]);
+
+        const noteTitle = document.querySelector('#edit-note-title').value;
+        const noteContent = document.querySelector('#edit-note-content').value;
+        const noteTag = document.querySelector('#edit-note-tag').value;
+        var dateValue = getCurrentTime();
+
+        note.title = noteTitle;
+        note.content = noteContent;
+        note.date = dateValue + " (edited)";
+        note.tag = noteTag;
+
+        localStorage.setItem(key, JSON.stringify(note));
+    }
+    // CLOSE EDIT NOTE
+    const closeEditNote = document.querySelector('#close_edit_form');
+    closeEditNote.addEventListener('click',function() {
+        editNoteForm.classList.remove('show_overlay');
+    })
+    // ADD NOTE LOGIC
 
     // INITIAL
     window.addEventListener('load',function () {
@@ -67,7 +112,8 @@ document.addEventListener('DOMContentLoaded',function(){
             const addFormNote = document.querySelector('#add_form');
 
             addFormNote.onclick = createNote;
-
+            // BTN DELETE NOTE
+            del.onclick = removeNoteFromDOM;
 
             var notesArray = getNotesArray();
             for (let i = 0; i < notesArray.length; i++) {
@@ -141,12 +187,21 @@ document.addEventListener('DOMContentLoaded',function(){
         note.appendChild(note_title);
         note.appendChild(note_content);
         note.appendChild(note_bottom);
-        noteList.appendChild(note);
+        noteList.insertBefore(note, noteList.childNodes[1]);
+
+
+        note.addEventListener('click',function () {
+            const notes = document.querySelectorAll('.note');
+            for (let i = 0; i < notes.length; i++) {
+                notes[i].classList.remove('selected');
+            }
+            note.classList.toggle('selected');
+            edit.classList.add('btn-active');
+            del.classList.add('btn-active');
+        });
     }
 
-    const noteTitle = document.querySelector('#note-title');
-    const noteContent = document.querySelector('#note-content');
-    const noteTag = document.querySelector('#note-tag');
+
 
     function getNotesArray() {
         var notesArray = localStorage["notesArray"];
@@ -162,6 +217,10 @@ document.addEventListener('DOMContentLoaded',function(){
     function createNote() {
         var notesArray = getNotesArray();
         // NOTE OBJ
+        const noteTitle = document.querySelector('#note-title');
+        const noteContent = document.querySelector('#note-content');
+        const noteTag = document.querySelector('#note-tag');
+
         var titleValue = noteTitle.value;
         var contentValue = noteContent.value;
         var tagValue = noteTag.value;
@@ -181,6 +240,25 @@ document.addEventListener('DOMContentLoaded',function(){
         localStorage.setItem("notesArray", JSON.stringify(notesArray));
         addNoteToDOM(key, noteObj);
     }
+    function removeNoteFromDOM() {
+        const noteList = document.querySelector('.note-wrapper');
+        var selected = document.querySelector('li.selected');
+        var key = selected.getAttribute('id');
+        
+        // REMOVE FROM LOCAL STORAGE
+        var notesArray = getNotesArray();
+        localStorage.removeItem(key);
+        for (let i = 0; i < notesArray.length; i++) {
+            if (key == notesArray[i]) {
+                notesArray.splice(i,1);
+            }
+        }
+        localStorage.setItem('notesArray', JSON.stringify(notesArray));
 
+        // REMOVE NOTE FROM DOM
+        noteList.removeChild(selected);
+        edit.classList.toggle('btn-active');
+        del.classList.toggle('btn-active');
+    }
 
 },false)

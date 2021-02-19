@@ -244,7 +244,13 @@ ul {
         border-radius: 20px;
         color: #9695a7;
         box-shadow: var(--bs-neu);
-        word-break: break-all;
+
+        /* BREAK WORD WHEN TOO LONG */
+        word-break: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+
+
         margin-bottom: 5vh;
         transition: 0.4s ease-in-out;
     }
@@ -253,15 +259,12 @@ ul {
         background-image: linear-gradient(#3b3b4d, #2e2e3d);
         transition: 0.4s ease-in-out;
     }
-        .note__bottom {
-            display: flex;
-            justify-content: space-between;
-        }
         /* NOTE TITLE */
         .note__title {
+            font-size: var(--fs-body-big);
             color: #f6f6f6;
             padding-bottom: 15px;
-            text-align: center;
+            font-weight: var(--fw-extra-normal);
         }
 
 
@@ -270,15 +273,25 @@ ul {
             padding-bottom: 20px;
         }
         /* NOTE BOTTOM */
+        .note__bottom {
+            display: flex;
+            justify-content: space-between;
+        }
+        .note__tag,
+        .note__time {
+            width: 44%;
+            font-size: var(--fs-body-small);
+        }
         .note__tag {
+            text-align: right;
             color: var(--cl-tag);
-            /* text-shadow: var(--ts-tag); */
             font-weight: var(--fw-extra-normal);
         }
 
 /* SEARCH OVERLAY*/
 .search-overlay,
-.add-note-overlay {
+.add-note-overlay,
+.edit-note-overlay {
     width: 100%;
     height: 100%;
     background: #1f1d2b;
@@ -309,21 +322,21 @@ ul {
     padding-bottom: 3vh;
 }
 
-/* ADD NOTE FORM */
-.add-note-form {
+/* FORM */
+.form {
     font-size: var(--fs-body-big);
     text-align: left;
 }
 .form-group {
     margin-bottom: 3vh;
 }
-.add-note-form label,
-.add-note-form input,
-.add-note-form textarea {
+.form label,
+.form input,
+.form textarea {
     display: block;
     font-family: inherit;
 }
-.add-note-form textarea {
+.form textarea {
     height: 200px;
     resize: none;
 }
@@ -342,11 +355,11 @@ ul {
     font-size: var(--fs-body-big);
     padding: 15px 10px;
 }
-.add-note-form label {
+.form label {
     color: var(--cl-title);
     padding-bottom: 10px;
 }
-.add-note-form input {
+.form input {
     height: inherit;
 }
 /* FORM BTN */
