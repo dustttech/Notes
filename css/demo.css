@@ -45,7 +45,11 @@
                      6px  6px 20px rgba(0, 0, 0, 0.5) inset;
     --ts-tag: 0px 0px 5px rgb(92, 230, 154);
 }
-*   {
+
+
+*,
+*::after,
+*::before {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -55,10 +59,13 @@ html,body {
     width: 100%;
     height: 100%;
 }
-body {
+html {
     font-size: var(--fs-body);
+}
+body {
     font-family: var(--ff-normal);
     line-height: 1.5;
+    background: #1f1d2b;
 }
 a {
     display: inline-block;
@@ -193,19 +200,24 @@ ul {
 }
 
 /* MAIN WRAPPER */
-#main {
+.main {
     width: 100%;
+    background: #1f1d2b;
+}
+.main-wrapper {
+    max-width: 500px;
+    margin: 0 auto;
     min-height: 100%;
     padding: 0 20px 5vh;
-    background: #1f1d2b;
     position: relative;
 }
 /* HEADER */
 .header {
-    padding: 5vh 0;
-    display: flex;
+    padding: 3vh 0;
+    text-align: center;
+    /* display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; */
 }
     /* APP TITLE */
     .title {
@@ -213,15 +225,17 @@ ul {
         font-weight: 600;
         letter-spacing: 2px;
         font-family: var(--ff-title);
+        padding-bottom: 3vh;
     }
     .nav-bar {
         display: flex;
+        justify-content: center;
     }
 
     /* ADD NOTE BTN */
     #add-note {
         position: fixed;
-        bottom: 50px;right: 40px;
+        bottom: 50px;right: 15%;
         z-index: 10;
         background: #3369ff;
         border: none;
@@ -238,7 +252,11 @@ ul {
     .empty_toggle {
         display: none;
     }
+    .gutter-sizer {
+        width: 0;
+    }
     .note {
+        width: 100%;
         background-color: #272636;
         padding: 20px;
         border-radius: 20px;
@@ -383,4 +401,38 @@ ul {
     color: var(--cl-btn-bg);
     font-weight: var(--fw-extra-bold);
     /* box-shadow: var(--bs-btn-neu-inset); */
+}
+
+@media (min-width:800px) {
+    .main-wrapper {
+        max-width: 1000px;
+    }
+        .gutter-sizer {
+            width: 4%;
+        }
+        .note {
+            width: 48%;
+        }
+}
+@media (min-width:1200px) {
+    .main-wrapper {
+        max-width: 1300px;
+    }
+        .gutter-sizer {
+            width: 2%;
+        }
+        .note {
+            width: 32%;
+        }
+}
+@media (min-width:1400px) {
+    .main-wrapper {
+        max-width: 1400px;
+    }
+        .gutter-sizer {
+            width: calc(8% / 3);
+        }
+        .note {
+            width: 23%;
+        }
 }

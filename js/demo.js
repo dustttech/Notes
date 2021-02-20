@@ -122,10 +122,21 @@ document.addEventListener('DOMContentLoaded',function(){
                 addNoteToDOM(key, value);
             }
 
+            // ISOTOPE
+            var elem = document.querySelector('.note-wrapper');
+            var iso = new Isotope( elem, {
+                percentPosition: true,
+                itemSelector: ".note",
+                masonry: {
+                    gutter: '.gutter-sizer',
+                    horizontalOrder: true
+                }
+            });
 
 
             if (localStorage.length > 0) {
-                displayMsg.style.display = "none";
+                const noteList = document.querySelector('.note-wrapper');
+                noteList.removeChild(displayMsg.parentNode);
             } else {
                 displayMsg.style.display = " ";
             }
@@ -260,5 +271,8 @@ document.addEventListener('DOMContentLoaded',function(){
         edit.classList.toggle('btn-active');
         del.classList.toggle('btn-active');
     }
+
+
+
 
 },false)
