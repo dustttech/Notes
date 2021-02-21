@@ -26,6 +26,7 @@
     --fs-icon: 5rem;
     /* COLOR */
     --cl-bg: #1f1d2b;
+    --cl-bg-light: #1e1b2b;
     --cl-content: #9695a7;
     --cl-title: #e4e4e4;
     --cl-btn: rgb(94, 94, 119);
@@ -194,7 +195,49 @@ a {
 }
 
 /* END BTN STYLE */
+/* SELECT */
+.fitler-wrapper {
+    display: block;
+    width: 100%;
+    position: relative;
+    margin: 20px;
+}
+.fitler-wrapper > i {
+    position: absolute;
+    top: 18px;right: 20px;
+    color: var(--cl-content);
+}
+#filter-tag {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
 
+    /* NOT WORK IN SAFARI */
+    /* text-align: center;
+    text-align-last: center;
+    -moz-text-align-last: center; */
+
+    width: 100%;
+    height: 50px;
+    background: var(--cl-bg);
+    outline: none;
+    border: none;
+    border-radius: 20px;
+    padding: 0 20px;
+    color: var(--cl-content);
+    font-family: inherit;
+    text-transform: capitalize;
+    font-size: var(--fs-body-big);
+    box-shadow: -6px -6px 20px rgba(255, 255, 255, 0.1),
+                6px  6px 20px rgba(0, 0, 0, 0.5);
+                /* -6px -6px 20px rgba(255, 255, 255, 0.1) inset,
+                6px  6px 20px rgba(0, 0, 0, 0.5) inset; */
+}
+#filter-tag option {
+}
+/* END SELECT */
 ul {
     list-style-type: none;
 }
@@ -229,6 +272,7 @@ ul {
     }
     .nav-bar {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
     }
 

@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
+    var arr = [];
 
 
     // ADD NOTE LOGIC
@@ -107,18 +108,14 @@ document.addEventListener('DOMContentLoaded',function(){
                 updateEditNote();
             })
 
-    
+            // UPDATE DOM
+            updateDOM();
         
-            var notesArray = getNotesArray();
-            for (let i = 0; i < notesArray.length; i++) {
-                var key = notesArray[i];
-                var value = JSON.parse(localStorage[key]);
-                addNoteToDOM(key, value);
-            }
+
 
             // ISOTOPE
-            var elem = document.querySelector('.note-wrapper');
-            var iso = new Isotope( elem, {
+            var noteList = document.querySelector('.note-wrapper');
+            var iso = new Isotope( noteList, {
                 percentPosition: true,
                 itemSelector: ".note",
                 masonry: {
@@ -126,7 +123,19 @@ document.addEventListener('DOMContentLoaded',function(){
                     horizontalOrder: true
                 }
             });
+            iso.reloadItems()   
 
+            // FILTER   
+            const filterTag = document.querySelector("#filter-tag");
+            filterTag.addEventListener('change', function () {
+                var filterValue = this.value;
+                filterValue = "._" + filterValue;
+                if (filterValue == "._all") {
+                    iso.arrange({ filter: "*" });     
+                } else {
+                    iso.arrange({ filter: filterValue });
+                }
+            })
 
             if (localStorage.length > 0) {
                 const noteList = document.querySelector('.note-wrapper');
@@ -137,7 +146,39 @@ document.addEventListener('DOMContentLoaded',function(){
         } else {displayMsg.innerHTML = "Sorry, your browser doesn't support LocalStorage :( ";}
     })
 
+    function updateDOM() {
+        var notesArray = getNotesArray();
+        for (let i = 0; i < notesArray.length; i++) {
+            var key = notesArray[i];
+            var value = JSON.parse(localStorage[key]);
+            addNoteToDOM(key, value);
+        }
+    }
 
+    function addSelect(value) {
+        const filterTag = document.querySelector("#filter-tag");
+        // var valueOpt = document.querySelector("#filter-tag option[value="+ value +"]");
+        // if (valueOpt === null) {
+        //     createOpt(filterTag, value);
+        // } else {
+        //     return false;
+        // }
+        var arrOpt = [];
+        function checkOpt() {
+            if (arrOpt.indexOf(value) === -1) {
+                arrOpt.push(value);
+                createOpt(filterTag, value);
+            } 
+        }
+        return checkOpt;
+    }
+
+    function createOpt(select, value) {
+        var option = document.createElement('option');
+        option.setAttribute('value', value);
+        option.text = value;
+        select.add(option);
+    }
     function getCurrentTime() {
         var d = new Date();
         var month = new Array();
@@ -163,7 +204,6 @@ document.addEventListener('DOMContentLoaded',function(){
 
         var note = document.createElement('li');
         note.setAttribute("id", key);
-        note.setAttribute('class', 'note');
 
         var note_title = document.createElement('h1');
         note_title.setAttribute('class', 'note__title');
@@ -187,6 +227,9 @@ document.addEventListener('DOMContentLoaded',function(){
         note_date.innerHTML = noteobj.date;
         note_tag.innerHTML = noteobj.tag;
 
+        var test = addSelect(noteobj.tag);
+        test();
+        note.setAttribute('class', 'note _' + noteobj.tag);
         note_bottom.appendChild(note_date);
         note_bottom.appendChild(note_tag);
         note.appendChild(note_title);
@@ -265,6 +308,7 @@ document.addEventListener('DOMContentLoaded',function(){
         noteList.removeChild(selected);
         edit.classList.toggle('btn-active');
         del.classList.toggle('btn-active');
+        location.reload();
     }
 
     // EDIT NOTE  FORM 
