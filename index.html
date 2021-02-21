@@ -67,28 +67,28 @@
             </section>
             <section class="add-note-overlay">
                 <h1 class="title">Notes</h1>
-                <form action="" class="form">
+                <form id="add-form" action="" class="form">
                     <div class="form-group">
                         <label for="title">Title</label>
                         <div class="input-field__wrapper">
-                            <input id="note-title" type="text" name="title" class="input-field">
+                            <input required id="note-title" type="text" name="title" class="input-field">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="content">Content</label>
                         <div class="input-field__wrapper">
-                            <textarea id="note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
+                            <textarea required id="note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="tag">Tag</label>
                         <div class="input-field__wrapper">
-                            <input id="note-tag"  type="text" name="tag" class="input-field">
+                            <input required id="note-tag"  type="text" name="tag" class="input-field">
                         </div>
                     </div>
                     <div class="form-group btn-group">
                         <div class="form-btn__wrapper">
-                            <input id="add_form" type="submit" class="submit-content form-btn" value="Add">
+                            <input id="add_form" type="submit" class="submit-content form-btn " value="Add">
                         </div>
                         <div class="form-btn__wrapper">
                             <input id="close_add_form" type="button" class="close-form form-btn" value="Cancel">
@@ -98,23 +98,23 @@
             </section>
             <section class="edit-note-overlay">
                 <h1 class="title">Edit</h1>
-                <form action="" class="form">
+                <form id="edit-note" action="" class="form">
                     <div class="form-group">
                         <label for="title">Title</label>
                         <div class="input-field__wrapper">
-                            <input id="edit-note-title" type="text" name="title" class="input-field">
+                            <input required id="edit-note-title" type="text" name="title" class="input-field">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="content">Content</label>
                         <div class="input-field__wrapper">
-                            <textarea id="edit-note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
+                            <textarea required id="edit-note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="tag">Tag</label>
                         <div class="input-field__wrapper">
-                            <input id="edit-note-tag"  type="text" name="tag" class="input-field">
+                            <input required id="edit-note-tag"  type="text" name="tag" class="input-field">
                         </div>
                     </div>
                     <div class="form-group btn-group">
