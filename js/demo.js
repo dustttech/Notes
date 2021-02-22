@@ -1,34 +1,42 @@
 document.addEventListener('DOMContentLoaded',function(){
     const edit = document.querySelector('.edit');
-    const close_btn = document.querySelector('.close');
+    // const close_btn = document.querySelector('.close');
     const del = document.querySelector('.delete');
 
-    // SEARCH
-    const search = document.querySelector('.search');
-    const search_overLay = document.querySelector('.search-overlay');
-    search.addEventListener('click',function () {
-        search_overLay.classList.add('show_overlay');
-        setTimeout(() => {
-            close_btn.classList.add('show_close');
-        }, 500);
-    })
-    close_btn.addEventListener('click',function () {
-        close_btn.classList.remove('show_close');
-        close_btn.classList.add('hide_close');
-        function close_search() {
-            close_btn.classList.remove('hide_close');
-            search_overLay.classList.remove('show_overlay'); 
-            close_btn.removeEventListener('animationend', close_search, true); 
-            close_btn.removeEventListener('webkitAnimationEnd', close_search, true);
-        }
-        close_btn.addEventListener('animationend', close_search, true);
-        close_btn.addEventListener('webkitAnimationEnd', close_search, true);
-    })
+    // NAVLINK 
+    const navLink = document.querySelectorAll('.nav-link');
+    const content = document.querySelector('.main-content');
+
+    const addNote = document.querySelector('.add-note');
+    const addFolder = document.querySelector('.add-folder');
 
 
+    navLink.forEach(element => {
+        element.addEventListener('click', function (e) {
+            for (let i = 0; i < navLink.length; i++) {
+                navLink[i].classList.remove('active');
+            }
+            element.classList.add('active');
+            var showWhat = e.target.getAttribute('data-show');
+            if (showWhat == 'folder') {
+                content.classList.remove('show-note');
+                content.classList.add('show-folder');
 
+                addNote.classList.remove('add-active');
+                addFolder.classList.add('add-active');
+            }   else {
+                content.classList.remove('show-folder');
+                content.classList.add('show-note');
 
-    var arr = [];
+                addFolder.classList.remove('add-active');
+                addNote.classList.add('add-active');
+            }
+        })
+
+    });
+    const linkAll = document.querySelector('#link-all');
+    const linkFolder = document.querySelector('#link-folder');
+
 
 
     // ADD NOTE LOGIC
@@ -43,7 +51,6 @@ document.addEventListener('DOMContentLoaded',function(){
 
             const showAddOverLay = document.querySelector('.add-note-overlay');
 
-            const addNote = document.querySelector('#add-note');
             addNote.addEventListener('click', function () {
                 showAddOverLay.classList.add('show_overlay');
             })
@@ -77,7 +84,6 @@ document.addEventListener('DOMContentLoaded',function(){
             // SHOW EDIT NOTE
             edit.addEventListener('click', function () {
                 editOverLay.classList.add('show_overlay');
-
                 var key = document.querySelector('li.selected').getAttribute('id');
                 addFormEdit(key);
             })
@@ -114,10 +120,11 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
             // ISOTOPE
-            var noteList = document.querySelector('.note-wrapper');
+            const noteList = document.querySelector('.note-list');
             var iso = new Isotope( noteList, {
                 percentPosition: true,
                 itemSelector: ".note",
+                columnWidth: ".note",
                 masonry: {
                     gutter: '.gutter-sizer',
                     horizontalOrder: true
@@ -125,20 +132,20 @@ document.addEventListener('DOMContentLoaded',function(){
             });
             iso.reloadItems()   
 
-            // FILTER   
-            const filterTag = document.querySelector("#filter-tag");
-            filterTag.addEventListener('change', function () {
-                var filterValue = this.value;
-                filterValue = "._" + filterValue;
-                if (filterValue == "._all") {
-                    iso.arrange({ filter: "*" });     
-                } else {
-                    iso.arrange({ filter: filterValue });
-                }
-            })
+                // FILTER  
+                 
+            // const filterTag = document.querySelector("#filter-tag");
+            // filterTag.addEventListener('change', function () {
+            //     var filterValue = this.value;
+            //     filterValue = "._" + filterValue;
+            //     if (filterValue == "._all") {
+            //         iso.arrange({ filter: "*" });     
+            //     } else {
+            //         iso.arrange({ filter: filterValue });
+            //     }
+            // })
 
             if (localStorage.length > 0) {
-                const noteList = document.querySelector('.note-wrapper');
                 noteList.removeChild(displayMsg.parentNode);
             } else {
                 displayMsg.style.display = " ";
@@ -155,30 +162,29 @@ document.addEventListener('DOMContentLoaded',function(){
         }
     }
 
-    function addSelect(value) {
-        const filterTag = document.querySelector("#filter-tag");
-        // var valueOpt = document.querySelector("#filter-tag option[value="+ value +"]");
-        // if (valueOpt === null) {
-        //     createOpt(filterTag, value);
-        // } else {
-        //     return false;
-        // }
-        var arrOpt = [];
-        function checkOpt() {
-            if (arrOpt.indexOf(value) === -1) {
-                arrOpt.push(value);
-                createOpt(filterTag, value);
-            } 
-        }
-        return checkOpt;
-    }
+            //add select option
+    
+    // var arrOpt = [];
 
-    function createOpt(select, value) {
-        var option = document.createElement('option');
-        option.setAttribute('value', value);
-        option.text = value;
-        select.add(option);
-    }
+    // function addSelect(value, arr) {
+    //     const filterTag = document.querySelector("#filter-tag");
+    //     function checkOpt() {
+    //         if (arrOpt.indexOf(value) === -1) {
+    //             arrOpt.push(value);
+    //             createOpt(filterTag, value);
+    //         } 
+    //     }
+    //     return checkOpt;
+    // }
+
+    // function createOpt(select, value) {
+    //     var option = document.createElement('option');
+    //     option.setAttribute('value', value);
+    //     option.text = value;
+    //     select.add(option);
+    // }
+
+
     function getCurrentTime() {
         var d = new Date();
         var month = new Array();
@@ -200,7 +206,7 @@ document.addEventListener('DOMContentLoaded',function(){
     }
     function addNoteToDOM(key, noteobj) {
 
-        const noteList = document.querySelector('.note-wrapper');
+        const noteList = document.querySelector('.note-list');
 
         var note = document.createElement('li');
         note.setAttribute("id", key);
@@ -227,8 +233,6 @@ document.addEventListener('DOMContentLoaded',function(){
         note_date.innerHTML = noteobj.date;
         note_tag.innerHTML = noteobj.tag;
 
-        var test = addSelect(noteobj.tag);
-        test();
         note.setAttribute('class', 'note _' + noteobj.tag);
         note_bottom.appendChild(note_date);
         note_bottom.appendChild(note_tag);
@@ -244,8 +248,8 @@ document.addEventListener('DOMContentLoaded',function(){
                 notes[i].classList.remove('selected');
             }
             note.classList.toggle('selected');
-            edit.classList.add('btn-active');
-            del.classList.add('btn-active');
+            edit.classList.add('active');
+            del.classList.add('active');
         });
     }
 
@@ -290,7 +294,7 @@ document.addEventListener('DOMContentLoaded',function(){
         addNoteToDOM(key, noteObj);
     }
     function removeNoteFromDOM() {
-        const noteList = document.querySelector('.note-wrapper');
+        const noteList = document.querySelector('.note-list');
         var selected = document.querySelector('li.selected');
         var key = selected.getAttribute('id');
         

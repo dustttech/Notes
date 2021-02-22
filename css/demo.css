@@ -22,29 +22,58 @@
     --fs-body-small: 0.8rem;
     --fs-body: 1rem;
     --fs-body-big: 1.2rem;
+    --fs-icon: 2.5rem;
     --fs-header:1.2rem;
-    --fs-icon: 5rem;
+    /* --fs-icon: 5rem; */
     /* COLOR */
+    --cl-black : #08070d;
+    --cl-dark-gray : #3f3a47;
+    --cl-light-gray : #3f3a47;
+    --cl-light-gray : #a18478;
+    --cl-dark-blue : #292994;
+    --cl-blue : #4f4bbd;
+    --cl-light-blue : #74aaac;
+
+
     --cl-bg: #1f1d2b;
+    --cl-item: #272636;
     --cl-bg-light: #1e1b2b;
     --cl-content: #9695a7;
+    --cl-content-unactive: #494554;
     --cl-title: #e4e4e4;
-    --cl-btn: rgb(94, 94, 119);
-    --cl-btn-bg: #16151f;
-    --cl-btn-active: rgb(255, 255, 255);
-    --cl-btn-bg-active: #504f6b;
+    --cl-nav-link:#f6b846;
+
     
     --cl-tag: rgb(72, 180, 121);
 
     /* BOX SHADOW */
-    --bs-neu: -6px -6px 20px rgba(255, 255, 255, 0.1),
-               6px  6px 20px rgba(0, 0, 0, 0.5);
-    --bs-btn-neu: -6px -6px 20px rgba(0, 195, 255, 0.2),
-                    6px  6px 20px rgba(0, 0, 0, 0.5);
+    /* --bs-neu: -6px -6px 20px rgba(255, 255, 255, 0.1),
+                6px  6px 20px rgba(0, 0, 0, 0.5);
 
-    --bs-neu-inset: -6px -6px 20px rgba(255, 255, 255, 0.1) inset,
-                     6px  6px 20px rgba(0, 0, 0, 0.5) inset;
+    --bs-neu-inset: -6px -6px 20px rgba(255, 255, 255, 0.1),
+                    6px  6px 20px rgba(0, 0, 0, 0.5),
+                    -6px -6px 20px rgba(255, 255, 255, 0.1) inset,
+                    6px  6px 20px rgba(0, 0, 0, 0.5) inset;
+
+    --bs-select   : -6px -6px 20px rgba(255, 255, 255, 0.1),
+                    6px  6px 20px rgba(0, 0, 0, 0.5),
+                    -6px -6px 20px rgba(255, 255, 255, 0.1) inset,
+                    6px  6px 20px rgba(0, 0, 0, 0.5) inset;
+
+
+
+    --bs-btn-neu: -6px -6px 20px rgba(0, 195, 255, 0.2),
+                    6px  6px 20px rgba(0, 0, 0, 0.5),
+                    inset -6px -6px 20px rgba(255, 255, 255, 0.1),
+                    inset 6px  6px 20px rgba(0, 0, 0, 0.5); */
+
+    /* --bs-neu-inset: -6px -6px 20px rgba(255, 255, 255, 0.1) inset,
+                     6px  6px 20px rgba(0, 0, 0, 0.5) inset; */
+
+
     --ts-tag: 0px 0px 5px rgb(92, 230, 154);
+
+
 }
 
 
@@ -69,19 +98,20 @@ body {
     background: var(--cl-bg);
 }
 a {
+    -webkit-tap-highlight-color:transparent;
     display: inline-block;
     text-decoration: none;
     color: #9695a7;
 }
 /* BTN STYLE */
-.btn-wrapper {
+/* .btn-wrapper {
     width: 50px;
     height: 50px;
     display: inline-block;
     border-radius: 50%;
     box-shadow: var(--bs-neu);
-}
-.btn-wrapper + .btn-wrapper {
+} */
+/* .btn + .btn {
     margin-left: 20px;
 }
 .btn {
@@ -100,7 +130,7 @@ a {
 }
 .btn > i {
     line-height: 50px;
-}
+} */
 .btn-active {
     color: var(--cl-btn-active);
     background-color: var(--cl-btn-bg-active);
@@ -230,10 +260,7 @@ a {
     font-family: inherit;
     text-transform: capitalize;
     font-size: var(--fs-body-big);
-    box-shadow: -6px -6px 20px rgba(255, 255, 255, 0.1),
-                6px  6px 20px rgba(0, 0, 0, 0.5);
-                /* -6px -6px 20px rgba(255, 255, 255, 0.1) inset,
-                6px  6px 20px rgba(0, 0, 0, 0.5) inset; */
+    box-shadow: var(--bs-select);
 }
 #filter-tag option {
 }
@@ -244,7 +271,7 @@ ul {
 
 /* MAIN WRAPPER */
 .main {
-    width: 100%;height: 100%;
+    width: 100%;
     background: var(--cl-bg);
 }
 .main-wrapper {
@@ -256,11 +283,13 @@ ul {
 }
 /* HEADER */
 .header {
+    margin: 0 auto;
+    max-width: 800px;
     padding: 3vh 0;
     text-align: center;
-    /* display: flex;
+    display: flex;
     justify-content: space-between;
-    align-items: center; */
+    align-items: center;
 }
     /* APP TITLE */
     .title {
@@ -268,25 +297,94 @@ ul {
         font-weight: 600;
         letter-spacing: 2px;
         font-family: var(--ff-title);
-        padding-bottom: 3vh;
     }
-    .nav-bar {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+    /* HEADER NAV */
+    .header-nav > a {
+        display: inline-block;
+        padding: 0 5px;
+        font-size: var(--fs-body);
+        color: var(--cl-content-unactive);
     }
-
+    .header-nav > a.active {
+        color: white;
+    }
     /* ADD NOTE BTN */
-    #add-note {
+    .header-nav .add-note,
+    .header-nav .add-folder {
+        width: 70px;
+        height: 70px;
+        line-height: 70px;
         position: fixed;
         bottom: 50px;right: 15%;
-        z-index: 10;
-        background: #3369ff;
-        border: none;
-        box-shadow: 0px 0px 60px #3369ff9a,
-                    0px 0px 30px #3369ff,
-                    0px 0px 10px #3369ffe1;
+        background: var(--cl-light-blue);
+        border-radius: 50%;
+        text-align: center;
+        color: var(--cl-black);
+        z-index: -1;
+        opacity: 0;
+        transition: 0.3s ease-in-out;
     }
+    .header-nav .add-active {
+        opacity: 1;
+        z-index: 10;
+    }
+    .flaticon-add-file {
+        color: var(--cl-black);
+        padding-left: 8px;
+        font-size: var(--fs-icon);
+    }
+
+/* NAV LINK */
+.nav-link__wrapper   {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 5vh;
+}
+.nav-link__wrapper .active {
+    color: var(--cl-nav-link);
+    position: relative;
+}
+.nav-link__wrapper .active::after {
+    content: "";
+    position: absolute; 
+    bottom: -5px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 50px;
+    height: 5px;
+    background-color: var(--cl-nav-link);
+    border-radius: 5px;
+    transition: 0.3s ease-in-out;
+}
+    .nav-link {
+        font-size: var(--fs-body-big);
+        transition: 0.3s ease-in-out;
+    }
+    
+/* MAIN CONTENT */
+.main-content__view-port {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.main-content {
+    width: 200%;
+    display: flex;
+    transition: 0.3s ;
+}
+
+.main-content.show-note {
+    transform: translateX(0);
+}
+.main-content.show-folder {
+    transform: translateX(-50%);
+}
+    .main-content .note-wrapper,
+    .main-content .folder-wrapper {
+        width: 50%;
+    }
+
     /* NOTE STYLE */
     /* EMPTY MESSAGE */
     .message {
@@ -301,7 +399,7 @@ ul {
     }
     .note {
         width: 100%;
-        background-color: #272636;
+        background-color: var(--cl-item);
         padding: 20px;
         border-radius: 20px;
         color: #9695a7;
@@ -350,8 +448,7 @@ ul {
             font-weight: var(--fw-extra-normal);
         }
 
-/* SEARCH OVERLAY*/
-.search-overlay,
+/*OVERLAY*/
 .add-note-overlay,
 .edit-note-overlay {
     width: 100%;
@@ -402,17 +499,12 @@ ul {
     height: 200px;
     resize: none;
 }
-.input-field__wrapper   {
-    border-radius: 20px;
-    box-shadow: var(--bs-neu);
-}
 .input-field {
     width: 100%;
     border-radius: 20px;
     outline: none;
-    border: 5px solid var(--cl-btn-bg);
-    box-shadow: var(--bs-neu-inset);
-    background-color: var(--cl-btn-bg);
+    border: 1px solid var(--cl-dark-gray);
+    background-color: var(--cl-item);
     color: var(--cl-content);
     font-size: var(--fs-body-big);
     padding: 15px 10px;
