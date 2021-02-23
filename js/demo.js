@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded',function(){
     const navLink = document.querySelectorAll('.nav-link');
     const content = document.querySelector('.main-content');
 
-    const addNote = document.querySelector('.add-note');
-    const addFolder = document.querySelector('.add-folder');
+    const showAddNote = document.querySelector('.show-add-note');
+    const showAddFolder = document.querySelector('.show-add-folder');
 
 
     navLink.forEach(element => {
@@ -22,20 +22,18 @@ document.addEventListener('DOMContentLoaded',function(){
                 content.classList.remove('show-note');
                 content.classList.add('show-folder');
 
-                addNote.classList.remove('add-active');
-                addFolder.classList.add('add-active');
+                showAddNote.classList.remove('show-add-active');
+                showAddFolder.classList.add('show-add-active');
             }   else {
                 content.classList.remove('show-folder');
                 content.classList.add('show-note');
 
-                addFolder.classList.remove('add-active');
-                addNote.classList.add('add-active');
+                showAddFolder.classList.remove('show-add-active');
+                showAddNote.classList.add('show-add-active');
             }
         })
 
     });
-    const linkAll = document.querySelector('#link-all');
-    const linkFolder = document.querySelector('#link-folder');
 
 
 
@@ -43,7 +41,6 @@ document.addEventListener('DOMContentLoaded',function(){
 
     // INITIAL
     window.addEventListener('load',function () {
-        var displayMsg = document.querySelector('.message > span');
         if (window["localStorage"]) {
 
 
@@ -51,29 +48,44 @@ document.addEventListener('DOMContentLoaded',function(){
 
             const showAddOverLay = document.querySelector('.add-note-overlay');
 
-            addNote.addEventListener('click', function () {
+            showAddNote.addEventListener('click', function () {
                 showAddOverLay.classList.add('show_overlay');
             })
             // BTN ADD NOTE FORM
-            const addFormNote = document.querySelector('#add_form');
-            const closeAddNote = document.querySelector('#close_add_form');
+            const addNote = document.querySelector('#add_note');
+
+            const closeAddNote = document.querySelector('#close_add_note');
+
             const inputField = document.querySelectorAll('.input-field');
             inputField.forEach(input => {
                 input.addEventListener('invalid', function name(e) {
                     e.preventDefault();
                 })
             });
-            addFormNote.addEventListener('click', function () {
+
+
+            addNote.addEventListener('click', function () {
                 inputField.forEach(input => {
                     input.setAttribute('placeholder', 'Please enter this')
-                });
+                }); 
             });
+
+            const addNoteForm = document.querySelector('#add-note-form');
+            addNoteForm.addEventListener('submit', function () {
+                createNote();    
+            })
                 // CLOSE ADD NOTE
             closeAddNote.addEventListener('click',function() {
                 showAddOverLay.classList.remove('show_overlay');
                 inputField.forEach(input => {
                     input.removeAttribute('placeholder')
                 });
+            })
+  
+
+            const editForm = document.querySelector('#edit-note');
+            editForm.addEventListener('submit', function () {
+                updateEditNote();
             })
             // END ADD NOTE
 
@@ -87,40 +99,53 @@ document.addEventListener('DOMContentLoaded',function(){
                 var key = document.querySelector('li.selected').getAttribute('id');
                 addFormEdit(key);
             })
-            const editNote = document.querySelector('#add_edit_form');
+            const editNote = document.querySelector('#add_edit');
             editNote.addEventListener('click', function () {
                 inputField.forEach(input => {
                     input.setAttribute('placeholder', 'Please enter this')
                 });
             })
             // CLOSE EDIT NOTE
-            const closeEditNote = document.querySelector('#close_edit_form');
+            const closeEditNote = document.querySelector('#close_edit_note');
             closeEditNote.addEventListener('click',function() {
                 editOverLay.classList.remove('show_overlay');
             })
             // END EDIT NOTE
 
+            // ADD FOLDER SECTION
+            // SHOW ADD FOLDER SECTION
+            const folderOverLay = document.querySelector('.add-folder-overlay');
+            showAddFolder.addEventListener('click', function () {
+                folderOverLay.classList.add('show_overlay');
+            })
+            const closeFolder = document.querySelector('#close_create_folder');
+            closeFolder.addEventListener('click', function () {
+                folderOverLay.classList.remove('show_overlay');
+            })
+
+
+            //END ADD FOLDER 
 
             // BTN DELETE NOTE
             del.onclick = removeNoteFromDOM;
 
-            // CHECK FORM VALID
-            const addForm = document.querySelector('#add-form');
-            addForm.addEventListener('submit', function () {
-                createNote();    
-            })
-            const editForm = document.querySelector('#edit-note');
-            editForm.addEventListener('submit', function () {
-                updateEditNote();
-            })
+
 
             // UPDATE DOM
-            updateDOM();
-        
+            // updateDOM();
+            const noteList = document.querySelector('.note-list');
+            var displayMsg = document.querySelector('.message > span');
+
+            if (localStorage.length > 0) {
+                updateDOM();
+                noteList.removeChild(displayMsg.parentNode);
+            } else {
+                displayMsg.style.display = " ";
+            }
 
 
             // ISOTOPE
-            const noteList = document.querySelector('.note-list');
+
             var iso = new Isotope( noteList, {
                 percentPosition: true,
                 itemSelector: ".note",
@@ -132,24 +157,9 @@ document.addEventListener('DOMContentLoaded',function(){
             });
             iso.reloadItems()   
 
-                // FILTER  
-                 
-            // const filterTag = document.querySelector("#filter-tag");
-            // filterTag.addEventListener('change', function () {
-            //     var filterValue = this.value;
-            //     filterValue = "._" + filterValue;
-            //     if (filterValue == "._all") {
-            //         iso.arrange({ filter: "*" });     
-            //     } else {
-            //         iso.arrange({ filter: filterValue });
-            //     }
-            // })
 
-            if (localStorage.length > 0) {
-                noteList.removeChild(displayMsg.parentNode);
-            } else {
-                displayMsg.style.display = " ";
-            }
+
+
         } else {displayMsg.innerHTML = "Sorry, your browser doesn't support LocalStorage :( ";}
     })
 
@@ -162,27 +172,7 @@ document.addEventListener('DOMContentLoaded',function(){
         }
     }
 
-            //add select option
-    
-    // var arrOpt = [];
 
-    // function addSelect(value, arr) {
-    //     const filterTag = document.querySelector("#filter-tag");
-    //     function checkOpt() {
-    //         if (arrOpt.indexOf(value) === -1) {
-    //             arrOpt.push(value);
-    //             createOpt(filterTag, value);
-    //         } 
-    //     }
-    //     return checkOpt;
-    // }
-
-    // function createOpt(select, value) {
-    //     var option = document.createElement('option');
-    //     option.setAttribute('value', value);
-    //     option.text = value;
-    //     select.add(option);
-    // }
 
 
     function getCurrentTime() {
@@ -253,13 +243,14 @@ document.addEventListener('DOMContentLoaded',function(){
         });
     }
 
-
-    function getNotesArray() {
+    
+    
+    function getNotesArray(array) {
         var notesArray = localStorage["notesArray"];
 
         if (!notesArray) {
             notesArray = [];
-            localStorage.setItem('notesArray', JSON.stringify(notesArray));
+            localStorage.setItem("notesArray", JSON.stringify(notesArray));
         } else {
             notesArray = JSON.parse(notesArray);
         }
@@ -300,6 +291,7 @@ document.addEventListener('DOMContentLoaded',function(){
         
         // REMOVE FROM LOCAL STORAGE
         var notesArray = getNotesArray();
+
         localStorage.removeItem(key);
         for (let i = 0; i < notesArray.length; i++) {
             if (key == notesArray[i]) {

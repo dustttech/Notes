@@ -31,10 +31,10 @@
                         <i class="fas fa-moon    "></i>
                         <i class="fas fa-sun    "></i>
                     </a>
-                    <a class="add-note add-active"  href="#">
+                    <a class="show-add-note show-add-active"  href="#">
                         <i class="flaticon-add-file"></i>
                     </a>
-                    <a class="add-folder"  href="#">
+                    <a class="show-add-folder"  href="#">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                     </a>
                     <!-- <div class="fitler-wrapper">
@@ -68,9 +68,6 @@
                                     <a href="#" class="note__tag">Tag</a>
                                 </div>
                             </li> -->
-                            <a class="add-note add-active"  href="#">
-                                <i class="flaticon-add-file"></i>
-                            </a>
                         </ul>
 
                     </div>
@@ -95,7 +92,7 @@
             </section> -->
             <section class="add-note-overlay">
                 <h1 class="title">Notes</h1>
-                <form id="add-form" action="" class="form">
+                <form id="add-note-form" action="" class="form">
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input required id="note-title" type="text" name="title" class="input-field">
@@ -109,8 +106,8 @@
                         <input required id="note-tag"  type="text" name="tag" class="input-field">
                     </div>
                     <div class="form-group btn-group">
-                        <input id="add_form" type="submit" class="submit-content form-btn " value="Add">
-                        <input id="close_add_form" type="button" class="close-form form-btn" value="Cancel">
+                        <input id="add_note" type="submit" class="submit-content form-btn " value="Add">
+                        <input id="close_add_note" type="button" class="close-form form-btn" value="Cancel">
                     </div>
                 </form>
             </section>
@@ -136,12 +133,19 @@
                         </div>
                     </div>
                     <div class="form-group btn-group">
-                        <div class="form-btn__wrapper">
-                            <input id="add_edit_form" type="submit" class="submit-content form-btn" value="Edit">
-                        </div>
-                        <div class="form-btn__wrapper">
-                            <input id="close_edit_form" type="button" class="close-form form-btn" value="Cancel">
-                        </div>
+                        <input id="add_edit" type="submit" class="submit-content form-btn" value="Edit">
+                        <input id="close_edit_note" type="button" class="close-form form-btn" value="Cancel">
+                    </div>
+                </form>
+            </section>
+            <section class="add-folder-overlay">
+                <form id="add-folder-form" action="" class="form">
+                    <div class="form-group">
+                        <input id="folder-input" type="text" class="input-field" placeholder="Folder name" >
+                    </div>
+                    <div class="form-group btn-group">
+                        <input id="create_folder" type="submit" class="submit-content form-btn" value="Create">
+                        <input id="close_create_folder" type="button" class="close-form form-btn" value="Cancel">
                     </div>
                 </form>
             </section>

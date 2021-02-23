@@ -309,8 +309,8 @@ ul {
         color: white;
     }
     /* ADD NOTE BTN */
-    .header-nav .add-note,
-    .header-nav .add-folder {
+    .header-nav .show-add-note,
+    .header-nav .show-add-folder {
         width: 70px;
         height: 70px;
         line-height: 70px;
@@ -324,7 +324,7 @@ ul {
         opacity: 0;
         transition: 0.3s ease-in-out;
     }
-    .header-nav .add-active {
+    .header-nav .show-add-active {
         opacity: 1;
         z-index: 10;
     }
@@ -374,15 +374,29 @@ ul {
     transition: 0.3s ;
 }
 
-.main-content.show-note {
+.main-content__view-port .show-note {
     transform: translateX(0);
 }
-.main-content.show-folder {
+
+.main-content__view-port .show-folder {
     transform: translateX(-50%);
+}
+.show-note .folder-wrapper {
+    opacity: 0;
+    visibility: hidden;
+}
+.show-folder .note-wrapper {
+    opacity: 0;
+    visibility: hidden;
+}
+.show-folder .note-wrapper,
+.show-note .folder-wrapper {
+    max-height: 100vh;
 }
     .main-content .note-wrapper,
     .main-content .folder-wrapper {
         width: 50%;
+        transition: 0.3s ease-in-out;
     }
 
     /* NOTE STYLE */
@@ -452,7 +466,7 @@ ul {
 .add-note-overlay,
 .edit-note-overlay {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background: #1f1d2b;
     position: absolute;
     top: 0;left: 0;
@@ -465,6 +479,32 @@ ul {
     text-align: center;
     padding: 3vh 20px 0;
 }
+/* ADD FOLDER  */
+.add-folder-overlay {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;left: 0;
+
+    z-index: -1;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.4s ease-in-out;
+
+}
+#add-folder-form {
+    width: 80%;
+    max-width: 600px;
+    max-height: 200px;
+    background-color: var(--cl-item);
+    padding: 20px;
+    border-radius: 20px;
+}
+
 .show_overlay {
     z-index: 50;
     opacity: 1;
@@ -523,17 +563,13 @@ ul {
     display: flex;
     justify-content: space-between;
 }
-.form-btn__wrapper {
-    border-radius: 20px;
-    box-shadow: var(--bs-btn-neu);
-}
 .form-btn {
     display: inline-block;
     padding: 10px 20px;
     border-radius: 20px;
     outline: none;
     border: none;
-    background: #3369ff;
+    background: var(--cl-light-blue);
     color: var(--cl-btn-bg);
     font-weight: var(--fw-extra-bold);
     transition: 0.3s ease-in-out;
@@ -544,6 +580,10 @@ ul {
     color: var(--cl-content);
     pointer-events: none;
 }
+#folder-input {
+    text-align: center;
+}
+
 @media (min-width:800px) {
     .main-wrapper {
         max-width: 1000px;
