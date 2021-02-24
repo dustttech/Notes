@@ -103,6 +103,10 @@ a {
     text-decoration: none;
     color: #9695a7;
 }
+img {
+    display: block;
+    max-width: 100%;
+}
 /* BTN STYLE */
 /* .btn-wrapper {
     width: 50px;
@@ -402,13 +406,14 @@ ul {
     /* NOTE STYLE */
     /* EMPTY MESSAGE */
     .message {
+        display: block;
         text-align: center;
         color: #9695a7;
     }
     .empty_toggle {
         display: none;
     }
-    .gutter-sizer {
+    .note-wrapper .gutter-sizer {
         width: 0;
     }
     .note {
@@ -511,6 +516,35 @@ ul {
     visibility: visible;
 }
 
+/* FOLDER SECTION */
+.folder-list {
+    width: 100%;
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; */
+}
+.folder-list .gutter-sizer {
+    width: 4%;
+}
+.folder {
+    width: 48%;
+    background-color: var(--cl-item);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+    .folder__title {
+        text-align: center;
+        color: white;
+        text-transform: capitalize;
+        font-size: var(--fs-body-big);
+    }
+/* END FOLDER */
 /* ADD NOTE  */
 .add-note-overlay {
     padding-top: 0;
@@ -580,7 +614,7 @@ ul {
     color: var(--cl-content);
     pointer-events: none;
 }
-#folder-input {
+#folder-title {
     text-align: center;
 }
 
@@ -588,7 +622,7 @@ ul {
     .main-wrapper {
         max-width: 1000px;
     }
-        .gutter-sizer {
+        .note-wrapper .gutter-sizer {
             width: 4%;
         }
         .note {
@@ -599,7 +633,7 @@ ul {
     .main-wrapper {
         max-width: 1300px;
     }
-        .gutter-sizer {
+        .note-wrapper .gutter-sizer {
             width: 2%;
         }
         .note {
@@ -610,7 +644,7 @@ ul {
     .main-wrapper {
         max-width: 1400px;
     }
-        .gutter-sizer {
+        .note-wrapper .gutter-sizer {
             width: calc(8% / 3);
         }
         .note {

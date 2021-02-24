@@ -53,11 +53,9 @@
             <div class="main-content__view-port">
                 <div class="main-content show-note">
                     <div class="note-wrapper">
+                        <span class="message">There isn't any note yet !</span>
                         <ul class="note-list ">
                             <li class="gutter-sizer"></li>
-                            <li class="message">
-                                <span>There isn't any note yet !</span>
-                            </li>
                             <!-- <li class="note">
                                 <h1 class="note__title">Title</h1>
                                 <p class="note__content">
@@ -73,9 +71,15 @@
                     </div>
                     <div class="folder-wrapper">
                         <ul class="folder-list">
+                            <li class="gutter-sizer"></li>
                             <li class="message">
                                 <span>You haven't create any folder yet !</span>
                             </li>
+                            <!-- <li id="test"  class="folder">
+                                <img src="img/folder.png" alt="">
+                                <span class="folder__title">test dkowd owjdoa daw dwa dwa dwa dawdwa</span>
+                            </li> -->
+
                         </ul>
                     </div>
 
@@ -141,7 +145,7 @@
             <section class="add-folder-overlay">
                 <form id="add-folder-form" action="" class="form">
                     <div class="form-group">
-                        <input id="folder-input" type="text" class="input-field" placeholder="Folder name" >
+                        <input required id="folder-title" type="text" class="input-field" placeholder="Folder name" >
                     </div>
                     <div class="form-group btn-group">
                         <input id="create_folder" type="submit" class="submit-content form-btn" value="Create">
