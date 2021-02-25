@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded',function(){
     const closeAddNote = document.querySelector('#close_add_note');//close add note overlay
     const closeEditNote = document.querySelector('#close_edit_note');//close edit note overlay
     const closeCreateFolder = document.querySelector('#close_create_folder');//close create folder
-    // submit form 
+    // submit form btn
     const addNote = document.querySelector('#add_note');
-    const createFolder = document.querySelector('#create_folder');
+    const createfolder = document.querySelector('#create_folder');
     //form 
     const addNoteForm = document.querySelector('#add_note_form');
     const editNoteForm = document.querySelector('#edit_note_form');
@@ -25,22 +25,37 @@ document.addEventListener('DOMContentLoaded',function(){
     // NOTE 
     const noteList = document.querySelector('.note-list');//note list
     const notes = document.querySelectorAll('.note');//notes
+
+    // FOLDER
+    const folderList = document.querySelector('.folder-list');
+    // MESSAGE DISPLAY
+    const msgNote = document.querySelector('.note-list .message');//note
+    const msgFolder = document.querySelector('.folder-list .message');//folder
+
+    // BTN 
+    const del = document.querySelector('.delete');//delete
+    const edit = document.querySelector('.edit'); // edit
+
+
     // INTIAL
     window.addEventListener('load',function () {
         // CHECK IF THERE IS SUPPORT FOR LOCALSTORAGE
 
         if (window["localStorage"]) {
+            var notesArray = getNotesArray();
+            var foldersArray = getFoldersArray();
+
             // UPDATE DOM FROM LOCALSTORAGE
-            updateNoteDOM();
+            updateNoteDOM(notesArray, foldersArray);
 
 
             // ISOTOPE
 
-
-            var notesArray = getNotesArray();
-            const msgNote = document.querySelector('.note-list .message');
-
+            // DISPLAY MSG IF THERE IS 0 NOTE OR FOLDER
             if (notesArray.length > 0) {
+                // Remove msg
+                msgNote.style.display = "none";
+
                 var isoNote = new Isotope( noteList, {
                     percentPosition: true,
                     itemSelector: ".note",
@@ -51,21 +66,40 @@ document.addEventListener('DOMContentLoaded',function(){
                     }
                 });
 
+            } else {
+                msgNote.style.display = "";
             }
+            if (foldersArray.length > 0) {
+                msgFolder.style.display = "none";
 
+                var isoFolder = new Isotope( folderList, {
+                    percentPosition: true,
+                    itemSelector: ".folder",
+                    columnWidth: ".folder",
+                    masonry: {
+                        gutter: '.gutter-sizer',
+                        horizontalOrder: true
+                    }
+                });
+            } else {
+                msgNote.style.display = "";
+            }
             // FORM
             //SUBMIT
             addNoteForm.addEventListener('submit', function () {
                 createNote();
             })
             editNoteForm.addEventListener('submit', function () {
-                editNote();
+                updateEditNote();
             })
             createFolderForm.addEventListener('submit', function () {
-                createFolder();
+                createFolder(foldersArray);
+            })
+            createfolder.addEventListener('click', function () {
+                console.log('thi sao');
             })
             // END FORM
-        } else {displayMsg.innerHTML = "Sorry, your browser doesn't support LocalStorage :( ";}
+        } else {msgNote.innerHTML = "Sorry, your browser doesn't support LocalStorage :( ";}
 
 
 
@@ -84,12 +118,18 @@ document.addEventListener('DOMContentLoaded',function(){
     
                     showAddNote.classList.remove('show-add-active');
                     showAddFolder.classList.add('show-add-active');
+                    if (foldersArray.length > 0) {
+                        isoFolder.layout();
+                    }
                 }   else {
                     contentShow.classList.remove('show-folder');
                     contentShow.classList.add('show-note');
     
                     showAddFolder.classList.remove('show-add-active');
                     showAddNote.classList.add('show-add-active');
+                    if (notesArray.length > 0) {
+                        isoNote.layout();
+                    }
                 }
             })
         });
@@ -101,13 +141,20 @@ document.addEventListener('DOMContentLoaded',function(){
         showAddNote.onclick = function () {
             addNoteOverLay.classList.add('show_overlay');
         }
+        showEdit.onclick = checkItem;
         showAddFolder.onclick = function () {
             addFolderOverLay.classList.add('show_overlay');
         }
         // CLOSE
+        // CLOSE ADD NOTE
         closeAddNote.onclick = function () {
             addNoteOverLay.classList.remove('show_overlay');
         }
+        // CLOSE EDIT NOTE 
+        closeEditNote.onclick = function () {
+            editNoteOverLay.classList.remove('show_overlay');
+        }
+        // CLOSE CREATE FOLDER
         closeCreateFolder.onclick = function () {
             addFolderOverLay.classList.remove('show_overlay');
         }
@@ -117,17 +164,40 @@ document.addEventListener('DOMContentLoaded',function(){
     });
     // END INITIAL
 
-
-    function updateNoteDOM() {
-        var notesArray = getNotesArray();
+    function checkItem() {
+        var selected = document.querySelector('.selected');
+        var key = selected.getAttribute('id');
+        if (selected.classList.contains('note')) {
+            editNoteOverLay.classList.add('show_overlay');
+            addFormEdit(key);
+        } else if (selected.classList.contains('folder')) {
+            console.log('show edit folder');
+        }
+    }
+    function updateNoteDOM(notesArray, foldersArray) {
         for (let i = 0; i < notesArray.length; i++) {
             var key = notesArray[i];
             var value = JSON.parse(localStorage[key]);
             addNoteToDOM(key, value);
         }
+        for (let i = 0; i < foldersArray.length; i++) {
+            var obj = foldersArray[i];
+            addFolderToDOM(obj);
+        }
 
     }
     
+    function getFoldersArray() {
+        var foldersArray = localStorage["foldersArray"];
+
+        if (!foldersArray) {
+            foldersArray = [];
+            localStorage.setItem("foldersArray", JSON.stringify(foldersArray));
+        } else {
+            foldersArray = JSON.parse(foldersArray);
+        }
+        return foldersArray;
+    }
     function getNotesArray() {
         var notesArray = localStorage["notesArray"];
 
@@ -188,6 +258,7 @@ document.addEventListener('DOMContentLoaded',function(){
         notesArray.push(key);
         localStorage.setItem("notesArray", JSON.stringify(notesArray));
     }
+
     function addNoteToDOM(key, noteobj) {
 
         const noteList = document.querySelector('.note-list');
@@ -233,8 +304,73 @@ document.addEventListener('DOMContentLoaded',function(){
                 notes[i].classList.remove('selected');
             }
             note.classList.toggle('selected');
-            // edit.classList.add('active');
-            // del.classList.add('active');
+            edit.classList.add('btn-active');
+            del.classList.add('btn-active');
         });
+    }
+
+    function addFormEdit(key) {
+        var note = JSON.parse(localStorage[key]);
+
+        const noteTitle = document.querySelector('#edit-note-title');
+        const noteContent = document.querySelector('#edit-note-content');
+        const noteTag = document.querySelector('#edit-note-tag');
+        
+        noteTitle.value = note.title;
+        noteContent.value = note.content;
+        noteTag.value = note.tag;
+    }
+    function updateEditNote() {
+        var key = document.querySelector('li.selected').getAttribute('id');
+        var note = JSON.parse(localStorage[key]);
+
+        const noteTitle = document.querySelector('#edit-note-title').value;
+        const noteContent = document.querySelector('#edit-note-content').value;
+        const noteTag = document.querySelector('#edit-note-tag').value;
+        var dateValue = getCurrentTime();
+
+        note.title = noteTitle;
+        note.content = noteContent;
+        note.date = dateValue + " (edited)";
+        note.tag = noteTag;
+
+        localStorage.setItem(key, JSON.stringify(note));
+    }
+
+    function createFolder(foldersArray) {
+        const folderTitle = document.querySelector('#folder-title');
+        
+        var title = folderTitle.value;
+        var folderObj = {
+            "title" : title,
+            "list" : []
+        };
+        foldersArray.push(folderObj);
+        localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
+        addFolderToDOM(folderObj);
+    }
+    function addFolderToDOM(folderObj) {
+        const folderList = document.querySelector('.folder-list');
+
+        var folder = document.createElement('li');
+        folder.setAttribute('id', folderObj.title);
+        folder.setAttribute('class', 'folder');
+        var img = document.createElement('img');
+        img.setAttribute('src' , "img/folder.png");
+        img.setAttribute('alt' , "Folder");
+        var title = document.createElement('span');
+        title.setAttribute('class', 'folder__title');
+        title.innerHTML = folderObj.title;
+
+
+        folder.appendChild(img);
+        folder.appendChild(title);
+        folderList.appendChild(folder);
+
+        folder.addEventListener('click', function () {
+            var folderName = folder.getAttribute('id');
+            console.log('open ' + folderName);
+        })
+
     }
 },false)

@@ -79,46 +79,50 @@
                 </div>
             </div>
             <section class="add-note-overlay">
-                <h1 class="title">Notes</h1>
-                <form id="add_note_form" action="" class="form">
-                    <div class="form-group">
-                        <label for="title">Title</label>
-                        <input required id="note-title" type="text" name="title" class="input-field">
-                    </div>
-                    <div class="form-group">
-                        <label for="content">Content</label>
-                        <textarea required id="note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="tag">Tag</label>
-                        <input required id="note-tag"  type="text" name="tag" class="input-field">
-                    </div>
-                    <div class="form-group btn-group">
-                        <input id="add_note" type="submit" class="submit-content form-btn " value="Add">
-                        <input id="close_add_note" type="button" class="close-form form-btn" value="Cancel">
-                    </div>
-                </form>
+                <div class="add-note-wrapper">
+                    <h1 class="title-form">Create Note</h1>
+                    <form id="add_note_form" action="" class="form">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input required id="note-title" type="text" name="title" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Content</label>
+                            <textarea required id="note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="tag">Tag</label>
+                            <input required id="note-tag"  type="text" name="tag" class="input-field">
+                        </div>
+                        <div class="form-group btn-group">
+                            <input id="add_note" type="submit" class="submit-content form-btn " value="Add">
+                            <input id="close_add_note" type="button" class="close-form form-btn" value="Cancel">
+                        </div>
+                    </form>
+                </div>
             </section>
             <section class="edit-note-overlay">
-                <h1 class="title">Edit</h1>
-                <form id="edit_note_form" action="" class="form">
-                    <div class="form-group">
-                        <label for="title">Title</label>
-                        <input required id="edit-note-title" type="text" name="title" class="input-field">
-                    </div>
-                    <div class="form-group">
-                        <label for="content">Content</label>
-                        <textarea required id="edit-note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="tag">Tag</label>
-                        <input required id="edit-note-tag"  type="text" name="tag" class="input-field">
-                    </div>
-                    <div class="form-group btn-group">
-                        <input id="add_edit" type="submit" class="submit-content form-btn" value="Edit">
-                        <input id="close_edit_note" type="button" class="close-form form-btn" value="Cancel">
-                    </div>
-                </form>
+                <div class="edit-wrapper">
+                    <h1 class="title-form">Edit Note</h1>
+                    <form id="edit_note_form" action="" class="form">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input required id="edit-note-title" type="text" name="title" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Content</label>
+                            <textarea required id="edit-note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="tag">Tag</label>
+                            <input required id="edit-note-tag"  type="text" name="tag" class="input-field">
+                        </div>
+                        <div class="form-group btn-group">
+                            <input id="add_edit" type="submit" class="submit-content form-btn" value="Edit">
+                            <input id="close_edit_note" type="button" class="close-form form-btn" value="Cancel">
+                        </div>
+                    </form>
+                </div>
             </section>
             <section class="add-folder-overlay">
                 <form id="create_folder_form" action="" class="form">

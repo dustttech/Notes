@@ -83,13 +83,7 @@ ul {
     list-style-type: none;
 }
 
-/* TOGGLE STYLE */
-.btn-active {
-    color: var(--cl-btn-active);
-    background-color: var(--cl-btn-bg-active);
-    border: 2px solid var(--cl-btn-bg-active);
-    pointer-events: unset;
-}
+
 
 /* MAIN */
 .main {
@@ -125,11 +119,18 @@ ul {
     .header-nav > a {
         display: inline-block;
         padding: 0 5px;
-        font-size: var(--fs-body);
+        font-size: var(--fs-body-big);
         color: var(--cl-content-unactive);
+        pointer-events: none;
     }
     .header-nav > a.active {
         color: white;
+    }
+    /* TOGGLE STYLE */
+
+    .header-nav > .btn-active {
+        color: white;
+        pointer-events: unset;
     }
 
     /* ADD OVERLAY BTN */
@@ -147,6 +148,8 @@ ul {
         z-index: -1;
         opacity: 0;
         transition: 0.3s ease-in-out;
+        pointer-events: unset;
+
     }
     .header-nav .show-add-active {
         opacity: 1;
@@ -282,6 +285,35 @@ ul {
             font-weight: var(--fw-extra-normal);
         }
         /* END NOTE STYLE */
+        /* FOLDER STYLE */
+        .folder-list {
+            width: 100%;
+            /* display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; */
+        }
+        .folder-list .gutter-sizer {
+            width: 4%;
+        }
+        .folder {
+            width: 48%;
+            background-color: var(--cl-item);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+            .folder__title {
+                text-align: center;
+                color: white;
+                text-transform: capitalize;
+                font-size: var(--fs-body-big);
+            }
+        /* END FOLDER */
 .main-content::after {
     content: "";
     clear: both;
@@ -308,34 +340,42 @@ ul {
 }
 .add-note-overlay,
 .edit-note-overlay {
-    background: #1f1d2b;
-    transition: 0.4s ease-in-out;
+    /* background: #1f1d2b; */
     text-align: center;
-    padding: 3vh 20px 0;
 }
 .show_overlay {
     z-index: 50;
     opacity: 1;
     visibility: visible;
 }
-/* FORM */
-/* FOLDER FORM */
-#add-folder-form {
-    width: 80%;
+.add-note-wrapper,
+.edit-wrapper,
+#create_folder_form {
+    width: 100%;
     max-width: 600px;
-    max-height: 200px;
-    background-color: var(--cl-item);
-    padding: 20px;
+    background-color: var(--cl-nav-link);
     border-radius: 20px;
+    padding: 20px;
+}
+/* FORM */
+
+/* FOLDER FORM */
+#create_folder_form {
+    padding: 20px 10px;
 }
 /* FORM */
 .form {
     width: 100%;
     font-size: var(--fs-body-big);
     text-align: left;
+    color: var(--cl-black);
 }
 .form-group {
     margin-bottom: 3vh;
+}
+.title-form {
+    font-family: var(--ff-title);
+    font-size: var(--fs-h3);
 }
 .form label,
 .form input,
@@ -351,15 +391,15 @@ ul {
     width: 100%;
     border-radius: 20px;
     outline: none;
-    border: 1px solid var(--cl-dark-gray);
-    background-color: var(--cl-item);
-    color: var(--cl-content);
+    border: 2px solid var(--cl-black);
+    background-color: var(--cl-nav-link);
+    color: var(--cl-black);
     font-size: var(--fs-body-big);
     padding: 15px 10px;
 }
 .form label {
-    color: var(--cl-title);
     padding-bottom: 10px;
+    font-weight: var(--fw-extra-normal);
 }
 .form input {
     height: inherit;
@@ -376,9 +416,8 @@ ul {
     padding: 10px 20px;
     border-radius: 20px;
     outline: none;
-    border: none;
-    background: var(--cl-light-blue);
-    color: var(--cl-btn-bg);
+    border: 2px solid var(--cl-black);
+    background: var(--cl-nav-link);
     font-weight: var(--fw-extra-bold);
     transition: 0.3s ease-in-out;
 }
@@ -389,6 +428,15 @@ ul {
 }
 #folder-title {
     text-align: center;
+}
+#folder-title::placeholder {
+    color: var(--cl-black);
+}
+
+@media (min-width:400px) {
+    #create_folder_form {
+        padding: 40px 20px;
+    }
 }
 
 @media (min-width:800px) {
