@@ -24,7 +24,7 @@
                     <a class="edit" href="#">
                         Edit
                     </a>
-                    <a class="delete" href="#">
+                    <a id="show-delete" class="delete" href="#">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </a>
                     <a href="#" class="active theme">
@@ -81,7 +81,7 @@
             <section class="add-note-overlay">
                 <div class="add-note-wrapper">
                     <h1 class="title-form">Create Note</h1>
-                    <form id="add_note_form" action="" class="form">
+                    <form id="add_note_form" action="" class="form" autocomplete="off">
                         <div class="form-group">
                             <label for="title">Title</label>
                             <input required id="note-title" type="text" name="title" class="input-field">
@@ -104,7 +104,7 @@
             <section class="edit-note-overlay">
                 <div class="edit-wrapper">
                     <h1 class="title-form">Edit Note</h1>
-                    <form id="edit_note_form" action="" class="form">
+                    <form id="edit_note_form" action="" class="form" autocomplete="off">
                         <div class="form-group">
                             <label for="title">Title</label>
                             <input required id="edit-note-title" type="text" name="title" class="input-field">
@@ -125,15 +125,24 @@
                 </div>
             </section>
             <section class="add-folder-overlay">
-                <form id="create_folder_form" action="" class="form">
+                <form autocomplete="off" id="create_folder_form" action="" class="form">
                     <div class="form-group">
-                        <input required id="folder-title" type="text" class="input-field" placeholder="Folder name" >
+                        <input name="folder-name" required id="folder-title" type="text" class="input-field" placeholder="Folder name" >
                     </div>
                     <div class="form-group btn-group">
                         <input id="create_folder" type="submit" class="submit-content form-btn" value="Create">
                         <input id="close_create_folder" type="button" class="close-form form-btn" value="Cancel">
                     </div>
                 </form>
+            </section>
+            <section class="confirm-delete-overlay">
+                    <form id="confirm_delete_form" class="delete-wrapper" action="">
+                        <span>Are you sure wanna delete this ?</span>
+                        <div class="form-group btn-group">
+                            <input id="delete" type="button" class="form-btn" value="Yes">
+                            <input id="close_confirm_delete" type="button" class="form-btn" value="No">
+                        </div>
+                    </form>
             </section>
         </div>
     </div>

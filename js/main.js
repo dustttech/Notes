@@ -2,10 +2,12 @@ document.addEventListener('DOMContentLoaded',function(){
     // nav link
     const navShow = document.querySelectorAll('.nav-link');
     const contentShow = document.querySelector('.main-content');
-    //adnote overlay , folder overlay , edit overlay
+    //adnote overlay , folder overlay , edit overlay, delete confirm overlay
     const addNoteOverLay = document.querySelector('.add-note-overlay');
     const editNoteOverLay = document.querySelector('.edit-note-overlay');
     const addFolderOverLay = document.querySelector('.add-folder-overlay');
+    //delete confirm
+    const confirmDelOverLay = document.querySelector('.confirm-delete-overlay');
     //show addnote, addfolder overlay , edit overlay
     const showAddNote = document.querySelector('.show-add-note');//note
     const showEdit = document.querySelector('.edit');//edit
@@ -14,14 +16,24 @@ document.addEventListener('DOMContentLoaded',function(){
     const closeAddNote = document.querySelector('#close_add_note');//close add note overlay
     const closeEditNote = document.querySelector('#close_edit_note');//close edit note overlay
     const closeCreateFolder = document.querySelector('#close_create_folder');//close create folder
+    const closeConfirmDel = document.querySelector('#close_confirm_delete');//close create folder
     // submit form btn
     const addNote = document.querySelector('#add_note');
+    const editNote = document.querySelector('#add_edit');
     const createfolder = document.querySelector('#create_folder');
     //form 
+    //add note
     const addNoteForm = document.querySelector('#add_note_form');
-    const editNoteForm = document.querySelector('#edit_note_form');
-    const createFolderForm = document.querySelector('#create_folder_form');
+    const addNoteInput = document.querySelectorAll('#add_note_form .input-field');//input 
 
+    //edit note
+    const editNoteForm = document.querySelector('#edit_note_form');
+    const editNoteInput = document.querySelectorAll('#edit_note_form .input-field');//input
+    //folder
+    const createFolderForm = document.querySelector('#create_folder_form');
+    const createFolderInput = document.querySelector('#create_folder_form .input-field');//input
+    //delete
+    // const confirmDelForm = document.querySelector('#confirm_delete_form');
     // NOTE 
     const noteList = document.querySelector('.note-list');//note list
     const notes = document.querySelectorAll('.note');//notes
@@ -33,9 +45,9 @@ document.addEventListener('DOMContentLoaded',function(){
     const msgFolder = document.querySelector('.folder-list .message');//folder
 
     // BTN 
-    const del = document.querySelector('.delete');//delete
+    const showDel = document.querySelector('#show-delete');//confirm delete
+    const del = document.querySelector('#delete'); // edit
     const edit = document.querySelector('.edit'); // edit
-
 
     // INTIAL
     window.addEventListener('load',function () {
@@ -85,6 +97,29 @@ document.addEventListener('DOMContentLoaded',function(){
                 msgNote.style.display = "";
             }
             // FORM
+            // VALID MESSAGE 
+            addNote.addEventListener('click', function () {
+                addNoteInput.forEach(input => {
+                    input.addEventListener('invalid', function (e) {
+                        e.preventDefault();
+                        input.setAttribute('placeholder', "Please enter this");
+                    })
+                });
+            })
+            editNote.addEventListener('click', function () {
+                editNoteInput.forEach(input => {
+                    input.addEventListener('invalid', function (e) {
+                        e.preventDefault();
+                        input.setAttribute('placeholder', "Please enter this");
+                    })
+                });
+            })
+            createfolder.addEventListener('click', function () {
+                createFolderInput.addEventListener('invalid', function (e) {
+                    e.preventDefault();
+                    this.setAttribute('placeholder', "Please enter this");  
+                })
+            })
             //SUBMIT
             addNoteForm.addEventListener('submit', function () {
                 createNote();
@@ -95,9 +130,8 @@ document.addEventListener('DOMContentLoaded',function(){
             createFolderForm.addEventListener('submit', function () {
                 createFolder(foldersArray);
             })
-            createfolder.addEventListener('click', function () {
-                console.log('thi sao');
-            })
+            // DELETE
+            del.onclick = removeFromDOM;
             // END FORM
         } else {msgNote.innerHTML = "Sorry, your browser doesn't support LocalStorage :( ";}
 
@@ -141,22 +175,37 @@ document.addEventListener('DOMContentLoaded',function(){
         showAddNote.onclick = function () {
             addNoteOverLay.classList.add('show_overlay');
         }
-        showEdit.onclick = checkItem;
+        showEdit.onclick = checkItemEdit;
         showAddFolder.onclick = function () {
             addFolderOverLay.classList.add('show_overlay');
         }
+        showDel.onclick = function () {
+            confirmDelOverLay.classList.add('show_overlay');
+        }
+      
         // CLOSE
         // CLOSE ADD NOTE
         closeAddNote.onclick = function () {
             addNoteOverLay.classList.remove('show_overlay');
+            addNoteInput.forEach(input => {
+                input.removeAttribute('placeholder');
+            });
         }
         // CLOSE EDIT NOTE 
         closeEditNote.onclick = function () {
             editNoteOverLay.classList.remove('show_overlay');
+            editNoteInput.forEach(input => {
+                input.removeAttribute('placeholder');
+            });
         }
         // CLOSE CREATE FOLDER
         closeCreateFolder.onclick = function () {
             addFolderOverLay.classList.remove('show_overlay');
+            createFolderInput.setAttribute('placeholder', "Folder Name");  
+        }
+        //CLOSE CONFIRM DELETE
+        closeConfirmDel.onclick = function () {
+            confirmDelOverLay.classList.remove('show_overlay');
         }
         // END OVERLAY
 
@@ -164,7 +213,7 @@ document.addEventListener('DOMContentLoaded',function(){
     });
     // END INITIAL
 
-    function checkItem() {
+    function checkItemEdit() {
         var selected = document.querySelector('.selected');
         var key = selected.getAttribute('id');
         if (selected.classList.contains('note')) {
@@ -305,7 +354,7 @@ document.addEventListener('DOMContentLoaded',function(){
             }
             note.classList.toggle('selected');
             edit.classList.add('btn-active');
-            del.classList.add('btn-active');
+            showDel.classList.add('btn-active');
         });
     }
 
@@ -331,7 +380,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
         note.title = noteTitle;
         note.content = noteContent;
-        note.date = dateValue + " (edited)";
+        note.date = dateValue;
         note.tag = noteTag;
 
         localStorage.setItem(key, JSON.stringify(note));
@@ -368,9 +417,37 @@ document.addEventListener('DOMContentLoaded',function(){
         folderList.appendChild(folder);
 
         folder.addEventListener('click', function () {
-            var folderName = folder.getAttribute('id');
-            console.log('open ' + folderName);
+            // var folderName = folder.getAttribute('id');
+            // console.log('open ' + folderName);
+            var folders = document.querySelectorAll('.folder');
+            for (let i = 0; i < folders.length; i++) {
+                folders[i].classList.remove('selected');
+            }
+            folder.classList.add('selected');
+            showDel.classList.add('btn-active');
         })
 
+    }
+    function removeFromDOM() {
+        const noteList = document.querySelector('.note-list');
+        var selected = document.querySelector('li.selected');
+        var key = selected.getAttribute('id');
+        
+        // REMOVE FROM LOCAL STORAGE
+        var notesArray = getNotesArray();
+
+        localStorage.removeItem(key);
+        for (let i = 0; i < notesArray.length; i++) {
+            if (key == notesArray[i]) {
+                notesArray.splice(i,1);
+            }
+        }
+        localStorage.setItem('notesArray', JSON.stringify(notesArray));
+
+        // REMOVE NOTE FROM DOM
+        noteList.removeChild(selected);
+        edit.classList.toggle('btn-active');
+        del.classList.toggle('btn-active');
+        location.reload();
     }
 },false)
