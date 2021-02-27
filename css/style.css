@@ -191,38 +191,34 @@ ul {
 
 /* END NAV LINK */
 /* MAIN CONTENT */
-.main-content__view-port {
-    width: 100%;
-    overflow: hidden;
-}
 .main-content {
-    width: 200%;
+    /* width: 200%; */
     /* display: flex; */
+    position: relative;
     transition: 0.3s ;
 }
     .note-wrapper,
-    .folder-wrapper {
-        float: left;
-        width: 50%;
-        position: relative;
+    .folder-wrapper,
+    .folder-section {
+        /* float: left; */
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
         opacity: 0;
+        visibility: hidden;
         /* min-height: 80vh; */
         transition: opacity 0.3s ease-in-out;
     }
-    .note-wrapper {
-        left: 0;
-    }
-    .folder-wrapper {
-        left: -50%;
-    }
-    .show-note .note-wrapper {
+    .show-note .note-wrapper,
+    .show-folder .folder-wrapper,
+    .show-folder-section .folder-section {
         opacity: 1;
+        visibility: visible;
         z-index: 1;
     }
-    .show-folder .folder-wrapper {
-        opacity: 1;
-        z-index: 1;
-    }
+
     /* NOTE STYLE */
     .message {
         display: block;
@@ -238,6 +234,7 @@ ul {
     .note {
         width: 100%;
         background-color: var(--cl-item);
+        border: 2px solid var(--cl-item);
         padding: 20px;
         border-radius: 20px;
         color: #9695a7;
@@ -249,11 +246,7 @@ ul {
 
 
         margin-bottom: 5vh;
-        /* transition: 0.4s; */
-    }
-    /* SELECTED NOTE */
-    .note-list .selected {
-        border: 2px solid var(--cl-nav-link);
+        cursor: pointer;
     }
         /* NOTE TITLE */
         .note__title {
@@ -284,18 +277,14 @@ ul {
             font-weight: var(--fw-extra-normal);
         }
         /* END NOTE STYLE */
+    /* SELECTED */
+    .note-list .selected,
+    .folder-list .selected {
+        border: 2px solid var(--cl-nav-link);
+    }
 /* FOLDER STYLE */
 .folder-wrapper {
     padding: 0 10vw;
-}
-.folder-list .selected {
-    border: 2px solid var(--cl-nav-link);
-}
-.folder-list {
-    width: 100%;
-    /* display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between; */
 }
 .folder-list .gutter-sizer {
     width: 0;
@@ -323,12 +312,17 @@ ul {
         text-transform: capitalize;
         font-size: var(--fs-body-big);
     }
-/* END FOLDER */
-.main-content::after {
-    content: "";
-    clear: both;
-    display: table;
+
+/* FOLDER SECTION */
+.folder-section__title {
+    text-align: center;
+    color: white;
+    font-weight: var(--fw-extra-normal);
+    padding-bottom: 5vh;
+    text-transform: capitalize;
 }
+/* END FOLDER STYLE */
+
 /* END MAIN CONTENT */
 
 /* OVERLAY */

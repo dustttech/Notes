@@ -49,6 +49,9 @@ document.addEventListener('DOMContentLoaded',function(){
     const del = document.querySelector('#delete'); // edit
     const edit = document.querySelector('.edit'); // edit
 
+
+
+
     // INTIAL
     window.addEventListener('load',function () {
         // CHECK IF THERE IS SUPPORT FOR LOCALSTORAGE
@@ -71,12 +74,14 @@ document.addEventListener('DOMContentLoaded',function(){
                 var isoNote = new Isotope( noteList, {
                     percentPosition: true,
                     itemSelector: ".note",
-                    columnWidth: ".note",
+                    
                     masonry: {
+                        columnWidth: ".note",
                         gutter: '.gutter-sizer',
                         horizontalOrder: true
                     }
                 });
+
 
             } else {
                 msgNote.style.display = "";
@@ -87,15 +92,27 @@ document.addEventListener('DOMContentLoaded',function(){
                 var isoFolder = new Isotope( folderList, {
                     percentPosition: true,
                     itemSelector: ".folder",
-                    columnWidth: ".folder",
                     masonry: {
+                        columnWidth: ".folder",
                         gutter: '.gutter-sizer',
                         horizontalOrder: true
                     }
                 });
             } else {
-                msgNote.style.display = "";
+                msgFolder.style.display = "";
             }
+            // RELOAD LAYOUT EVERYTIME WINDOW RESIZE (*)
+            var resz = window.requestAnimationFrame || function (callback) {
+                setTimeout(callback, 1000/60);
+                }
+            function loop() {
+                isoFolder.layout();
+                isoNote.layout();
+                resz(loop);//REPEAT
+            }
+            resz(loop);
+            // END (*)
+
             // FORM
             // VALID MESSAGE 
             addNote.addEventListener('click', function () {
@@ -135,9 +152,6 @@ document.addEventListener('DOMContentLoaded',function(){
             // END FORM
         } else {msgNote.innerHTML = "Sorry, your browser doesn't support LocalStorage :( ";}
 
-
-
-
         // NAV LINK 
         navShow.forEach(link => {
             link.addEventListener('click', function (e) {
@@ -146,9 +160,13 @@ document.addEventListener('DOMContentLoaded',function(){
                 }
                 link.classList.add('active');
                 var showWhat = e.target.getAttribute('data-show');
+                var curClass = contentShow.classList[1];
                 if (showWhat == 'folder') {
-                    contentShow.classList.remove('show-note');
-                    contentShow.classList.add('show-folder');
+                    // if (!contentShow.classList[1]) { 
+                    //     contentShow.classList.add('show-folder');
+                    // }
+                    contentShow.classList.replace(curClass, 'show-folder');
+                    
     
                     showAddNote.classList.remove('show-add-active');
                     showAddFolder.classList.add('show-add-active');
@@ -156,8 +174,9 @@ document.addEventListener('DOMContentLoaded',function(){
                         isoFolder.layout();
                     }
                 }   else {
-                    contentShow.classList.remove('show-folder');
-                    contentShow.classList.add('show-note');
+                    contentShow.classList.replace(curClass, 'show-note');
+                    // contentShow.classList.remove('show-folder');
+                    
     
                     showAddFolder.classList.remove('show-add-active');
                     showAddNote.classList.add('show-add-active');
@@ -212,7 +231,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
     });
     // END INITIAL
-
+    
     function checkItemEdit() {
         var selected = document.querySelector('.selected');
         var key = selected.getAttribute('id');
@@ -348,13 +367,20 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
         note.addEventListener('click',function () {
-            const notes = document.querySelectorAll('.note');
-            for (let i = 0; i < notes.length; i++) {
-                notes[i].classList.remove('selected');
+            if (!this.classList.contains('selected')) {
+                note.classList.add('selected'); 
+                var selects = document.querySelectorAll('.note-list .selected');
+                console.log(selects);
+
+            } else if (this.classList.contains('selected')) {
+                note.classList.remove('selected'); 
+                var selects = document.querySelectorAll('.note-list .selected');
+
+                console.log(selects);
+
             }
-            note.classList.toggle('selected');
-            edit.classList.add('btn-active');
-            showDel.classList.add('btn-active');
+                        // edit.classList.add('btn-active');
+            // showDel.classList.add('btn-active');
         });
     }
 
@@ -416,17 +442,38 @@ document.addEventListener('DOMContentLoaded',function(){
         folder.appendChild(title);
         folderList.appendChild(folder);
 
-        folder.addEventListener('click', function () {
-            // var folderName = folder.getAttribute('id');
-            // console.log('open ' + folderName);
+        folder.addEventListener('click', function (e) {
+            var folderName = this.getAttribute('id');
+
+            // get the current show class 
+            var curClass = contentShow.classList[1];
+            var folderSectionTitle = document.querySelector('.folder-section__title');
+
+            //change title text (with name of the clicked folder) in folder section
+            folderSectionTitle.innerHTML = folderName;
+
+
+            //show folder section when click in any folder
+            contentShow.classList.replace(curClass, 'show-folder-section');//replace the current show class with .....
+
+            //hide add folder button
+            showAddFolder.classList.remove('show-add-active');
+
             var folders = document.querySelectorAll('.folder');
+
+            //selected 
             for (let i = 0; i < folders.length; i++) {
                 folders[i].classList.remove('selected');
             }
             folder.classList.add('selected');
             showDel.classList.add('btn-active');
+
+
         })
 
+    }
+    function addNotetoFolderDOM(note) {
+        
     }
     function removeFromDOM() {
         const noteList = document.querySelector('.note-list');
