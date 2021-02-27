@@ -135,7 +135,8 @@ ul {
 
     /* ADD OVERLAY BTN */
     .header-nav .show-add-note,
-    .header-nav .show-add-folder {
+    .header-nav .show-add-folder,
+    .header-nav .btn-folder-section {
         width: 70px;
         height: 70px;
         line-height: 70px;
@@ -154,6 +155,10 @@ ul {
     .header-nav .show-add-active {
         opacity: 1;
         z-index: 10;
+    }
+    .header-nav .btn-folder-section {
+        right: 50%;
+        transform: translateX(35px);
     }
     .flaticon-add-file {
         color: var(--cl-black);

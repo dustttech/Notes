@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded',function(){
     const showAddNote = document.querySelector('.show-add-note');//note
     const showEdit = document.querySelector('.edit');//edit
     const showAddFolder = document.querySelector('.show-add-folder');//folder
+
     //close overlay
     const closeAddNote = document.querySelector('#close_add_note');//close add note overlay
     const closeEditNote = document.querySelector('#close_edit_note');//close edit note overlay
@@ -33,22 +34,27 @@ document.addEventListener('DOMContentLoaded',function(){
     const createFolderForm = document.querySelector('#create_folder_form');
     const createFolderInput = document.querySelector('#create_folder_form .input-field');//input
     //delete
-    // const confirmDelForm = document.querySelector('#confirm_delete_form');
+
     // NOTE 
     const noteList = document.querySelector('.note-list');//note list
     const notes = document.querySelectorAll('.note');//notes
 
     // FOLDER
     const folderList = document.querySelector('.folder-list');
+
+    // FOLDER SECTION LIST
+    const folderSectionList = document.querySelector('.folder-section__list');
+
     // MESSAGE DISPLAY
     const msgNote = document.querySelector('.note-list .message');//note
     const msgFolder = document.querySelector('.folder-list .message');//folder
+    const msgFolderSection = document.querySelector('.folder-section__list .message');//folder section
 
     // BTN 
     const showDel = document.querySelector('#show-delete');//confirm delete
     const del = document.querySelector('#delete'); // edit
     const edit = document.querySelector('.edit'); // edit
-
+    const addNoteToFolder = document.querySelector('#add_note_to_folder');
 
 
 
@@ -61,7 +67,7 @@ document.addEventListener('DOMContentLoaded',function(){
             var foldersArray = getFoldersArray();
 
             // UPDATE DOM FROM LOCALSTORAGE
-            updateNoteDOM(notesArray, foldersArray);
+            updateNoteDOM(notesArray, noteList, foldersArray);
 
 
             // ISOTOPE
@@ -87,6 +93,8 @@ document.addEventListener('DOMContentLoaded',function(){
                 msgNote.style.display = "";
             }
             if (foldersArray.length > 0) {
+                updateFolderDOM(foldersArray);
+
                 msgFolder.style.display = "none";
 
                 var isoFolder = new Isotope( folderList, {
@@ -101,6 +109,7 @@ document.addEventListener('DOMContentLoaded',function(){
             } else {
                 msgFolder.style.display = "";
             }
+
             // RELOAD LAYOUT EVERYTIME WINDOW RESIZE (*)
             var resz = window.requestAnimationFrame || function (callback) {
                 setTimeout(callback, 1000/60);
@@ -169,6 +178,7 @@ document.addEventListener('DOMContentLoaded',function(){
                     
     
                     showAddNote.classList.remove('show-add-active');
+                    addNoteToFolder.classList.remove('show-add-active');
                     showAddFolder.classList.add('show-add-active');
                     if (foldersArray.length > 0) {
                         isoFolder.layout();
@@ -179,6 +189,7 @@ document.addEventListener('DOMContentLoaded',function(){
                     
     
                     showAddFolder.classList.remove('show-add-active');
+                    addNoteToFolder.classList.remove('show-add-active');
                     showAddNote.classList.add('show-add-active');
                     if (notesArray.length > 0) {
                         isoNote.layout();
@@ -201,7 +212,11 @@ document.addEventListener('DOMContentLoaded',function(){
         showDel.onclick = function () {
             confirmDelOverLay.classList.add('show_overlay');
         }
-      
+        addNoteToFolder.addEventListener('click', function () {
+            updateNoteDOM(notesArray, folderSectionList);
+            msgFolderSection.style.display = "none";
+
+        })
         // CLOSE
         // CLOSE ADD NOTE
         closeAddNote.onclick = function () {
@@ -228,7 +243,6 @@ document.addEventListener('DOMContentLoaded',function(){
         }
         // END OVERLAY
 
-
     });
     // END INITIAL
     
@@ -242,19 +256,21 @@ document.addEventListener('DOMContentLoaded',function(){
             console.log('show edit folder');
         }
     }
-    function updateNoteDOM(notesArray, foldersArray) {
+    function updateNoteDOM(notesArray, noteList) {
         for (let i = 0; i < notesArray.length; i++) {
             var key = notesArray[i];
             var value = JSON.parse(localStorage[key]);
-            addNoteToDOM(key, value);
+            addNoteToDOM(key, value, noteList);
         }
+    }
+    function updateFolderDOM(foldersArray) {
         for (let i = 0; i < foldersArray.length; i++) {
             var obj = foldersArray[i];
             addFolderToDOM(obj);
         }
-
     }
-    
+
+
     function getFoldersArray() {
         var foldersArray = localStorage["foldersArray"];
 
@@ -327,9 +343,9 @@ document.addEventListener('DOMContentLoaded',function(){
         localStorage.setItem("notesArray", JSON.stringify(notesArray));
     }
 
-    function addNoteToDOM(key, noteobj) {
+    function addNoteToDOM(key, noteobj, list) {
 
-        const noteList = document.querySelector('.note-list');
+        // const noteList = document.querySelector('.note-list');
 
         var note = document.createElement('li');
         note.setAttribute("id", key);
@@ -362,7 +378,7 @@ document.addEventListener('DOMContentLoaded',function(){
         note.appendChild(note_title);
         note.appendChild(note_content);
         note.appendChild(note_bottom);
-        noteList.appendChild(note);
+        list.appendChild(note);
         // noteList.insertBefore(note, noteList.childNodes[1]);
 
 
@@ -466,15 +482,15 @@ document.addEventListener('DOMContentLoaded',function(){
                 folders[i].classList.remove('selected');
             }
             folder.classList.add('selected');
-            showDel.classList.add('btn-active');
+            
 
-
+            showAddFolder.classList.remove('show-add-active');
+            addNoteToFolder.classList.add('show-add-active');
+            showAddNote.classList.remove('show-add-active');
         })
 
     }
-    function addNotetoFolderDOM(note) {
-        
-    }
+
     function removeFromDOM() {
         const noteList = document.querySelector('.note-list');
         var selected = document.querySelector('li.selected');
