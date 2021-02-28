@@ -1,0 +1,49 @@
+<!-- <li class="note">
+    <h1 class="note__title">Title</h1>
+    <p class="note__content">
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi debitis dolorum esse dolorem odio! Enim ullam qui saepe voluptate exercitationem libero minima dolor optio. Quasi repellat ipsa facere reiciendis cumque!
+    </p>
+    <div class="note__bottom">
+        <span class="note__time">12 Jan</span>
+        <a href="#" class="note__tag">Tag</a>
+    </div>
+</li> -->
+
+
+<!-- <li id="test"  class="folder">
+    <img src="img/folder.png" alt="">
+    <span class="folder__title">test dkowd owjdoa daw dwa dwa dwa dawdwa</span>
+</li> -->
+
+
+<!-- <li class="note">
+    <h1 class="note__title">Title</h1>
+    <p class="note__content">
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi debitis dolorum esse dolorem odio! Enim ullam qui saepe voluptate exercitationem libero minima dolor optio. Quasi repellat ipsa facere reiciendis cumque!
+    </p>
+    <div class="note__bottom">
+        <span class="note__time">12 Jan</span>
+        <a href="#" class="note__tag">Tag</a>
+    </div>
+</li> -->
+
+            // //ISOTOPE
+            // var isoNote = new Isotope( contentList, {
+            //     percentPosition: true,
+            //     itemSelector: ".note",
+            //     masonry: {
+            //         columnWidth: ".note",
+            //         gutter: '.gutter-sizer',
+            //         horizontalOrder: true
+            //     }
+            // });
+            // // RELOAD LAYOUT EVERYTIME WINDOW RESIZE (*)
+            // var resz = window.requestAnimationFrame || function (callback) {
+            //     setTimeout(callback, 1000/60);
+            //     }
+            // function loop() {
+            //     isoNote.layout();
+            //     resz(loop);//REPEAT
+            // }
+            // resz(loop);
+            // END (*)

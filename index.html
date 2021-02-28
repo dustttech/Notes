@@ -31,70 +31,59 @@
                         <i class="fas fa-moon    "></i>
                         <i class="fas fa-sun    "></i>
                     </a>
-                    <a class="show-add-note show-add-active"  href="#">
-                        <i class="flaticon-add-file"></i>
-                    </a>
-                    <a class="show-add-folder"  href="#">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                    </a>
-                    <a id="add_note_to_folder" class="btn-folder-section"  href="#">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                    </a>
+
                 </nav>
             </header>
             <nav class="nav-link__wrapper">
                 <a data-show="all" href="#" class="nav-link active">All</a>
                 <a data-show="folder" href="#" class="nav-link">Folder</a>
             </nav>
-            <div class="main-content show-note">
-                <section class="note-wrapper content-active">
-                    <ul class="note-list ">
-                        <li class="message">There isn't any note yet !</li>
-                        <li class="gutter-sizer"></li>
-                        <!-- <li class="note">
-                            <h1 class="note__title">Title</h1>
-                            <p class="note__content">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi debitis dolorum esse dolorem odio! Enim ullam qui saepe voluptate exercitationem libero minima dolor optio. Quasi repellat ipsa facere reiciendis cumque!
-                            </p>
-                            <div class="note__bottom">
-                                <span class="note__time">12 Jan</span>
-                                <a href="#" class="note__tag">Tag</a>
-                            </div>
-                        </li> -->
+            <section data-content="note" class="main-content">
+                <section class="list-wrapper">
+                    <ul class="list">
+                        <li class="folder-section__title">
+                            <h2>Folder Title</h2>
+                            <span class="return_folder">
+                                <i class="fas fa-undo-alt    "></i>
+                            </span>
+                        </li>
+                        <li class="message">There isn't any note yet !!!</li>
+                        <!-- <li class="gutter-sizer"></li> -->
                     </ul>
-
                 </section>
+                <div class="content_btn-group">
+                    <a class="show-add-note"  href="#">
+                        <i class="flaticon-add-file"></i>
+                    </a>
+                    <a class="show-add-folder"  href="#">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                    <a id="load_note_to_folder" class="btn-folder-section"  href="#">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                    <a id="add_note_to_folder" class="add-folder-section" href="#">Add to folder</a>
+                </div>
+                <!-- <section class="folder-section">
+                    <h2 class="folder-section__title">Folder Title</h2>
+                    <ul class="folder-section__list ">
+                        <li class="message">You haven't add any note in this folder yet !</li>
+                        <li class="gutter-sizer"></li>
+
+                    </ul>
+                </section>  -->
+                <!-- 
                 <section class="folder-wrapper">
                     <ul class="folder-list">
                         <li class="gutter-sizer"></li>
                         <li class="message">
                             You haven't create any folder yet !
                         </li>
-                        <!-- <li id="test"  class="folder">
-                            <img src="img/folder.png" alt="">
-                            <span class="folder__title">test dkowd owjdoa daw dwa dwa dwa dawdwa</span>
-                        </li> -->
+
 
                     </ul>
                 </section>
-                <section class="folder-section">
-                    <h2 class="folder-section__title">Folder Title</h2>
-                    <ul class="folder-section__list ">
-                        <li class="message">You haven't add any note in this folder yet !</li>
-                        <li class="gutter-sizer"></li>
-                        <!-- <li class="note">
-                            <h1 class="note__title">Title</h1>
-                            <p class="note__content">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi debitis dolorum esse dolorem odio! Enim ullam qui saepe voluptate exercitationem libero minima dolor optio. Quasi repellat ipsa facere reiciendis cumque!
-                            </p>
-                            <div class="note__bottom">
-                                <span class="note__time">12 Jan</span>
-                                <a href="#" class="note__tag">Tag</a>
-                            </div>
-                        </li> -->
-                    </ul>
-                </section>
-            </div>
+                -->
+            </section>
             <section class="add-note-overlay">
                 <div class="add-note-wrapper">
                     <h1 class="title-form">Create Note</h1>
@@ -156,7 +145,7 @@
                     <form id="confirm_delete_form" class="delete-wrapper" action="">
                         <span>Are you sure wanna delete this ?</span>
                         <div class="form-group btn-group">
-                            <input id="delete" type="button" class="form-btn" value="Yes">
+                            <input name="submit-delete" id="delete" type="submit" class="form-btn" value="Yes">
                             <input id="close_confirm_delete" type="button" class="form-btn" value="No">
                         </div>
                     </form>
@@ -164,7 +153,7 @@
         </div>
     </div>
     <!-- <script src="js/demo.js"></script> -->
-    <script src="js/isotope/isotope.js"></script>
+    <!-- <script src="js/isotope/isotope.js"></script> -->
     <script src="js/main.js"></script>
 </body>
 </html>
