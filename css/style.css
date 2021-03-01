@@ -376,7 +376,7 @@ section[data-content="folder-section"] .folder-section__title {
 /* OVERLAY */
 .add-note-overlay,
 .edit-note-overlay,
-.add-folder-overlay,
+.folder-overlay,
 .confirm-delete-overlay {
     width: 100%;
     height: 100vh;
