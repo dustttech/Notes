@@ -117,13 +117,26 @@ document.addEventListener('DOMContentLoaded',function(){
             editNoteForm.addEventListener('submit', function () {
                 updateEditNote();
             })
-            submitFolderForm.addEventListener('submit', function () {
-                var submitWhat = this.getAttribute('data-submit');
+            submitFolderForm.addEventListener('submit', function (e) {
+                e.preventDefault();
                 var foldersArray = getFoldersArray();
-                if (submitWhat == "create") {
-                    createFolder(foldersArray, fragment);
-                } else if (submitWhat == "edit") {
-                    editFolder(foldersArray, fragment);
+                var isUnique = uniqueFolderName(foldersArray);
+                if (!isUnique) {
+                    submitFolderForm.reset();
+                    folderInput.setAttribute('placeholder', "You have use this name . Please type another one !!!");
+                } else {
+                    msg.style.display = "none";
+                    var submitWhat = this.getAttribute('data-submit');
+                    var foldersArray = getFoldersArray();
+                    if (submitWhat == "create") {
+                        createFolder(foldersArray, fragment);
+                        contentList.appendChild(fragment);
+                    } else if (submitWhat == "edit") {
+
+                        editFolder(foldersArray, fragment);
+
+                    }
+                    folderOverLay.classList.remove('show_overlay');
                 }
             })
 
@@ -185,7 +198,6 @@ document.addEventListener('DOMContentLoaded',function(){
                     msg.style.display = "";
                     msg.innerHTML = "There isn't any note yet !!!";
                     if (notesArray.length > 0) {
-                        console.log('ok');
                         msg.style.display = "none";
                         updateNoteDOM(notesArray, fragment);
 
@@ -200,6 +212,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
         // RETURN TO FOLDER FROM FOLDER SECTION
         returnToFolder.onclick = function () {
+            var foldersArray = getFoldersArray();
             checkSelect('no');
             removeFragmentChild();
             loadNoteToFolderBtn.style.display = "";
@@ -229,6 +242,7 @@ document.addEventListener('DOMContentLoaded',function(){
         }
         showEdit.onclick = checkItemEdit;
         showAddFolder.onclick = function () {
+            folderInput.setAttribute('placeholder', "Folder Name");
             const folderTitle = document.querySelector('#folder-title');
             folderTitle.value = "";
             submitFolderBtn.value = "Create";
@@ -340,11 +354,15 @@ document.addEventListener('DOMContentLoaded',function(){
             addFormEdit(key);
         } else if (selected.classList.contains('folder')) {
             folderOverLay.classList.add('show_overlay');
-            showEditFolder(key);
+            const folderTitle = document.querySelector('#folder-title');
+            folderTitle.value = key;
+            submitFolderBtn.value = "Rename";
+            submitFolderForm.setAttribute('data-submit', 'edit');
         }
     }
     // CHECK SELECTED
     function checkSelect(no) {
+        folderInput.setAttribute('placeholder', "Folder Name");
         const selects = document.querySelectorAll('.list .selected');
         if (selects.length == 1 && !no) {
 
@@ -470,18 +488,14 @@ document.addEventListener('DOMContentLoaded',function(){
         note.tag = noteTag;
 
         localStorage.setItem(key, JSON.stringify(note));
+        location.reload();
     }
 
 
-    //SHOW EDIT FOLDER NAME
-    function showEditFolder(key) {
-        const folderTitle = document.querySelector('#folder-title');
-        folderTitle.value = key;
-        submitFolderBtn.value = "Rename";
-        submitFolderForm.setAttribute('data-submit', 'edit');
-    }
+
     //EDIT FOLDER 
-    function editFolder(foldersArray) {
+    function editFolder(foldersArray,fragment) {
+
         const folderTitle = document.querySelector('#folder-title');
         var selected = document.querySelector('.selected');
         var key = selected.getAttribute('id');
@@ -493,7 +507,7 @@ document.addEventListener('DOMContentLoaded',function(){
             }
         }
         localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
-        addFolderToDOM(folderObj, fragment);
+        location.reload();
     }
     // CREATE FOLDER
     function createFolder(foldersArray, fragment) {
@@ -520,7 +534,26 @@ document.addEventListener('DOMContentLoaded',function(){
         
         return difference;
     }
+    //CHECK UNIQUE NAME
+    function uniqueFolderName(foldersArray) {
+        if (foldersArray.length == 0) {
+            return true;
+        }
+        const folderTitle = document.querySelector('#folder-title').value;
 
+
+        var isUnique ;
+        for (let i = 0; i < foldersArray.length; i++) {
+            const folder = foldersArray[i];
+            if (folder.title == folderTitle) {
+                isUnique = false;
+                break; // stop the loop when similar name is found
+            } else {
+                isUnique = true;
+            }
+        }
+        return isUnique;
+    }
     // NOTE
     function updateNoteDOM(notesArray, fragment) {
 
