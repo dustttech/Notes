@@ -100,19 +100,26 @@
                             <label for="tag">Tag</label>
                             <input required id="note-tag"  type="text" name="tag" class="input-field">
                         </div>
+                        <!-- <div class="form-group">
+                            <label class="input_title">Text color</label>
+                            <input type="radio" value="black" name="textcolor">
+                            <label for="black">Black</label>
+                            <input type="radio" value="white" name="textcolor">
+                            <label for="white">White</label>
+                        </div> -->
                         <div class="form-group color-wrapper">
                             <label>Note Color</label>
                             <ul class="color-picker">
-                                <li data-color="white">
+                                <li class="active" data-color="white">
                                     <span class="outline"></span>
                                     <span class="circle"></span>
                                 </li>
-                                <li data-color="black">
+                                <li data-color="red">
                                     <span class="outline"></span>
                                     <span class="circle"></span>
                                 </li>
                                 <li data-color="yellow">
-                                    <!-- <span class="outline"></span> -->
+                                    <span class="outline"></span>
                                     <span class="circle"></span>
                                 </li>
                                 <li data-color="bluesky">
@@ -148,6 +155,32 @@
                         <div class="form-group">
                             <label for="tag">Tag</label>
                             <input required id="edit-note-tag"  type="text" name="tag" class="input-field">
+                        </div>
+                        <div class="form-group color-wrapper">
+                            <label>Note Color</label>
+                            <ul class="color-picker">
+                                <li class="active" data-color="white">
+                                    <span class="outline"></span>
+                                    <span class="circle"></span>
+                                </li>
+                                <li data-color="red">
+                                    <span class="outline"></span>
+                                    <span class="circle"></span>
+                                </li>
+                                <li data-color="yellow">
+                                    <span class="outline"></span>
+                                    <span class="circle"></span>
+                                </li>
+                                <li data-color="bluesky">
+                                    <span class="outline"></span>
+                                    <span class="circle"></span>
+                                </li>
+                                <li data-color="green">
+                                    <span class="outline"></span>
+                                    <span class="circle"></span>
+                                </li>
+
+                            </ul>
                         </div>
                         <div class="form-group btn-group">
                             <input id="add_edit" type="submit" class="submit-content form-btn" value="Edit">

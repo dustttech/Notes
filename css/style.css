@@ -106,17 +106,18 @@ body {
 .light {
     --cl-bg: #f7f8fb;
     --cl-item: white;
-    --cl-text: --cl-black;
-    --cl-title: black;
-    --cl-logo: black;
-    --cl-btn-active: black;
+    --cl-text: #222;
+    --cl-text: #222;
+    --cl-title: #222;
+    --cl-logo: #222;
+    --cl-btn-active: #222;
     --cl-btn-icon: white;
     --cl-content-unactive: #d1cfd6;
     --cl-nav-link:#a35304;
     --btn-overlay: #08070d;
 
     --cl-btn2-unactive: white;
-    --cl-btn2-active: black;
+    --cl-btn2-active: #222;
     --cl-text-active: white;
 
 }
@@ -300,7 +301,7 @@ ul {
 .folder {
     margin: 0 5px;
     box-shadow: var(--bs-item);
-    border: 2px solid var(--cl-item);
+    border: 2px solid transparent;
 }
     /* NOTE STYLE */
     .message {
@@ -318,7 +319,7 @@ ul {
         
         padding: 20px;
         border-radius: 20px;
-        color: var(--cl-text);
+        /* color: var(--cl-text); */
 
         /* display: flex;
         flex-direction: column;
@@ -336,7 +337,7 @@ ul {
         /* NOTE TITLE */
         .note__title {
             font-size: var(--fs-body-big);
-            color: var(--cl-title);
+            /* color: var(--cl-title); */
             padding-bottom: 15px;
             font-weight: var(--fw-extra-normal);
         }
@@ -358,13 +359,18 @@ ul {
         }
         .note__tag {
             text-align: right;
-            color: var(--cl-tag);
-            font-weight: var(--fw-extra-normal);
+            color: #222;
+            /* font-weight: var(--fw-extra-normal); */
         }
         /* END NOTE STYLE */
     /* SELECTED */
-    .list .selected {
-        border: 2px solid var(--cl-nav-link);
+    .light .selected {
+        border: 2px solid;
+        border-color: #222;
+    }
+    .dark .selected {
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.5),
+                    0 0 40px rgba(255, 255, 255, 0.2);
     }
 /* FOLDER STYLE */
 section[data-content="folder"] {
@@ -393,7 +399,7 @@ section[data-content="folder"] .gutter-sizer {
 }
     .folder__title {
         text-align: center;
-        color: var(--cl-title);
+        /* color: var(--cl-title); */
 
         font-size: var(--fs-body-big);
     }
@@ -570,8 +576,8 @@ section[data-content="folder-section"] .folder-section__title {
 /* yellow #ffda47  orange #ff7746 blue #0aebaf #3369ff red #ff7746  purple #cf93d9*/
 .color-picker {
     padding: 20px 10px;
-    background-color: rgb(233, 233, 233);
-    background-color: #171c26;
+    background-color: rgb(29, 27, 27);
+    /* background-color: #171c26; */
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -582,14 +588,14 @@ section[data-content="folder-section"] .folder-section__title {
     height: 40px;
     position: relative;
     border-radius: 50%;
-
+    cursor: pointer;
 }
     /* color: rgb(0, 255, 255); */
 .color-picker > li[data-color="white"] {color: white;}
-.color-picker > li[data-color="black"] {color: #272636;}
+.color-picker > li[data-color="red"] {color: #ff7746;}
 .color-picker > li[data-color="yellow"] {color: #ffda47;}
 .color-picker > li[data-color="bluesky"] {color: #0aebaf;}
-.color-picker > li[data-color="green"] {color: rgb(123, 255, 47);}
+.color-picker > li[data-color="green"] {color: #7bff2f;}
     .color-picker > li > span {
         display: inline-block;
         position: absolute;
@@ -607,20 +613,23 @@ section[data-content="folder-section"] .folder-section__title {
         border: 2px solid currentColor;
         transform: scale(0);
     }
-    .color-picker > li:hover {
-        /* box-shadow: 0px 0px 20px rgba(255,255,255,0.2); */
-        box-shadow: 0px 0px 20px currentColor;
-    }
-    .color-picker > li[data-color="black"]:hover {
-        /* box-shadow: 0px 0px 20px rgba(255,255,255,0.2); */
-        box-shadow: 0px 0px 20px white;
-    }
-    .color-picker > li:hover > .circle  {
-        /* transform: scale(0.7); */
-    }
-    .color-picker > li:hover > span {
+    .color-picker > li:hover > .outline,
+    .color-picker > .active > .outline {
         transform: scale(1);
     }
+    .color-picker > li:hover > .circle ,
+        .color-picker > .active > .circle {
+        transform: scale(0.7);
+    }
+    /* .color-picker > li[data-color="black"]:hover {
+        box-shadow: 0px 0px 20px white;
+         box-shadow: 0px 0px 20px rgba(255,255,255,0.2); 
+        box-shadow: 0px 0px 20px currentColor; 
+        } 
+    */
+
+
+    .color-picker .active
 
 @media (min-width:400px) {
     #create_folder_form {

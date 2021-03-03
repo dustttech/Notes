@@ -69,7 +69,10 @@ document.addEventListener('DOMContentLoaded',function(){
     const contentListWrapper = document.querySelector('.list-wrapper');
     const contentList = document.querySelector('.list');
 
-    //selected item
+    //COLOR PICKER
+    const colorList = document.querySelectorAll('.color-picker li');
+
+    
     // INTIAL
     window.addEventListener('load',function () {
 
@@ -101,6 +104,16 @@ document.addEventListener('DOMContentLoaded',function(){
 
         
             // FORM
+            // COLOR PICKER 
+            colorList.forEach(color => {
+                color.addEventListener('click', function () {
+                    for (let i = 0; i < colorList.length; i++) {
+                        const color = colorList[i];
+                        color.classList.remove('active');
+                    }
+                    this.classList.add('active');
+                })
+            });
             // VALID MESSAGE 
             addNote.addEventListener('click', function () {
 
@@ -126,7 +139,12 @@ document.addEventListener('DOMContentLoaded',function(){
                 })
             })
             //SUBMIT
-            addNoteForm.addEventListener('submit', function () {
+            addNoteForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                addNoteOverLay.classList.remove('show_overlay');
+                addNoteInput.forEach(input => {
+                    input.removeAttribute('placeholder');
+                });
                 createNote();
             })
             editNoteForm.addEventListener('submit', function () {
@@ -254,6 +272,7 @@ document.addEventListener('DOMContentLoaded',function(){
         // SHOW 
         showAddNote.onclick = function () {
             addNoteOverLay.classList.add('show_overlay');
+            addNoteForm.reset();
         }
         showEdit.onclick = checkItemEdit;
         showAddFolder.onclick = function () {
@@ -450,19 +469,29 @@ function createNote() {
     const noteTitle = document.querySelector('#note-title');
     const noteContent = document.querySelector('#note-content');
     const noteTag = document.querySelector('#note-tag');
+    const colorPick = document.querySelector('.color-picker .active');
 
     var titleValue = noteTitle.value;
     var contentValue = noteContent.value;
     var tagValue = noteTag.value;
+    var color = colorPick.getAttribute('data-color');
+    var textcolor;
+    if (color == "black") {
+        textcolor = "#f6f6f6";
+    } else {textcolor = "#222"};
 
-
+    
     var dateValue = getCurrentTime();
     var noteObj = {
         "title": titleValue,
         "content": contentValue,
         "date": dateValue,
-        "tag": tagValue
+        "tag": tagValue,
+        "color": color,
+        "textcolor": textcolor
     };
+
+
     // KEY
     var d = new Date();
     var key = "note_" + d.getTime();
@@ -484,6 +513,8 @@ function addFormEdit(key) {
     const noteContent = document.querySelector('#edit-note-content');
     const noteTag = document.querySelector('#edit-note-tag');
     
+    addActiveColor(note.color);
+
     noteTitle.value = note.title;
     noteContent.value = note.content;
     noteTag.value = note.tag;
@@ -496,17 +527,40 @@ function updateEditNote() {
     const noteContent = document.querySelector('#edit-note-content').value;
     const noteTag = document.querySelector('#edit-note-tag').value;
     var dateValue = getCurrentTime();
+    const colorPick = document.querySelector('.color-picker .active');
+    var color = colorPick.getAttribute('data-color');
+
+    var textcolor;
+    if (color == "black") {
+        textcolor = "#f6f6f6";
+    } else {textcolor = "#222"};
+
 
     note.title = noteTitle;
     note.content = noteContent;
     note.date = dateValue;
     note.tag = noteTag;
+    note.color = color;
+    note.textcolor = textcolor;
 
     localStorage.setItem(key, JSON.stringify(note));
     location.reload();
 }
+function addActiveColor(color) {
+    const list = document.querySelectorAll('#edit_note_form .color-picker li');
+    for (let i = 0; i < list.length; i++) {
+        const item = list[i];
+        item.classList.remove('active');
+    }
+    list.forEach(item => {
 
+        var noteColor = item.getAttribute('data-color');
 
+        if (noteColor == color) {
+            item.classList.add('active');
+        }
+    });
+}
 
 //EDIT FOLDER 
 function editFolder(foldersArray,fragment) {
@@ -579,7 +633,7 @@ function updateNoteDOM(notesArray, fragment) {
     }
 }
 function addNoteToDOM(key, noteobj, fragment) {
-
+    msg.style.display = "none";
 
     var note = document.createElement('li');
     note.setAttribute("id", key);
@@ -601,10 +655,19 @@ function addNoteToDOM(key, noteobj, fragment) {
     var note_tag = document.createElement('a');
     note_tag.setAttribute('class', 'note__tag');
 
+    var color = getColor(noteobj.color);
+    var textcolor = getColor(noteobj.textcolor);
+    
+
     note_title.innerHTML = noteobj.title;
     note_content.innerHTML = noteobj.content;
     note_date.innerHTML = noteobj.date;
     note_tag.innerHTML = noteobj.tag;
+
+
+    note.style.color = textcolor;
+
+    note.style.backgroundColor = color;
 
     note.setAttribute('class', 'note');
     note_bottom.appendChild(note_date);
@@ -614,12 +677,37 @@ function addNoteToDOM(key, noteobj, fragment) {
     note.appendChild(note_bottom);
     fragment.appendChild(note);
 
+    contentList.appendChild(fragment);
     
     // noteList.insertBefore(note, noteList.childNodes[1]);
     addEventForNote(note);
 
 
 }
+// GET COLOR
+function getColor(color) {
+    switch (color) {
+        case "white":
+            return "white";
+            break;
+        case "red":
+            return "#ff7746";
+            break;
+        case "yellow":
+            return "#ffda47";
+            break;
+        case "bluesky":
+            return "#0aebaf";
+            break;
+        case "green":
+            return "#7bff2f";
+            break;
+        default:
+            return " ";
+            break;
+    }
+}
+
 function addEventForNote(note) {
     note.addEventListener('click',function () {
         if (!this.classList.contains('selected')) {
