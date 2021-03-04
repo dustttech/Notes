@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded',function(){
     const folderSectionList = document.querySelector('.folder-section__list');
 
     // MESSAGE DISPLAY
-    const msg = document.querySelector('.list .message');//note
+    const msg = document.querySelector('.main-content .message');//note
     const msgFolderSection = document.querySelector('.folder-section__list .message');//folder section
 
     // BTN 
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded',function(){
     //COLOR PICKER
     const colorList = document.querySelectorAll('.color-picker li');
 
-    
+
     // INTIAL
     window.addEventListener('load',function () {
 
@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded',function(){
             var notesArray = getNotesArray();
             var foldersArray = getFoldersArray();
 
+            // ISOTOPE
 
 
 
@@ -149,8 +150,10 @@ document.addEventListener('DOMContentLoaded',function(){
                 });
                 createNote();
             })
-            editNoteForm.addEventListener('submit', function () {
-                updateEditNote();
+            editNoteForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                updateEditNote(contentList, fragment);
+                editNoteOverLay.classList.remove('show_overlay');
             })
             submitFolderForm.addEventListener('submit', function (e) {
                 e.preventDefault();
@@ -197,9 +200,24 @@ document.addEventListener('DOMContentLoaded',function(){
         } else {msgNote.innerHTML = "Sorry, your browser doesn't support LocalStorage :( ";}
 
 
+        var iso = new Isotope( contentList, {
+            percentPosition: true,
+            itemSelector: "li",
+            columnWidth: "li",
+            masonry: {
+                // gutter: 0,
+                horizontalOrder: true
+            }
+          });
+        window.addEventListener('resize', function () {
+            iso.layout();
+        })
+
         // NAV LINK 
         navShow.forEach(link => {
             link.addEventListener('click', function (e) {
+
+        
                 checkSelect("no");
                 for (let i = 0; i < navShow.length; i++) {
                     navShow[i].classList.remove('active');
@@ -395,21 +413,7 @@ document.addEventListener('DOMContentLoaded',function(){
             });
         } 
     }
-    // function removeNoteFragment() {
-    //     const noteItem = document.querySelectorAll('.list .note');
 
-    //     noteItem.forEach(note => {
-    //         note.parentNode.removeChild(note);  
-    //     });
-    // }
-    // // REMOVE FOLDER FRAGMENT FROM DOM
-    // function removeFolderFragment() {
-    //     const folderItem = document.querySelectorAll('.list .folder');
-
-    //     folderItem.forEach(folder => {
-    //         folder.parentNode.removeChild(folder);  
-    //     });
-    // }
 
 
     function checkItemEdit() {
@@ -515,6 +519,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
+
     function addFormEdit(key) {
         var note = JSON.parse(localStorage[key]);
 
@@ -528,7 +533,7 @@ document.addEventListener('DOMContentLoaded',function(){
         noteContent.value = note.content;
         noteTag.value = note.tag;
     }
-    function updateEditNote() {
+    function updateEditNote(contentList, fragment) {
         var key = document.querySelector('li.selected').getAttribute('id');
         var note = JSON.parse(localStorage[key]);
 
@@ -553,7 +558,8 @@ document.addEventListener('DOMContentLoaded',function(){
         note.textcolor = textcolor;
 
         localStorage.setItem(key, JSON.stringify(note));
-        location.reload();
+        fragment.
+        addNoteToDOM(key, note ,fragment)
     }
     function addActiveColor(color) {
         const list = document.querySelectorAll('#edit_note_form .color-picker li');
@@ -687,6 +693,7 @@ document.addEventListener('DOMContentLoaded',function(){
         fragment.appendChild(note);
 
         contentList.appendChild(fragment);
+        
         
         // noteList.insertBefore(note, noteList.childNodes[1]);
         addEventForNote(note);
