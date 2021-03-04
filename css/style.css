@@ -105,7 +105,7 @@ body {
 }
 .light {
     --cl-bg: #f7f8fb;
-    --cl-item: white;
+    --cl-item: #fafafa;
     --cl-text: #222;
     --cl-text: #222;
     --cl-title: #222;
@@ -131,12 +131,26 @@ a {
 img {
     display: block;
     max-width: 100%;
+    pointer-events: none;
+    -webkit-tap-highlight-color:transparent;
+}
+.folder__title,
+img {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 ul {
     list-style-type: none;
 }
 
-
+.note,
+.folder {
+    -webkit-tap-highlight-color:transparent;
+}
 
 /* MAIN */
 .main {
@@ -299,7 +313,6 @@ ul {
 /* LIST */
 .note,
 .folder {
-    margin: 0 5px;
     box-shadow: var(--bs-item);
     border: 2px solid transparent;
 }
@@ -363,8 +376,9 @@ ul {
             /* font-weight: var(--fw-extra-normal); */
         }
         /* END NOTE STYLE */
-    /* SELECTED */
-    .light .selected {
+    /* SELECTED FOR NOTE AND FOLDER SECTION*/
+    .light section[data-content="note"] .selected,
+    .light section[data-content="folder-section"] .selected {
         border: 2px solid;
         border-color: #222;
     }
@@ -399,9 +413,16 @@ section[data-content="folder"] .gutter-sizer {
 }
     .folder__title {
         text-align: center;
-        /* color: var(--cl-title); */
+        color: var(--cl-title);
 
         font-size: var(--fs-body-big);
+    }
+/* SELECTED FOLDER */
+.light section[data-content="folder"] .selected {
+    background-color: #222;
+}
+    .light section[data-content="folder"] .selected .folder__title {
+        color: #fafafa;
     }
 
 /* FOLDER SECTION */
@@ -428,7 +449,6 @@ section[data-content="folder-section"] .folder-section__title {
     align-items: center;
     padding-bottom: 5vh;
     color: var(--cl-title);
-
 }
 .folder-section__title > h2 {
     font-weight: var(--fw-extra-normal);
@@ -438,6 +458,8 @@ section[data-content="folder-section"] .folder-section__title {
     cursor: pointer;
     font-size: var(--fs-body-big);
 }
+
+
 /* END FOLDER STYLE */
 
 /* END MAIN CONTENT */
@@ -660,6 +682,7 @@ section[data-content="folder-section"] .folder-section__title {
     } */
     section[data-content="folder"] .list .folder {
         width: 46%;
+        margin: 0 5px;
     }
 }
 @media (min-width:800px) {
@@ -686,6 +709,7 @@ section[data-content="folder-section"] .folder-section__title {
         section[data-content="note"] .note,
         section[data-content="folder-section"] .note {
             width: 48%;
+            margin: 0 5px;
         }
         /* FOLDER */
         /* section[data-content="folder"] .list .gutter-sizer {

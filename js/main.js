@@ -348,653 +348,676 @@ document.addEventListener('DOMContentLoaded',function(){
     });
     // END INITIAL
 
-// REMOVE NOTE FRAGMENT FROM DOM
-function removeFragmentChild() {
-    const noteItem = document.querySelectorAll('.list .note');
-    const folderItem = document.querySelectorAll('.list .folder');
-    if (noteItem.length > 0) {
-        noteItem.forEach(note => {
-            note.parentNode.removeChild(note);  
-        });
-    } 
-    else if(folderItem.length > 0){
-        folderItem.forEach(folder => {
-            folder.parentNode.removeChild(folder);  
-        });
-    } 
-}
-// function removeNoteFragment() {
-//     const noteItem = document.querySelectorAll('.list .note');
-
-//     noteItem.forEach(note => {
-//         note.parentNode.removeChild(note);  
-//     });
-// }
-// // REMOVE FOLDER FRAGMENT FROM DOM
-// function removeFolderFragment() {
-//     const folderItem = document.querySelectorAll('.list .folder');
-
-//     folderItem.forEach(folder => {
-//         folder.parentNode.removeChild(folder);  
-//     });
-// }
-
-// NOT DONE
-function checkItemEdit() {
-    var selected = document.querySelector('.selected');
-    var key = selected.getAttribute('id');
-    if (selected.classList.contains('note')) {
-        editNoteOverLay.classList.add('show_overlay');
-        addFormEdit(key);
-    } else if (selected.classList.contains('folder')) {
-        folderOverLay.classList.add('show_overlay');
-        const folderTitle = document.querySelector('#folder-title');
-        folderTitle.value = key;
-        submitFolderBtn.value = "Rename";
-        submitFolderForm.setAttribute('data-submit', 'edit');
+    // REMOVE NOTE FRAGMENT FROM DOM
+    function removeFragmentChild() {
+        const noteItem = document.querySelectorAll('.list .note');
+        const folderItem = document.querySelectorAll('.list .folder');
+        if (noteItem.length > 0) {
+            noteItem.forEach(note => {
+                note.parentNode.removeChild(note);  
+            });
+        } 
+        else if(folderItem.length > 0){
+            folderItem.forEach(folder => {
+                folder.parentNode.removeChild(folder);  
+            });
+        } 
     }
-}
-// CHECK SELECTED
-function checkSelect(no) {
-    folderInput.setAttribute('placeholder', "Folder Name");
-    const selects = document.querySelectorAll('.list .selected');
-    if (selects.length == 1 && !no) {
+    // function removeNoteFragment() {
+    //     const noteItem = document.querySelectorAll('.list .note');
 
-        edit.classList.add('btn-active');
-        showDel.classList.add('btn-active'); 
+    //     noteItem.forEach(note => {
+    //         note.parentNode.removeChild(note);  
+    //     });
+    // }
+    // // REMOVE FOLDER FRAGMENT FROM DOM
+    // function removeFolderFragment() {
+    //     const folderItem = document.querySelectorAll('.list .folder');
+
+    //     folderItem.forEach(folder => {
+    //         folder.parentNode.removeChild(folder);  
+    //     });
+    // }
+
+    // NOT DONE
+    function checkItemEdit() {
+        var selected = document.querySelector('.selected');
+        var key = selected.getAttribute('id');
+        if (selected.classList.contains('note')) {
+            editNoteOverLay.classList.add('show_overlay');
+            addFormEdit(key);
+        } else if (selected.classList.contains('folder')) {
+            folderOverLay.classList.add('show_overlay');
+            const folderTitle = document.querySelector('#folder-title');
+            folderTitle.value = key;
+            submitFolderBtn.value = "Rename";
+            submitFolderForm.setAttribute('data-submit', 'edit');
+        }
+    }
+
+
+
+
+
+    function getFoldersArray() {
+        var foldersArray = localStorage["foldersArray"];
+
+        if (!foldersArray) {
+            foldersArray = [];
+            localStorage.setItem("foldersArray", JSON.stringify(foldersArray));
+        } else {
+            foldersArray = JSON.parse(foldersArray);
+        }
+        return foldersArray;
+    }
+    function getNotesArray() {
+        var notesArray = localStorage["notesArray"];
+
+        if (!notesArray) {
+            notesArray = [];
+            localStorage.setItem("notesArray", JSON.stringify(notesArray));
+        } else {
+            notesArray = JSON.parse(notesArray);
+        }
+        return notesArray;
+    }
+    function getCurrentTime() {
+        var d = new Date();
+        var month = new Array();
+            month[0] = "January";
+            month[1] = "February";
+            month[2] = "March";
+            month[3] = "April";
+            month[4] = "May";
+            month[5] = "June";
+            month[6] = "July";
+            month[7] = "August";
+            month[8] = "September";
+            month[9] = "October";
+            month[10] = "November";
+            month[11] = "December";
+        var n = month[d.getMonth()];
+        var s = n + " " + d.getDate() ;
+        return s;
+    }
+    function createNote() {
+        var notesArray = getNotesArray();
+        // NOTE OBJ
+        const noteTitle = document.querySelector('#note-title');
+        const noteContent = document.querySelector('#note-content');
+        const noteTag = document.querySelector('#note-tag');
+        const colorPick = document.querySelector('.color-picker .active');
+
+        var titleValue = noteTitle.value;
+        var contentValue = noteContent.value;
+        var tagValue = noteTag.value;
+        var color = colorPick.getAttribute('data-color');
+        var textcolor;
+        if (color == "black") {
+            textcolor = "#f6f6f6";
+        } else {textcolor = "#222"};
+
         
-        AddNoteToFolderBtn.classList.add('active');
-    } else if (selects.length == 0 || no) {
+        var dateValue = getCurrentTime();
+        var noteObj = {
+            "title": titleValue,
+            "content": contentValue,
+            "date": dateValue,
+            "tag": tagValue,
+            "color": color,
+            "textcolor": textcolor
+        };
 
-        edit.classList.remove('btn-active');
-        showDel.classList.remove('btn-active');
 
-        AddNoteToFolderBtn.classList.remove('active');
+        // KEY
+        var d = new Date();
+        var key = "note_" + d.getTime();
+        var fragment = document.createDocumentFragment();
+        addNoteToDOM(key, noteObj, fragment);
 
-    } else {
-        showDel.classList.add('btn-active');
-        edit.classList.remove('btn-active');
+        localStorage.setItem(key, JSON.stringify(noteObj));
         
-        AddNoteToFolderBtn.classList.add('active');
-    }
-}
-
-
-
-
-function getFoldersArray() {
-    var foldersArray = localStorage["foldersArray"];
-
-    if (!foldersArray) {
-        foldersArray = [];
-        localStorage.setItem("foldersArray", JSON.stringify(foldersArray));
-    } else {
-        foldersArray = JSON.parse(foldersArray);
-    }
-    return foldersArray;
-}
-function getNotesArray() {
-    var notesArray = localStorage["notesArray"];
-
-    if (!notesArray) {
-        notesArray = [];
+        notesArray.push(key);
         localStorage.setItem("notesArray", JSON.stringify(notesArray));
-    } else {
-        notesArray = JSON.parse(notesArray);
     }
-    return notesArray;
-}
-function getCurrentTime() {
-    var d = new Date();
-    var month = new Array();
-        month[0] = "January";
-        month[1] = "February";
-        month[2] = "March";
-        month[3] = "April";
-        month[4] = "May";
-        month[5] = "June";
-        month[6] = "July";
-        month[7] = "August";
-        month[8] = "September";
-        month[9] = "October";
-        month[10] = "November";
-        month[11] = "December";
-    var n = month[d.getMonth()];
-    var s = n + " " + d.getDate() ;
-    return s;
-}
-function createNote() {
-    var notesArray = getNotesArray();
-    // NOTE OBJ
-    const noteTitle = document.querySelector('#note-title');
-    const noteContent = document.querySelector('#note-content');
-    const noteTag = document.querySelector('#note-tag');
-    const colorPick = document.querySelector('.color-picker .active');
-
-    var titleValue = noteTitle.value;
-    var contentValue = noteContent.value;
-    var tagValue = noteTag.value;
-    var color = colorPick.getAttribute('data-color');
-    var textcolor;
-    if (color == "black") {
-        textcolor = "#f6f6f6";
-    } else {textcolor = "#222"};
-
-    
-    var dateValue = getCurrentTime();
-    var noteObj = {
-        "title": titleValue,
-        "content": contentValue,
-        "date": dateValue,
-        "tag": tagValue,
-        "color": color,
-        "textcolor": textcolor
-    };
-
-
-    // KEY
-    var d = new Date();
-    var key = "note_" + d.getTime();
-    var fragment = document.createDocumentFragment();
-    addNoteToDOM(key, noteObj, fragment);
-
-    localStorage.setItem(key, JSON.stringify(noteObj));
-    
-    notesArray.push(key);
-    localStorage.setItem("notesArray", JSON.stringify(notesArray));
-}
 
 
 
-function addFormEdit(key) {
-    var note = JSON.parse(localStorage[key]);
+    function addFormEdit(key) {
+        var note = JSON.parse(localStorage[key]);
 
-    const noteTitle = document.querySelector('#edit-note-title');
-    const noteContent = document.querySelector('#edit-note-content');
-    const noteTag = document.querySelector('#edit-note-tag');
-    
-    addActiveColor(note.color);
-
-    noteTitle.value = note.title;
-    noteContent.value = note.content;
-    noteTag.value = note.tag;
-}
-function updateEditNote() {
-    var key = document.querySelector('li.selected').getAttribute('id');
-    var note = JSON.parse(localStorage[key]);
-
-    const noteTitle = document.querySelector('#edit-note-title').value;
-    const noteContent = document.querySelector('#edit-note-content').value;
-    const noteTag = document.querySelector('#edit-note-tag').value;
-    var dateValue = getCurrentTime();
-    const colorPick = document.querySelector('.color-picker .active');
-    var color = colorPick.getAttribute('data-color');
-
-    var textcolor;
-    if (color == "black") {
-        textcolor = "#f6f6f6";
-    } else {textcolor = "#222"};
-
-
-    note.title = noteTitle;
-    note.content = noteContent;
-    note.date = dateValue;
-    note.tag = noteTag;
-    note.color = color;
-    note.textcolor = textcolor;
-
-    localStorage.setItem(key, JSON.stringify(note));
-    location.reload();
-}
-function addActiveColor(color) {
-    const list = document.querySelectorAll('#edit_note_form .color-picker li');
-    for (let i = 0; i < list.length; i++) {
-        const item = list[i];
-        item.classList.remove('active');
-    }
-    list.forEach(item => {
-
-        var noteColor = item.getAttribute('data-color');
-
-        if (noteColor == color) {
-            item.classList.add('active');
-        }
-    });
-}
-
-//EDIT FOLDER 
-function editFolder(foldersArray,fragment) {
-
-    const folderTitle = document.querySelector('#folder-title');
-    var selected = document.querySelector('.selected');
-    var key = selected.getAttribute('id');
-
-    for (let i = 0; i < foldersArray.length; i++) {
-        const folder = foldersArray[i];
-        if (folder.title == key) {
-            folder.title = folderTitle.value;
-        }
-    }
-    localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
-    location.reload();
-}
-// CREATE FOLDER
-function createFolder(foldersArray, fragment) {
-    const folderTitle = document.querySelector('#folder-title');
-    
-    var title = folderTitle.value;
-    var folderObj = {
-        "title" : title,
-        "list" : []
-    };
-    foldersArray.push(folderObj);
-    localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
-    addFolderToDOM(folderObj, fragment);
-}
-
-
-// UNIQUE NOTE ARRAY
-function uniqueNote(notesArray, folderName) {
-
-    var foldersArray = getFoldersArray();
-    var folder = foldersArray.find(obj => obj.title == folderName);
-    
-    var difference = notesArray.filter(key => !folder.list.includes(key));
-    
-    return difference;
-}
-//CHECK UNIQUE NAME
-function uniqueFolderName(foldersArray) {
-    if (foldersArray.length == 0) {
-        return true;
-    }
-    const folderTitle = document.querySelector('#folder-title').value;
-
-
-    var isUnique ;
-    for (let i = 0; i < foldersArray.length; i++) {
-        const folder = foldersArray[i];
-        if (folder.title == folderTitle) {
-            isUnique = false;
-            break; // stop the loop when similar name is found
-        } else {
-            isUnique = true;
-        }
-    }
-    return isUnique;
-}
-// NOTE
-function updateNoteDOM(notesArray, fragment) {
-
-    for (let i = 0; i < notesArray.length; i++) {
-        var key = notesArray[i];
-        var value = JSON.parse(localStorage[key]);
-        addNoteToDOM(key, value, fragment);
-    }
-}
-function addNoteToDOM(key, noteobj, fragment) {
-    msg.style.display = "none";
-
-    var note = document.createElement('li');
-    note.setAttribute("id", key);
-
-    var note_title = document.createElement('h1');
-    note_title.setAttribute('class', 'note__title');
-
-
-    var note_content = document.createElement('p');
-    note_content.setAttribute('class', 'note__content');
-
-    var note_bottom = document.createElement('div');
-    note_bottom.setAttribute('class', 'note__bottom');
-
-
-    var note_date = document.createElement('span');
-    note_date.setAttribute('class', 'note__time');
-
-    var note_tag = document.createElement('a');
-    note_tag.setAttribute('class', 'note__tag');
-
-    var color = getColor(noteobj.color);
-    var textcolor = getColor(noteobj.textcolor);
-    
-
-    note_title.innerHTML = noteobj.title;
-    note_content.innerHTML = noteobj.content;
-    note_date.innerHTML = noteobj.date;
-    note_tag.innerHTML = noteobj.tag;
-
-
-    note.style.color = textcolor;
-
-    note.style.backgroundColor = color;
-
-    note.setAttribute('class', 'note');
-    note_bottom.appendChild(note_date);
-    note_bottom.appendChild(note_tag);
-    note.appendChild(note_title);
-    note.appendChild(note_content);
-    note.appendChild(note_bottom);
-    fragment.appendChild(note);
-
-    contentList.appendChild(fragment);
-    
-    // noteList.insertBefore(note, noteList.childNodes[1]);
-    addEventForNote(note);
-
-
-}
-// GET COLOR
-function getColor(color) {
-    switch (color) {
-        case "white":
-            return "white";
-            break;
-        case "red":
-            return "#ff7746";
-            break;
-        case "yellow":
-            return "#ffda47";
-            break;
-        case "bluesky":
-            return "#0aebaf";
-            break;
-        case "green":
-            return "#7bff2f";
-            break;
-        default:
-            return " ";
-            break;
-    }
-}
-
-function addEventForNote(note) {
-    note.addEventListener('click',function () {
-        if (!this.classList.contains('selected')) {
-            note.classList.add('selected'); 
-        } else {
-            note.classList.remove('selected'); 
-        }
-        checkSelect();
-    });
-}
-// FOLDER FUNCTION
-function updateFolderDOM(foldersArray, fragment) {
-    for (let i = 0; i < foldersArray.length; i++) {
-        var obj = foldersArray[i];
-        addFolderToDOM(obj, fragment);
-    }
-}
-function addFolderToDOM(folderObj, fragment) {
-
-    var folder = document.createElement('li');
-    folder.setAttribute('id', folderObj.title);
-    folder.setAttribute('class', 'folder');
-    var img = document.createElement('img');
-    img.setAttribute('src' , "img/folder.png");
-    img.setAttribute('alt' , "Folder");
-    var title = document.createElement('span');
-    title.setAttribute('class', 'folder__title');
-    title.innerHTML = folderObj.title;
-
-
-    folder.appendChild(img);
-    folder.appendChild(title);
-    fragment.appendChild(folder);
-
-
-    function showFolderSection() {
-        var folderName = this.getAttribute('id');
-
-        // get the current show class 
-
-
-        //change title text (with name of the clicked folder) in folder section
-        var folderSectionTitle = document.querySelector('.folder-section__title h2');
-        folderSectionTitle.innerHTML = folderName;
-
-
-        //show folder section when click in any folder
-        contentShow.setAttribute('data-content', 'folder-section');
-
-
-        //remove folder fragment before
-        removeFragmentChild();
+        const noteTitle = document.querySelector('#edit-note-title');
+        const noteContent = document.querySelector('#edit-note-content');
+        const noteTag = document.querySelector('#edit-note-tag');
         
-        // load note to folder 
-        loadNoteToFolder(folderName, fragment);
+        addActiveColor(note.color);
+
+        noteTitle.value = note.title;
+        noteContent.value = note.content;
+        noteTag.value = note.tag;
     }
-    folder.addEventListener('click', showFolderSection, true)
-    folder.addEventListener('mousedown', function () {
-        setTimeout(() => {
+    function updateEditNote() {
+        var key = document.querySelector('li.selected').getAttribute('id');
+        var note = JSON.parse(localStorage[key]);
+
+        const noteTitle = document.querySelector('#edit-note-title').value;
+        const noteContent = document.querySelector('#edit-note-content').value;
+        const noteTag = document.querySelector('#edit-note-tag').value;
+        var dateValue = getCurrentTime();
+        const colorPick = document.querySelector('.color-picker .active');
+        var color = colorPick.getAttribute('data-color');
+
+        var textcolor;
+        if (color == "black") {
+            textcolor = "#f6f6f6";
+        } else {textcolor = "#222"};
+
+
+        note.title = noteTitle;
+        note.content = noteContent;
+        note.date = dateValue;
+        note.tag = noteTag;
+        note.color = color;
+        note.textcolor = textcolor;
+
+        localStorage.setItem(key, JSON.stringify(note));
+        location.reload();
+    }
+    function addActiveColor(color) {
+        const list = document.querySelectorAll('#edit_note_form .color-picker li');
+        for (let i = 0; i < list.length; i++) {
+            const item = list[i];
+            item.classList.remove('active');
+        }
+        list.forEach(item => {
+
+            var noteColor = item.getAttribute('data-color');
+
+            if (noteColor == color) {
+                item.classList.add('active');
+            }
+        });
+    }
+
+    //EDIT FOLDER 
+    function editFolder(foldersArray,fragment) {
+
+        const folderTitle = document.querySelector('#folder-title');
+        var selected = document.querySelector('.selected');
+        var key = selected.getAttribute('id');
+
+        for (let i = 0; i < foldersArray.length; i++) {
+            const folder = foldersArray[i];
+            if (folder.title == key) {
+                folder.title = folderTitle.value;
+            }
+        }
+        localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
+        location.reload();
+    }
+    // CREATE FOLDER
+    function createFolder(foldersArray, fragment) {
+        const folderTitle = document.querySelector('#folder-title');
+        
+        var title = folderTitle.value;
+        var folderObj = {
+            "title" : title,
+            "list" : []
+        };
+        foldersArray.push(folderObj);
+        localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
+        addFolderToDOM(folderObj, fragment);
+    }
+
+
+    // UNIQUE NOTE ARRAY
+    function uniqueNote(notesArray, folderName) {
+
+        var foldersArray = getFoldersArray();
+        var folder = foldersArray.find(obj => obj.title == folderName);
+        
+        var difference = notesArray.filter(key => !folder.list.includes(key));
+        
+        return difference;
+    }
+    //CHECK UNIQUE NAME
+    function uniqueFolderName(foldersArray) {
+        if (foldersArray.length == 0) {
+            return true;
+        }
+        const folderTitle = document.querySelector('#folder-title').value;
+
+
+        var isUnique ;
+        for (let i = 0; i < foldersArray.length; i++) {
+            const folder = foldersArray[i];
+            if (folder.title == folderTitle) {
+                isUnique = false;
+                break; // stop the loop when similar name is found
+            } else {
+                isUnique = true;
+            }
+        }
+        return isUnique;
+    }
+    // NOTE
+    function updateNoteDOM(notesArray, fragment) {
+
+        for (let i = 0; i < notesArray.length; i++) {
+            var key = notesArray[i];
+            var value = JSON.parse(localStorage[key]);
+            addNoteToDOM(key, value, fragment);
+        }
+    }
+    function addNoteToDOM(key, noteobj, fragment) {
+        msg.style.display = "none";
+
+        var note = document.createElement('li');
+        note.setAttribute("id", key);
+
+        var note_title = document.createElement('h1');
+        note_title.setAttribute('class', 'note__title');
+
+
+        var note_content = document.createElement('p');
+        note_content.setAttribute('class', 'note__content');
+
+        var note_bottom = document.createElement('div');
+        note_bottom.setAttribute('class', 'note__bottom');
+
+
+        var note_date = document.createElement('span');
+        note_date.setAttribute('class', 'note__time');
+
+        var note_tag = document.createElement('a');
+        note_tag.setAttribute('class', 'note__tag');
+
+        var color = getColor(noteobj.color);
+        var textcolor = getColor(noteobj.textcolor);
+        
+
+        note_title.innerHTML = noteobj.title;
+        note_content.innerHTML = noteobj.content;
+        note_date.innerHTML = noteobj.date;
+        note_tag.innerHTML = noteobj.tag;
+
+
+        note.style.color = textcolor;
+
+        note.style.backgroundColor = color;
+
+        note.setAttribute('class', 'note');
+        note_bottom.appendChild(note_date);
+        note_bottom.appendChild(note_tag);
+        note.appendChild(note_title);
+        note.appendChild(note_content);
+        note.appendChild(note_bottom);
+        fragment.appendChild(note);
+
+        contentList.appendChild(fragment);
+        
+        // noteList.insertBefore(note, noteList.childNodes[1]);
+        addEventForNote(note);
+
+
+    }
+    // GET COLOR
+    function getColor(color) {
+        switch (color) {
+            case "white":
+                return "white";
+                break;
+            case "red":
+                return "#ff7746";
+                break;
+            case "yellow":
+                return "#ffda47";
+                break;
+            case "bluesky":
+                return "#0aebaf";
+                break;
+            case "green":
+                return "#7bff2f";
+                break;
+            default:
+                return " ";
+                break;
+        }
+    }
+
+    function addEventForNote(note) {
+        note.addEventListener('click',function () {
             if (!this.classList.contains('selected')) {
+                note.classList.add('selected'); 
+            } else {
+                note.classList.remove('selected'); 
+            }
+            checkSelect();
+        });
+    }
+    // FOLDER FUNCTION
+    function updateFolderDOM(foldersArray, fragment) {
+        for (let i = 0; i < foldersArray.length; i++) {
+            var obj = foldersArray[i];
+            addFolderToDOM(obj, fragment);
+        }
+    }
+    function addFolderToDOM(folderObj, fragment) {
+
+        var folder = document.createElement('li');
+        folder.setAttribute('id', folderObj.title);
+        folder.setAttribute('class', 'folder');
+        var img = document.createElement('img');
+        img.setAttribute('src' , "img/folder.png");
+        img.setAttribute('alt' , "Folder");
+        var title = document.createElement('span');
+        title.setAttribute('class', 'folder__title');
+        title.innerHTML = folderObj.title;
+
+
+        folder.appendChild(img);
+        folder.appendChild(title);
+        fragment.appendChild(folder);
+
+
+        function showFolderSection() {
+            var folderName = this.getAttribute('id');
+        
+            // get the current show class 
+        
+        
+            //change title text (with name of the clicked folder) in folder section
+            var folderSectionTitle = document.querySelector('.folder-section__title h2');
+            folderSectionTitle.innerHTML = folderName;
+        
+        
+            //show folder section when click in any folder
+            contentShow.setAttribute('data-content', 'folder-section');
+        
+        
+            //remove folder fragment before
+            removeFragmentChild();
+            
+            // load note to folder 
+            loadNoteToFolder(folderName, fragment);
+        }
+        
+        function processSelect(folder, input) {
+            if (!folder.classList.contains('selected')) {
                 folder.classList.add('selected');
-                folder.removeEventListener('click', showFolderSection, true );
-            }   
+                folder.removeEventListener('click', showFolderSection, true);
+            }      
             else {
+            folder.classList.remove('selected'); 
                 folder.classList.remove('selected'); 
+            folder.classList.remove('selected'); 
                 setTimeout(() => {
                     folder.addEventListener('click', showFolderSection, true );
                 }, 300);
             }
             checkSelect();
-        },500);
-    })
-}
-
-// ADD NOTE TO FOLDER 
-function AddNoteToFolder() {
-    var selects = document.querySelectorAll('li.selected');
-    var idFolder = document.querySelector('.folder-section__title h2').innerHTML;
-
-    // GET FOLDER ARRAY
-    var foldersArray = getFoldersArray();
-
-    // FIND SELECTED FOLDER 
-    var folder = foldersArray.find(obj => obj.title == idFolder);
-    
-    
-    for (let i = 0; i < selects.length; i++) {
-        const select = selects[i];
-
-        // ID OF NOTE 
-        var idNote = select.getAttribute('id');
-
-        // PUSH NOTE ID INTO FOLDER LIST 
-        folder.list.push(idNote);
-
-    }
-    
-    // SAVE FOLDERS ARRAY BACK INTO LOCALSTORAGE
-    localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
-    location.reload();
-
-}
-
-// LOAD NOTE TO FOLDER 
-function loadNoteToFolder(id, fragment) {
-    // GET FOLDER ARRAY
-
-    var foldersArray = getFoldersArray();
-
-    // FIND SELECTED FOLDER 
-    var folder = foldersArray.find(obj => obj.title == id);
-    if (folder.list.length == 0) {
-        msg.style.display = "";
-        msg.innerHTML = "You haven't add any note into this folder yet";
-
-    } else {
-        msg.style.display = "none";
-        updateNoteDOM(folder.list, fragment);
-        contentList.appendChild(fragment);
-    }
-
-
-}
-
-//REMOVE ALL 
-function removeAll(selects) {
-    selects.forEach(select => {
-        var key = select.getAttribute('id');
-        // REMOVE FROM LOCALSTORAGE
-        localStorage.removeItem(key); //remove item
-
-        //remove key push in the array
-        var notesArray = getNotesArray();
-
-        for (let i = 0; i < notesArray.length; i++) {
-            if (key == notesArray[i]) {
-                notesArray.splice(i,1);
-            }
         }
-        if (notesArray.length > 0) {
-            msg.style.display = "none";
+        folder.addEventListener('click', showFolderSection, true);
+        folder.addEventListener('mousedown', function () {
+            setTimeout(() => {
+                processSelect(folder);
+            }, 500);
+        });
+
+
+
+            //working on this , touch don't open folder 
+        folder.addEventListener('touchstart', function (e) {
+            e.preventDefault();
+            setTimeout(() => {
+                processSelect(folder);
+            }, 500);
+        });
+        // folder.addEventListener('touchend', function () {
+        //     setTimeout(() => {
+        //         processSelect(folder);
+        //     }, 500);
+        // })
+
+    }
+
+    // CHECK SELECTED
+    function checkSelect(no) {
+        folderInput.setAttribute('placeholder', "Folder Name");
+        const selects = document.querySelectorAll('.list .selected');
+        if (selects.length == 1 && !no) {
+
+            edit.classList.add('btn-active');
+            showDel.classList.add('btn-active'); 
+            
+            AddNoteToFolderBtn.classList.add('active');
+        } else if (selects.length == 0 || no) {
+
+            edit.classList.remove('btn-active');
+            showDel.classList.remove('btn-active');
+
+            AddNoteToFolderBtn.classList.remove('active');
+
         } else {
-            msg.style.display = "";
-            msg.innerHTML = "There isn't any note yet !!!";
+            showDel.classList.add('btn-active');
+            edit.classList.remove('btn-active');
+            
+            AddNoteToFolderBtn.classList.add('active');
         }
-        localStorage.setItem('notesArray', JSON.stringify(notesArray));
+    }
+    // ADD NOTE TO FOLDER 
+    function AddNoteToFolder() {
+        var selects = document.querySelectorAll('li.selected');
+        var idFolder = document.querySelector('.folder-section__title h2').innerHTML;
 
+        // GET FOLDER ARRAY
+        var foldersArray = getFoldersArray();
+
+        // FIND SELECTED FOLDER 
+        var folder = foldersArray.find(obj => obj.title == idFolder);
+        
+        
+        for (let i = 0; i < selects.length; i++) {
+            const select = selects[i];
+
+            // ID OF NOTE 
+            var idNote = select.getAttribute('id');
+
+            // PUSH NOTE ID INTO FOLDER LIST 
+            folder.list.push(idNote);
+
+        }
+        
+        // SAVE FOLDERS ARRAY BACK INTO LOCALSTORAGE
+        localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
+        location.reload();
+
+    }
+
+    // LOAD NOTE TO FOLDER 
+    function loadNoteToFolder(id, fragment) {
+        // GET FOLDER ARRAY
 
         var foldersArray = getFoldersArray();
-        for (let i = 0; i < foldersArray.length; i++) {
-            var folder = foldersArray[i];
-            for (let j = 0; j < folder.list.length; j++) {
-                if (folder.list[j] == key) {
-                    folder.list.splice(j,1);
-                }
-            }
-        }
-        localStorage.setItem('foldersArray', JSON.stringify(foldersArray));  
 
-        // REMOVE NOTE FROM DOM
-        select.parentNode.removeChild(select);
-
-
-        del.classList.remove('btn-active');
-        confirmDelOverLay.classList.remove('show_overlay');
-    });
-}
-function removeNoteFromDOM(selects) {
-
-    selects.forEach(select => {
-        var key = select.getAttribute('id');
-        localStorage.removeItem(key);
-
-        // REMOVE FROM LOCALSTORAGE
-        var notesArray = getNotesArray();
-
-
-        for (let i = 0; i < notesArray.length; i++) {
-            if (key == notesArray[i]) {
-                notesArray.splice(i,1);
-            }
-        }
-        localStorage.setItem('notesArray', JSON.stringify(notesArray));      
-
-
-        // REMOVE NOTE FROM DOM
-
-        select.parentNode.removeChild(select);
-
-
-        del.classList.remove('btn-active');
-        confirmDelOverLay.classList.remove('show_overlay');
-        // location.reload();
-        
-
-    });
-
-
-
-}
-//REMOVE FOLDER 
-function removeFolder(selects) {
-    var foldersArray = getFoldersArray();
-
-
-    selects.forEach(select => {
-        var folderName = select.getAttribute('id');
-        for (let i = 0; i < foldersArray.length; i++) {
-            const folder = foldersArray[i];
-            if (folder.title == folderName) {
-                foldersArray.splice(i,1);
-                break;
-                //need break here after add uniquearray function
-            }
-        }
-
-        if (foldersArray.length == 0) {
+        // FIND SELECTED FOLDER 
+        var folder = foldersArray.find(obj => obj.title == id);
+        if (folder.list.length == 0) {
             msg.style.display = "";
-            msg.innerHTML = "You haven't create any folder yet !!!";
+            msg.innerHTML = "You haven't add any note into this folder yet";
 
         } else {
             msg.style.display = "none";
+            updateNoteDOM(folder.list, fragment);
+            contentList.appendChild(fragment);
         }
-        localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
 
-        // REMOVE FROM DOM
-        select.parentNode.removeChild(select);
-        del.classList.remove('btn-active');
-        confirmDelOverLay.classList.remove('show_overlay');
-    });
-}
-// REMOVE NOTE FROM FOLDER
-function removeNoteFromFolder(selects) {
-    console.log(selects);
-    if (selects) {
-        selects.forEach(select => {
-            var key = select.getAttribute('id');
-            
-            var folderName = document.querySelector('.folder-section__title h2').innerHTML;
-    
-                // REMOVE FROM LOCALSTORAGE
-    
-                var foldersArray = getFoldersArray();
-                var folder;
-    
-                for (let i = 0; i < foldersArray.length; i++) {
-                    if (foldersArray[i].title == folderName) {
-                        folder = foldersArray[i];
-                        break;
-                    }  
-                }
-    
-                for (let i = 0; i < folder.list.length; i++) {
-                    if (folder.list[i] == key) {
-                        folder.list.splice(i,1);
-                        break;
-                    }
-                }
-    
-    
-                if (folder.list.length == 0) {
-                    msg.style.display = "";
-                    msg.innerHTML = "You haven't add any note into this folder yet";
-        
-                } else {
-                    msg.style.display = "none";
-                }
-    
-            
-                localStorage.setItem('foldersArray', JSON.stringify(foldersArray));      
-    
-                // REMOVE NOTE FROM DOM
-    
-                select.parentNode.removeChild(select);
-    
-    
-                del.classList.remove('btn-active');
-                confirmDelOverLay.classList.remove('show_overlay');
-    
-            
-            });
+
     }
 
-}
+    //REMOVE ALL 
+    function removeAll(selects) {
+        selects.forEach(select => {
+            var key = select.getAttribute('id');
+            // REMOVE FROM LOCALSTORAGE
+            localStorage.removeItem(key); //remove item
+
+            //remove key push in the array
+            var notesArray = getNotesArray();
+
+            for (let i = 0; i < notesArray.length; i++) {
+                if (key == notesArray[i]) {
+                    notesArray.splice(i,1);
+                }
+            }
+            if (notesArray.length > 0) {
+                msg.style.display = "none";
+            } else {
+                msg.style.display = "";
+                msg.innerHTML = "There isn't any note yet !!!";
+            }
+            localStorage.setItem('notesArray', JSON.stringify(notesArray));
 
 
-},false)
+            var foldersArray = getFoldersArray();
+            for (let i = 0; i < foldersArray.length; i++) {
+                var folder = foldersArray[i];
+                for (let j = 0; j < folder.list.length; j++) {
+                    if (folder.list[j] == key) {
+                        folder.list.splice(j,1);
+                    }
+                }
+            }
+            localStorage.setItem('foldersArray', JSON.stringify(foldersArray));  
+
+            // REMOVE NOTE FROM DOM
+            select.parentNode.removeChild(select);
+
+
+            del.classList.remove('btn-active');
+            confirmDelOverLay.classList.remove('show_overlay');
+        });
+    }
+    function removeNoteFromDOM(selects) {
+
+        selects.forEach(select => {
+            var key = select.getAttribute('id');
+            localStorage.removeItem(key);
+
+            // REMOVE FROM LOCALSTORAGE
+            var notesArray = getNotesArray();
+
+
+            for (let i = 0; i < notesArray.length; i++) {
+                if (key == notesArray[i]) {
+                    notesArray.splice(i,1);
+                }
+            }
+            localStorage.setItem('notesArray', JSON.stringify(notesArray));      
+
+
+            // REMOVE NOTE FROM DOM
+
+            select.parentNode.removeChild(select);
+
+
+            del.classList.remove('btn-active');
+            confirmDelOverLay.classList.remove('show_overlay');
+            // location.reload();
+            
+
+        });
+
+
+
+    }
+    //REMOVE FOLDER 
+    function removeFolder(selects) {
+        var foldersArray = getFoldersArray();
+
+
+        selects.forEach(select => {
+            var folderName = select.getAttribute('id');
+            for (let i = 0; i < foldersArray.length; i++) {
+                const folder = foldersArray[i];
+                if (folder.title == folderName) {
+                    foldersArray.splice(i,1);
+                    break;
+                    //need break here after add uniquearray function
+                }
+            }
+
+            if (foldersArray.length == 0) {
+                msg.style.display = "";
+                msg.innerHTML = "You haven't create any folder yet !!!";
+
+            } else {
+                msg.style.display = "none";
+            }
+            localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
+
+            // REMOVE FROM DOM
+            select.parentNode.removeChild(select);
+            del.classList.remove('btn-active');
+            confirmDelOverLay.classList.remove('show_overlay');
+        });
+    }
+    // REMOVE NOTE FROM FOLDER
+    function removeNoteFromFolder(selects) {
+        console.log(selects);
+        if (selects) {
+            selects.forEach(select => {
+                var key = select.getAttribute('id');
+                
+                var folderName = document.querySelector('.folder-section__title h2').innerHTML;
+        
+                    // REMOVE FROM LOCALSTORAGE
+        
+                    var foldersArray = getFoldersArray();
+                    var folder;
+        
+                    for (let i = 0; i < foldersArray.length; i++) {
+                        if (foldersArray[i].title == folderName) {
+                            folder = foldersArray[i];
+                            break;
+                        }  
+                    }
+        
+                    for (let i = 0; i < folder.list.length; i++) {
+                        if (folder.list[i] == key) {
+                            folder.list.splice(i,1);
+                            break;
+                        }
+                    }
+        
+        
+                    if (folder.list.length == 0) {
+                        msg.style.display = "";
+                        msg.innerHTML = "You haven't add any note into this folder yet";
+            
+                    } else {
+                        msg.style.display = "none";
+                    }
+        
+                
+                    localStorage.setItem('foldersArray', JSON.stringify(foldersArray));      
+        
+                    // REMOVE NOTE FROM DOM
+        
+                    select.parentNode.removeChild(select);
+        
+        
+                    del.classList.remove('btn-active');
+                    confirmDelOverLay.classList.remove('show_overlay');
+        
+                
+                });
+        }
+
+    }
+
+
+},false);
 
 
     // THEME
