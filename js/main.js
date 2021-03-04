@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded',function(){
     const AddNoteToFolderBtn = document.querySelector('#add_note_to_folder');//add note to folder (folder section)
 
     const returnToFolder = document.querySelector('.return_folder');
+    //select folder
+    const selectFolder = document.querySelector('.select-folder');
 
     // SHOW CONTENT 
     const contentShow = document.querySelector('.main-content');
@@ -379,7 +381,7 @@ document.addEventListener('DOMContentLoaded',function(){
     //     });
     // }
 
-    // NOT DONE
+
     function checkItemEdit() {
         var selected = document.querySelector('.selected');
         var key = selected.getAttribute('id');
@@ -721,7 +723,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
         function showFolderSection() {
-            var folderName = this.getAttribute('id');
+            var folderName = folder.getAttribute('id');
         
             // get the current show class 
         
@@ -741,8 +743,23 @@ document.addEventListener('DOMContentLoaded',function(){
             // load note to folder 
             loadNoteToFolder(folderName, fragment);
         }
-        
-        function processSelect(folder, input) {
+
+        var isSelect;
+
+        // SELECT FOLDER 
+        selectFolder.addEventListener('click', function () {
+            this.classList.toggle('active');
+            return () => {
+
+            };
+            const folders = document.querySelectorAll('.list .folder');
+            folders.forEach(folder => {
+                folder.removeEventListener('click', showFolderSection, true);
+            });
+        })
+
+
+        function processSelect(folder) {
             if (!folder.classList.contains('selected')) {
                 folder.classList.add('selected');
                 folder.removeEventListener('click', showFolderSection, true);
@@ -764,20 +781,8 @@ document.addEventListener('DOMContentLoaded',function(){
             }, 500);
         });
 
+        // NO MORE FUKCING TOUCH EVENT
 
-
-            //working on this , touch don't open folder 
-        folder.addEventListener('touchstart', function (e) {
-            e.preventDefault();
-            setTimeout(() => {
-                processSelect(folder);
-            }, 500);
-        });
-        // folder.addEventListener('touchend', function () {
-        //     setTimeout(() => {
-        //         processSelect(folder);
-        //     }, 500);
-        // })
 
     }
 
@@ -843,9 +848,10 @@ document.addEventListener('DOMContentLoaded',function(){
         // FIND SELECTED FOLDER 
         var folder = foldersArray.find(obj => obj.title == id);
         if (folder.list.length == 0) {
-            msg.style.display = "";
-            msg.innerHTML = "You haven't add any note into this folder yet";
-
+            setTimeout(() => {
+                msg.innerHTML = "You haven't add any note into this folder yet";
+                msg.style.display = "";
+            }, 500);
         } else {
             msg.style.display = "none";
             updateNoteDOM(folder.list, fragment);

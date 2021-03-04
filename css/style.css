@@ -249,6 +249,7 @@ ul {
    /* ADD OVERLAY BTN */
    .main-content .show-add-note,
    .main-content .show-add-folder,
+   .main-content .select-folder,
    .main-content .btn-folder-section {
        width: 70px;
        height: 70px;
@@ -263,7 +264,7 @@ ul {
        opacity: 0;
        transition: 0.3s ease-in-out;
        pointer-events: unset;
-
+        box-shadow: var(--bs-item);
    }
    .flaticon-add-file {
     color: currentColor;
@@ -273,6 +274,13 @@ ul {
    .main-content .btn-folder-section {
         right: 50%;
         transform: translateX(35px);
+    }
+    /* SELECT FOLDER  */
+    .main-content .select-folder {
+        right: 0;
+        left: 15%;
+        color: var(--cl-content-unactive);
+        background-color: var(--cl-btn2-unactive);
     }
     /* ADD NOTE TO FOLDER BTN */
    .main-content .add-folder-section {
@@ -292,6 +300,7 @@ ul {
    section[data-content="folder-section"] .show {
        display: inline-block;
    }
+   section[data-content="folder"] .active,
    section[data-content="folder-section"] .active {
        background: var(--cl-btn2-active);
        color: var(--cl-text-active);
@@ -300,6 +309,7 @@ ul {
    /* END ADD NOTE TO FOLDER BTN */
    section[data-content="note"] .show-add-note, 
    section[data-content="folder"] .show-add-folder, 
+   section[data-content="folder"] .select-folder, 
    section[data-content="folder-section"] .btn-folder-section {
         opacity: 1;
         z-index: 10;
@@ -315,6 +325,7 @@ ul {
 .folder {
     box-shadow: var(--bs-item);
     border: 2px solid transparent;
+    
 }
     /* NOTE STYLE */
     .message {
@@ -505,6 +516,7 @@ section[data-content="folder-section"] .folder-section__title {
 .add-note-wrapper {
     padding: 20px 0;
 }
+
 /* FORM */
 
 /* FOLDER FORM */
@@ -682,7 +694,7 @@ section[data-content="folder-section"] .folder-section__title {
     } */
     section[data-content="folder"] .list .folder {
         width: 46%;
-        margin: 0 5px;
+        margin: 0 5px 3vh;
     }
 }
 @media (min-width:800px) {
@@ -709,7 +721,7 @@ section[data-content="folder-section"] .folder-section__title {
         section[data-content="note"] .note,
         section[data-content="folder-section"] .note {
             width: 48%;
-            margin: 0 5px;
+            margin: 0 5px 3vh;
         }
         /* FOLDER */
         /* section[data-content="folder"] .list .gutter-sizer {
