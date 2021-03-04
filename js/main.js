@@ -346,7 +346,37 @@ document.addEventListener('DOMContentLoaded',function(){
             confirmDelOverLay.classList.remove('show_overlay');
         }
         // END OVERLAY
+        // SELECT FOLDER 
+        const selectMany = () => {
+            let isSelect = true;
+            return () => {
 
+                const folders = document.querySelectorAll('.list .folder');
+                if (isSelect) {
+                    selectFolder.classList.add('active');
+
+                    folders.forEach(folder => {
+                        folder.removeEventListener('click', showFolderSection, true);
+
+                        folder.addEventListener('click', processSelect, true);
+                    });
+
+
+                } else {
+                    selectFolder.classList.remove('active');
+
+                    folders.forEach(folder => {
+                        folder.classList.remove('selected');
+                        folder.addEventListener('click', showFolderSection, true );
+
+                        folder.removeEventListener('click', processSelect, true);
+                    });
+
+                }
+                isSelect = !isSelect;
+            }
+        }
+        selectFolder.addEventListener('click', selectMany());
     });
     // END INITIAL
 
@@ -721,71 +751,44 @@ document.addEventListener('DOMContentLoaded',function(){
         folder.appendChild(title);
         fragment.appendChild(folder);
 
-
-        function showFolderSection() {
-            var folderName = folder.getAttribute('id');
-        
-            // get the current show class 
-        
-        
-            //change title text (with name of the clicked folder) in folder section
-            var folderSectionTitle = document.querySelector('.folder-section__title h2');
-            folderSectionTitle.innerHTML = folderName;
-        
-        
-            //show folder section when click in any folder
-            contentShow.setAttribute('data-content', 'folder-section');
-        
-        
-            //remove folder fragment before
-            removeFragmentChild();
-            
-            // load note to folder 
-            loadNoteToFolder(folderName, fragment);
-        }
-
-        var isSelect;
-
-        // SELECT FOLDER 
-        selectFolder.addEventListener('click', function () {
-            this.classList.toggle('active');
-            return () => {
-
-            };
-            const folders = document.querySelectorAll('.list .folder');
-            folders.forEach(folder => {
-                folder.removeEventListener('click', showFolderSection, true);
-            });
-        })
-
-
-        function processSelect(folder) {
-            if (!folder.classList.contains('selected')) {
-                folder.classList.add('selected');
-                folder.removeEventListener('click', showFolderSection, true);
-            }      
-            else {
-            folder.classList.remove('selected'); 
-                folder.classList.remove('selected'); 
-            folder.classList.remove('selected'); 
-                setTimeout(() => {
-                    folder.addEventListener('click', showFolderSection, true );
-                }, 300);
-            }
-            checkSelect();
-        }
         folder.addEventListener('click', showFolderSection, true);
-        folder.addEventListener('mousedown', function () {
-            setTimeout(() => {
-                processSelect(folder);
-            }, 500);
-        });
-
-        // NO MORE FUKCING TOUCH EVENT
-
-
     }
-
+    function processSelect(e) {
+        var folder = e.target;
+        if (e.target.tagName.toLowerCase() == "span") {
+            folder = e.target.parentNode;
+        }
+        if (!folder.classList.contains('selected')) {
+            folder.classList.add('selected');
+        }      
+        else {
+            folder.classList.remove('selected'); 
+        }
+        checkSelect();
+    }
+    function showFolderSection(e) {
+        var folderName = e.target.id;
+        if (e.target.tagName.toLowerCase() == "span") {
+            folderName = e.target.parentNode.id;
+        }
+        // get the current show class 
+    
+    
+        //change title text (with name of the clicked folder) in folder section
+        var folderSectionTitle = document.querySelector('.folder-section__title h2');
+        folderSectionTitle.innerHTML = folderName;
+    
+    
+        //show folder section when click in any folder
+        contentShow.setAttribute('data-content', 'folder-section');
+    
+    
+        //remove folder fragment before
+        removeFragmentChild();
+        
+        // load note to folder 
+        loadNoteToFolder(folderName);
+    }
     // CHECK SELECTED
     function checkSelect(no) {
         folderInput.setAttribute('placeholder', "Folder Name");
@@ -840,11 +843,11 @@ document.addEventListener('DOMContentLoaded',function(){
     }
 
     // LOAD NOTE TO FOLDER 
-    function loadNoteToFolder(id, fragment) {
+    function loadNoteToFolder(id) {
         // GET FOLDER ARRAY
 
         var foldersArray = getFoldersArray();
-
+        var fragment = document.createDocumentFragment();
         // FIND SELECTED FOLDER 
         var folder = foldersArray.find(obj => obj.title == id);
         if (folder.list.length == 0) {
