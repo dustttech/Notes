@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded',function(){
             // UPDATE DOM FROM LOCALSTORAGE
             var notesArray = getNotesArray();
 
-            updateNoteDOM();
+            updateNoteDOM(notesArray);
             if (notesArray.length > 0) {
                 displayMsg('no');
             }
@@ -128,13 +128,7 @@ document.addEventListener('DOMContentLoaded',function(){
                     input.setAttribute('placeholder', "Please enter this");
                 })
             });
-            // VALID MESSAGE 
-            // addNote.addEventListener('click', function () {
-            // })
-            // editNote.addEventListener('click', function () {
-            // })
-            // submitFolderBtn.addEventListener('click', function () {
-            // })
+
             //SUBMIT
             addNoteForm.addEventListener('submit', function (e) {
                 e.preventDefault();
@@ -144,8 +138,6 @@ document.addEventListener('DOMContentLoaded',function(){
                 addNoteInput.forEach(input => {
                     input.removeAttribute('placeholder');
                 });
-
-
                 createNote();
             })
             editNoteForm.addEventListener('submit', function (e) {
@@ -232,7 +224,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
                     if (notesArray.length > 0) {
                         displayMsg('no')
-                        updateNoteDOM();
+                        updateNoteDOM(notesArray);
                     }
                 }  
                
@@ -261,6 +253,11 @@ document.addEventListener('DOMContentLoaded',function(){
         //ADD NOTE TO FOLDER 
         AddNoteToFolderBtn.addEventListener('click', function() {
             AddNoteToFolder();
+            removeFragmentChild();
+            AddNoteToFolderBtn.classList.remove('show');
+            var id = document.querySelector('.folder-section__title h2').innerHTML;
+            loadNoteToFolder(id);
+            loadNoteToFolderBtn.style.display = "";
         })
         // OVERLAY
 
@@ -305,7 +302,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
                 if (unique.length > 0) {
                     loadNoteToFolderBtn.style.display = "none";
-                    updateNoteDOM();
+                    updateNoteDOM(unique);
                     AddNoteToFolderBtn.classList.add('show');
                 } else {
                     displayMsg('show', 'fullnoteforfolder');
@@ -377,232 +374,24 @@ document.addEventListener('DOMContentLoaded',function(){
     });
     // END INITIAL
 
-    // REMOVE NOTE FRAGMENT FROM DOM
-    function removeFragmentChild() {
-        const noteItem = document.querySelectorAll('.list .note');
-        const folderItem = document.querySelectorAll('.list .folder');
-        if (noteItem.length > 0) {
-            noteItem.forEach(note => {
-                note.parentNode.removeChild(note);  
-            });
-        } 
-        else if(folderItem.length > 0){
-            folderItem.forEach(folder => {
-                folder.parentNode.removeChild(folder);  
-            });
-        } 
-    }
-
-
-
-    function checkItemEdit() {
-        var selected = document.querySelector('.selected');
-        var key = selected.getAttribute('id');
-        if (selected.classList.contains('note')) {
-            processOverlay(editNoteOverLay, 'yes');
-            addFormEdit(key);
-        } else if (selected.classList.contains('folder')) {
-            processOverlay(folderOverLay, 'yes');
-
-
-            const folderTitle = document.querySelector('#folder-title');
-            folderTitle.value = key;
-            submitFolderBtn.value = "Rename";
-            submitFolderForm.setAttribute('data-submit', 'edit');
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    function addFormEdit(key) {
-        var note = JSON.parse(localStorage[key]);
-
-        const noteTitle = document.querySelector('#edit-note-title');
-        const noteContent = document.querySelector('#edit-note-content');
-        const noteTag = document.querySelector('#edit-note-tag');
-        
-        addActiveColor(note.color);
-
-        noteTitle.value = note.title;
-        noteContent.value = note.content;
-        noteTag.value = note.tag;
-    }
-
-    function addActiveColor(color) {
-        const list = document.querySelectorAll('#edit_note_form .color-picker li');
-        for (let i = 0; i < list.length; i++) {
-            const item = list[i];
-            item.classList.remove('active');
-        }
-        list.forEach(item => {
-
-            var noteColor = item.getAttribute('data-color');
-
-            if (noteColor == color) {
-                item.classList.add('active');
-            }
-        });
-    }
-
-
-
-
-    // UNIQUE NOTE ARRAY
-    function uniqueNote(notesArray) {
-        var folderName = document.querySelector('.folder-section__title h2').innerHTML;
-        var foldersArray = getFoldersArray();
-        var folder = foldersArray.find(obj => obj.title == folderName);
-        
-        var difference = notesArray.filter(key => !folder.list.includes(key));
-        
-        return difference;
-    }
-
-
-
-
-    // FOLDER FUNCTION
-    function updateFolderDOM() {
-        var foldersArray = getFoldersArray();
-
-        for (let i = 0; i < foldersArray.length; i++) {
-            var folderObj = foldersArray[i];
-            addFolderToDOM(folderObj);
-        }
-    }
-    // ADD FOLDER TO DOM
-    function addFolderToDOM(folderObj) {
-        var fragment = document.createDocumentFragment();
-        const contentList = document.querySelector('.list');
-
-        var folder = document.createElement('li');
-        folder.setAttribute('id', folderObj.title);
-        folder.setAttribute('class', 'folder');
-        var img = document.createElement('img');
-        img.setAttribute('src' , "img/folder.png");
-        img.setAttribute('alt' , "Folder");
-        var title = document.createElement('span');
-        title.setAttribute('class', 'folder__title');
-        title.innerHTML = folderObj.title;
-
-
-        folder.appendChild(img);
-        folder.appendChild(title);
-        fragment.appendChild(folder);
-        contentList.appendChild(fragment);
-
-        folder.addEventListener('click', showFolderSection, true);
-    }
-    //EDIT FOLDER 
-    function editFolder() {
-
-
-        var foldersArray = getFoldersArray();
-
-        const folderTitle = document.querySelector('#folder-title');
-        var selected = document.querySelector('.selected');
-        var key = selected.getAttribute('id');
-
-        for (let i = 0; i < foldersArray.length; i++) {
-            var folder = foldersArray[i];
-            if (folder.title == key) {
-                folder.title = folderTitle.value;
-            }
-        }
-        localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
-        addFolderToDOM(folder);
-    }
-    // CREATE FOLDER
-    function createFolder() {
-        var foldersArray = getFoldersArray();
-
-        const folderTitle = document.querySelector('#folder-title');
-        
-        var title = folderTitle.value;
-        var folderObj = {
-            "title" : title,
-            "list" : []
-        };
-        foldersArray.push(folderObj);
-        localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
-        addFolderToDOM(folderObj);
-    }
-
-    function processSelect(e) {
-        var folder = e.target;
-        if (e.target.tagName.toLowerCase() == "span") {
-            folder = e.target.parentNode;
-        }
-        if (!folder.classList.contains('selected')) {
-            folder.classList.add('selected');
-        }      
-        else {
-            folder.classList.remove('selected'); 
-        }
-        checkSelect();
-    }
-    function showFolderSection(e) {
-        var folderName = e.target.id;
-        if (e.target.tagName.toLowerCase() == "span") {
-            folderName = e.target.parentNode.id;
-        }
-        // get the current show class 
-    
-    
-        //change title text (with name of the clicked folder) in folder section
-        var folderSectionTitle = document.querySelector('.folder-section__title h2');
-        folderSectionTitle.innerHTML = folderName;
-    
-    
-        //show folder section when click in any folder
-        contentShow.setAttribute('data-content', 'folder-section');
-    
-    
-        //remove folder fragment before
-        removeFragmentChild();
-        
-        // load note to folder 
-        loadNoteToFolder(folderName);
-    }
-
-
-
-    // LOAD NOTE TO FOLDER 
-    function loadNoteToFolder(id) {
-        // GET FOLDER ARRAY
-
-        var foldersArray = getFoldersArray();
-        var fragment = document.createDocumentFragment();
-        // FIND SELECTED FOLDER 
-        var folder = foldersArray.find(obj => obj.title == id);
-        if (folder.list.length == 0) {
-            setTimeout(() => {
-                msg.innerHTML = "You haven't add any note into this folder yet";
-                msg.style.display = "";
-            }, 500);
-        } else {
-            msg.style.display = "none";
-            updateNoteDOM(folder.list, fragment);
-            contentList.appendChild(fragment);
-        }
-
-
-    }
-
-
-
-
 },false);
 
+
+// REMOVE NOTE FRAGMENT FROM DOM
+function removeFragmentChild() {
+    const noteItem = document.querySelectorAll('.list .note');
+    const folderItem = document.querySelectorAll('.list .folder');
+    if (noteItem.length > 0) {
+        noteItem.forEach(note => {
+            note.parentNode.removeChild(note);  
+        });
+    } 
+    else if(folderItem.length > 0){
+        folderItem.forEach(folder => {
+            folder.parentNode.removeChild(folder);  
+        });
+    } 
+}
 // GET CURRENT TIME
 function getCurrentTime() {
     var d = new Date();
@@ -751,14 +540,17 @@ function displayMsg(display, type) {
     // NOTE
 
     // UPDATE NOTE LIST TO DOM
-    function updateNoteDOM() {
-        var notesArray = getNotesArray();
-        for (let i = 0; i < notesArray.length; i++) {
-            var key = notesArray[i];
+    function updateNoteDOM(array) {
+        removeFragmentChild();
+        for (let i = 0; i < array.length; i++) {
+            var key = array[i];
             var noteobj = JSON.parse(localStorage[key]);
             addNoteToDOM(key, noteobj);
         }
     }
+
+
+
     // ADD NOTE TO DOM
     function addNoteToDOM(key, noteobj) {
         const contentList = document.querySelector('.list');
@@ -826,6 +618,25 @@ function displayMsg(display, type) {
             checkSelect();
         });
     }
+        // LOAD NOTE TO FOLDER 
+        function loadNoteToFolder(id) {
+            // GET FOLDER ARRAY
+    
+            var foldersArray = getFoldersArray();
+            // FIND SELECTED FOLDER 
+            var folder = foldersArray.find(obj => obj.title == id);
+
+            if (folder.list.length == 0) {
+                setTimeout(() => {
+                    displayMsg('show', 'notefolder');
+                }, 500);
+            } else {
+                displayMsg('no');
+                updateNoteDOM(folder.list);
+            }
+    
+    
+        }
         // ADD NOTE TO FOLDER 
         function AddNoteToFolder() {
             var selects = document.querySelectorAll('li.selected');
@@ -851,6 +662,7 @@ function displayMsg(display, type) {
             
             // SAVE FOLDERS ARRAY BACK INTO LOCALSTORAGE
             localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
+
     
         }
     // CREATE NOTE
@@ -894,6 +706,39 @@ function displayMsg(display, type) {
         notesArray.push(key);
         localStorage.setItem("notesArray", JSON.stringify(notesArray));
     }
+
+
+    // EDIT 
+    // ADD FORM EDIT
+    function addFormEdit(key) {
+        var note = JSON.parse(localStorage[key]);
+
+        const noteTitle = document.querySelector('#edit-note-title');
+        const noteContent = document.querySelector('#edit-note-content');
+        const noteTag = document.querySelector('#edit-note-tag');
+        
+        addActiveColor(note.color);
+
+        noteTitle.value = note.title;
+        noteContent.value = note.content;
+        noteTag.value = note.tag;
+    }
+// ADD ACTIVE COLOR
+    function addActiveColor(color) {
+        const list = document.querySelectorAll('#edit_note_form .color-picker li');
+        for (let i = 0; i < list.length; i++) {
+            const item = list[i];
+            item.classList.remove('active');
+        }
+        list.forEach(item => {
+
+            var noteColor = item.getAttribute('data-color');
+
+            if (noteColor == color) {
+                item.classList.add('active');
+            }
+        });
+    }
     // UPDATE EDIT NOTE
     function updateEditNote() {
 
@@ -922,7 +767,8 @@ function displayMsg(display, type) {
 
         localStorage.setItem(key, JSON.stringify(note));
         // addNoteToDOM(key, note)
-        updateNoteDOM();
+        var notearray = getNotesArray();
+        updateNoteDOM(notearray);
     }
     //REMOVE ALL 
     function removeAll() {
@@ -1000,6 +846,115 @@ function displayMsg(display, type) {
 
         });
     }
+
+
+
+
+    // UNIQUE NOTE ARRAY
+    function uniqueNote(notesArray) {
+        var folderName = document.querySelector('.folder-section__title h2').innerHTML;
+        var foldersArray = getFoldersArray();
+        var folder = foldersArray.find(obj => obj.title == folderName);
+        
+        var difference = notesArray.filter(key => !folder.list.includes(key));
+        
+        return difference;
+    }
+
+
+    // FOLDER FUNCTION
+    function updateFolderDOM() {
+        var foldersArray = getFoldersArray();
+
+        for (let i = 0; i < foldersArray.length; i++) {
+            var folderObj = foldersArray[i];
+            addFolderToDOM(folderObj);
+        }
+    }
+    // ADD FOLDER TO DOM
+    function addFolderToDOM(folderObj) {
+        var fragment = document.createDocumentFragment();
+        const contentList = document.querySelector('.list');
+
+        var folder = document.createElement('li');
+        folder.setAttribute('id', folderObj.title);
+        folder.setAttribute('class', 'folder');
+        var img = document.createElement('img');
+        img.setAttribute('src' , "img/folder.png");
+        img.setAttribute('alt' , "Folder");
+        var title = document.createElement('span');
+        title.setAttribute('class', 'folder__title');
+        title.innerHTML = folderObj.title;
+
+
+        folder.appendChild(img);
+        folder.appendChild(title);
+        fragment.appendChild(folder);
+        contentList.appendChild(fragment);
+
+        folder.addEventListener('click', showFolderSection, true);
+    }
+    //EDIT FOLDER 
+    function editFolder() {
+
+
+        var foldersArray = getFoldersArray();
+
+        const folderTitle = document.querySelector('#folder-title');
+        var selected = document.querySelector('.selected');
+        var key = selected.getAttribute('id');
+
+        for (let i = 0; i < foldersArray.length; i++) {
+            var folder = foldersArray[i];
+            if (folder.title == key) {
+                folder.title = folderTitle.value;
+            }
+        }
+        localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
+        addFolderToDOM(folder);
+    }
+    // CREATE FOLDER
+    function createFolder() {
+        var foldersArray = getFoldersArray();
+
+        const folderTitle = document.querySelector('#folder-title');
+        
+        var title = folderTitle.value;
+        var folderObj = {
+            "title" : title,
+            "list" : []
+        };
+        foldersArray.push(folderObj);
+        localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
+        addFolderToDOM(folderObj);
+    }
+
+
+
+    // SHOW FOLDER SECTION
+    function showFolderSection(e) {
+        var folderName = e.target.id;
+        if (e.target.tagName.toLowerCase() == "span") {
+            folderName = e.target.parentNode.id;
+        }
+        // get the current show class 
+    
+    
+        //change title text (with name of the clicked folder) in folder section
+        var folderSectionTitle = document.querySelector('.folder-section__title h2');
+        folderSectionTitle.innerHTML = folderName;
+    
+    
+        //show folder section when click in any folder
+        contentShow.setAttribute('data-content', 'folder-section');
+    
+    
+        //remove folder fragment before
+        removeFragmentChild();
+        
+        // load note to folder 
+        loadNoteToFolder(folderName);
+    }
     // REMOVE NOTE FROM FOLDER
     function removeNoteFromFolder() {
         var selects = document.querySelectorAll('li.selected');
@@ -1055,6 +1010,30 @@ function displayMsg(display, type) {
     }
 
 
+    //CHECK ITEM EDIT
+    function checkItemEdit() {
+        var selected = document.querySelector('.selected');
+        var key = selected.getAttribute('id');
+        if (selected.classList.contains('note')) {
+            processOverlay(editNoteOverLay, 'yes');
+            addFormEdit(key);
+        } else if (selected.classList.contains('folder')) {
+            processOverlay(folderOverLay, 'yes');
+
+
+            const folderTitle = document.querySelector('#folder-title');
+            folderTitle.value = key;
+            submitFolderBtn.value = "Rename";
+            submitFolderForm.setAttribute('data-submit', 'edit');
+        }
+    }
+
+
+
+
+
+
+
     // PROCESS OVERLAY
     function processOverlay(whichone, display) {
         if (display == 'no') {
@@ -1063,7 +1042,20 @@ function displayMsg(display, type) {
             whichone.classList.add('show_overlay');
         }
     }
-
+    // PROCESS SELECT
+    function processSelect(e) {
+        var folder = e.target;
+        if (e.target.tagName.toLowerCase() == "span") {
+            folder = e.target.parentNode;
+        }
+        if (!folder.classList.contains('selected')) {
+            folder.classList.add('selected');
+        }      
+        else {
+            folder.classList.remove('selected'); 
+        }
+        checkSelect();
+    }
     // THEME
 function switchTheme() {
     if (document.body.classList.contains('dark')) {
