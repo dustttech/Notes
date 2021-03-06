@@ -321,11 +321,14 @@ ul {
 
 
 /* LIST */
+.main-content .list-wrapper .list {
+    margin: 0;
+}
 .note,
 .folder {
     box-shadow: var(--bs-item);
     border: 2px solid transparent;
-    
+    width: 100%;
 }
     /* NOTE STYLE */
     .message {
@@ -338,7 +341,7 @@ ul {
         width: 0;
     }
     .note {
-        width: 100%;
+
         background-color: var(--cl-item);
         
         padding: 20px;
@@ -405,7 +408,6 @@ section[data-content="folder"] .gutter-sizer {
     width: 0;
 }
 .folder {
-    width: 100%;
     background-color: var(--cl-item);
     display: flex;
     flex-direction: column;
@@ -683,18 +685,12 @@ section[data-content="folder-section"] .folder-section__title {
     section[data-content="folder-section"] {
         padding: 0 5vw;
     }
-    section[data-content="folder"] .list {
-        /* display: flex;
-        flex-wrap: wrap;
-        justify-content: center; */
-
-    }
-    /* section[data-content="folder"] .list .gutter-sizer {
+    section[data-content="folder"] .list .gutter-sizer {
         width: 4%;
-    } */
+    }
     section[data-content="folder"] .list .folder {
-        width: 46%;
-        margin: 0 5px 3vh;
+        width: 48%;
+        margin-bottom: 3vh;
     }
 }
 @media (min-width:800px) {
@@ -708,20 +704,14 @@ section[data-content="folder-section"] .folder-section__title {
     section[data-content="folder-section"] {
         padding: 0;
     }
-    .list {
-        /* display: flex;
-        flex-wrap: wrap;
-        justify-content: center; */
-        /* align-items: center; */
-    }
-        /* section[data-content="note"] .gutter-sizer,
+        section[data-content="note"] .gutter-sizer,
         section[data-content="folder-section"] .gutter-sizer {
             width: 4%;
-        } */
+        }
         section[data-content="note"] .note,
         section[data-content="folder-section"] .note {
             width: 48%;
-            margin: 0 5px 3vh;
+            margin-bottom: 3vh;
         }
         /* FOLDER */
         /* section[data-content="folder"] .list .gutter-sizer {
@@ -730,15 +720,16 @@ section[data-content="folder-section"] .folder-section__title {
         section[data-content="folder"] .list .folder {
             width: calc(92% / 4);
         }
+}
 
 @media (min-width:1200px) {
     /* .main-wrapper {
         max-width: 1300px;
     } */
-    /* section[data-content="note"] .gutter-sizer,
+    section[data-content="note"] .gutter-sizer,
     section[data-content="folder-section"] .gutter-sizer {
         width: 2%;
-    } */
+    }
     section[data-content="note"] .note,
     section[data-content="folder-section"] .note {
         width: 32%;
@@ -748,13 +739,13 @@ section[data-content="folder-section"] .folder-section__title {
     .main-wrapper {
         max-width: 1200px;
     }
-        /* section[data-content="note"] .gutter-sizer,
+        section[data-content="note"] .gutter-sizer,
         section[data-content="folder-section"] .gutter-sizer {
             width: calc(8% / 3);
-        } */
+        }
         section[data-content="note"] .note,
         section[data-content="folder-section"] .note {
-            width: 24%;
+            width: calc(92% /4);
         }
         section[data-content="folder"] {
             padding: 0 5vw;

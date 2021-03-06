@@ -84,30 +84,30 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
-            // ISOTOPE
 
-            // var iso = new Isotope( contentList, {
-            //     percentPosition: true,
-            //     itemSelector: "li",
-            //     columnWidth: "li",
-            //     masonry: {
-            //         // gutter: 0,
-            //         horizontalOrder: true
-            //     }
-            //   });
-            //   window.addEventListener('resize', function () {
-            //     iso.layout();
-            //     })
+
 
             // UPDATE DOM FROM LOCALSTORAGE
             var notesArray = getNotesArray();
 
             updateNoteDOM(notesArray);
+            isoLayout();
             if (notesArray.length > 0) {
                 displayMsg('no');
             }
 
-        
+        // SCROLL ANIMATION
+        var scroll = window.requestAnimationFrame || function (callback) {
+            setTimeout(callback, 1000/60);
+            }
+
+        // IF ELEMENT'S IN VIEW , ADD ANIMATION
+        function loop() {
+            isoLayout();
+            scroll(loop);//REPEAT
+        }
+        scroll(loop);
+
             // FORM
             // COLOR PICKER 
             colorList.forEach(color => {
@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded',function(){
                 processOverlay(editNoteOverLay, "no");
                 updateEditNote();
             })
+
             submitFolderForm.addEventListener('submit', function (e) {
                 e.preventDefault();
                 var isUnique = uniqueFolderName();
@@ -161,6 +162,7 @@ document.addEventListener('DOMContentLoaded',function(){
                         createFolder();
                     } else if (submitWhat == "edit") {
                         editFolder();
+                        selectFolder.classList.remove('active');
                     }
                     processOverlay(folderOverLay, 'no');
                 }
@@ -214,6 +216,7 @@ document.addEventListener('DOMContentLoaded',function(){
                     if (foldersArray.length > 0) {
                         displayMsg('no')
                         updateFolderDOM();
+                        isoLayout();
                     }  
                 } else {
                     var notesArray = getNotesArray();
@@ -225,6 +228,7 @@ document.addEventListener('DOMContentLoaded',function(){
                     if (notesArray.length > 0) {
                         displayMsg('no')
                         updateNoteDOM(notesArray);
+                        isoLayout();
                     }
                 }  
                
@@ -234,20 +238,26 @@ document.addEventListener('DOMContentLoaded',function(){
 
         // RETURN TO FOLDER FROM FOLDER SECTION
         returnToFolder.onclick = function () {
-            var foldersArray = getFoldersArray();
-            checkSelect('no');
-            removeFragmentChild();
+            // var foldersArray = getFoldersArray();
+            // checkSelect('no');
+            // removeFragmentChild();
 
-            loadNoteToFolderBtn.style.display = "";
+            // loadNoteToFolderBtn.style.display = "";
             
+            // AddNoteToFolderBtn.classList.remove('show');
+            // AddNoteToFolderBtn.classList.remove('active');
+            // contentShow.setAttribute('data-content', 'folder');
+            // displayMsg('show', 'folder');
+            // if (foldersArray.length > 0) {
+            //     displayMsg('no');
+            //     updateFolderDOM();
+            //     isoLayout();
+            // } 
+            removeFragmentChild();
             AddNoteToFolderBtn.classList.remove('show');
-            AddNoteToFolderBtn.classList.remove('active');
-            contentShow.setAttribute('data-content', 'folder');
-            displayMsg('show', 'folder');
-            if (foldersArray.length > 0) {
-                displayMsg('no');
-                updateFolderDOM();
-            } 
+            var id = document.querySelector('.folder-section__title h2').innerHTML;
+            loadNoteToFolder(id);
+            loadNoteToFolderBtn.style.display = "";
         };
         // END RETURN TO FOLDER
         //ADD NOTE TO FOLDER 
@@ -303,6 +313,7 @@ document.addEventListener('DOMContentLoaded',function(){
                 if (unique.length > 0) {
                     loadNoteToFolderBtn.style.display = "none";
                     updateNoteDOM(unique);
+                    isoLayout();
                     AddNoteToFolderBtn.classList.add('show');
                 } else {
                     displayMsg('show', 'fullnoteforfolder');
@@ -371,11 +382,27 @@ document.addEventListener('DOMContentLoaded',function(){
             }
         }
         selectFolder.addEventListener('click', selectMany());
+
+
     });
     // END INITIAL
 
 },false);
 
+// ISO 
+function isoLayout() {
+
+    var iso = new Isotope( contentList, {
+        percentPosition: true,
+        itemSelector: ".list-item",
+        masonry: {
+            columnWidth: '.list-item',
+            gutter: '.gutter-sizer',
+            horizontalOrder: true
+        }
+        });
+        iso.layout();
+}
 
 // REMOVE NOTE FRAGMENT FROM DOM
 function removeFragmentChild() {
@@ -592,7 +619,7 @@ function displayMsg(display, type) {
 
         note.style.backgroundColor = color;
 
-        note.setAttribute('class', 'note');
+        note.setAttribute('class', 'note list-item');
         note_bottom.appendChild(note_date);
         note_bottom.appendChild(note_tag);
         note.appendChild(note_title);
@@ -633,6 +660,7 @@ function displayMsg(display, type) {
             } else {
                 displayMsg('no');
                 updateNoteDOM(folder.list);
+                isoLayout();
             }
     
     
@@ -749,9 +777,9 @@ function displayMsg(display, type) {
         const noteContent = document.querySelector('#edit-note-content').value;
         const noteTag = document.querySelector('#edit-note-tag').value;
         var dateValue = getCurrentTime();
-        const colorPick = document.querySelector('.color-picker .active');
+        var colorPick = document.querySelector('.edit-note-overlay .color-picker .active');
         var color = colorPick.getAttribute('data-color');
-
+  
         var textcolor;
         if (color == "black") {
             textcolor = "#f6f6f6";
@@ -766,7 +794,7 @@ function displayMsg(display, type) {
         note.textcolor = textcolor;
 
         localStorage.setItem(key, JSON.stringify(note));
-        // addNoteToDOM(key, note)
+
         var notearray = getNotesArray();
         updateNoteDOM(notearray);
     }
@@ -864,6 +892,8 @@ function displayMsg(display, type) {
 
     // FOLDER FUNCTION
     function updateFolderDOM() {
+        removeFragmentChild();
+
         var foldersArray = getFoldersArray();
 
         for (let i = 0; i < foldersArray.length; i++) {
@@ -878,7 +908,7 @@ function displayMsg(display, type) {
 
         var folder = document.createElement('li');
         folder.setAttribute('id', folderObj.title);
-        folder.setAttribute('class', 'folder');
+        folder.setAttribute('class', 'folder list-item');
         var img = document.createElement('img');
         img.setAttribute('src' , "img/folder.png");
         img.setAttribute('alt' , "Folder");
@@ -911,7 +941,8 @@ function displayMsg(display, type) {
             }
         }
         localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
-        addFolderToDOM(folder);
+        // addFolderToDOM(folder);
+        updateFolderDOM();
     }
     // CREATE FOLDER
     function createFolder() {
