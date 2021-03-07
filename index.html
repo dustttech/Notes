@@ -7,10 +7,11 @@
 
     <!-- font awesome -->
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <!-- flaticon -->
     <link rel="stylesheet" href="flaticon/font/flaticon.css">
 
-    <!-- <link rel="stylesheet" href="css/style.css"> -->
-    <link rel="stylesheet" href="css/test.css">
+    <!-- STYLE -->
+    <link rel="stylesheet" href="css/style.css">
     <!-- FONT  -->
     <link href="https://fonts.googleapis.com/css2?family=Redressed&family=Poppins:wght@200;400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -19,6 +20,8 @@
 <body>
     <div class="main">
         <div class="main-wrapper">
+
+            <!-- HEADER -->
             <header class="header">
                 <h1 class="title">Notes</h1>
                 <nav class="header-nav">
@@ -35,14 +38,20 @@
 
                 </nav>
             </header>
+            <!-- END HEADER -->
+
+            <!-- NAV BAR -->
             <nav class="nav-link__wrapper">
                 <a data-show="all" href="#" class="nav-link active">All</a>
                 <a data-show="folder" href="#" class="nav-link">Folder</a>
             </nav>
+            <!-- END NAV BAR -->
+
+            <!-- DISPLAY SECTION -->
             <section data-content="note" class="main-content">
                 <div class="folder-section__title">
                     <h2>Folder Title</h2>
-                    <span class="return_folder">
+                    <span data-return="folder" class="return_folder-section">
                         <i class="fas fa-undo-alt    "></i>
                     </span>
                 </div>
@@ -67,27 +76,11 @@
                     </a>
                     <a id="add_note_to_folder" class="add-folder-section" href="#">Add to folder</a>
                 </div>
-                <!-- <section class="folder-section">
-                    <h2 class="folder-section__title">Folder Title</h2>
-                    <ul class="folder-section__list ">
-                        <li class="message">You haven't add any note in this folder yet !</li>
-                        <li class="gutter-sizer"></li>
-
-                    </ul>
-                </section>  -->
-                <!-- 
-                <section class="folder-wrapper">
-                    <ul class="folder-list">
-                        <li class="gutter-sizer"></li>
-                        <li class="message">
-                            You haven't create any folder yet !
-                        </li>
-
-
-                    </ul>
-                </section>
-                -->
             </section>
+            <!-- END DISPLAY SECTION -->
+
+            <!-- OVERLAY -->
+            <!-- ADD NOTE OVERLAY -->
             <section class="add-note-overlay">
                 <div class="add-note-wrapper">
                     <h1 class="title-form">Create Note</h1>
@@ -104,13 +97,6 @@
                             <label for="tag">Tag</label>
                             <input required id="note-tag"  type="text" name="tag" class="input-field">
                         </div>
-                        <!-- <div class="form-group">
-                            <label class="input_title">Text color</label>
-                            <input type="radio" value="black" name="textcolor">
-                            <label for="black">Black</label>
-                            <input type="radio" value="white" name="textcolor">
-                            <label for="white">White</label>
-                        </div> -->
                         <div class="form-group color-wrapper">
                             <label>Note Color</label>
                             <ul class="color-picker">
@@ -144,6 +130,9 @@
                     </form>
                 </div>
             </section>
+            <!-- END ADD NOTE OVERLAY -->
+
+            <!-- EDIT NOTE OVERLAY -->
             <section class="edit-note-overlay">
                 <div class="edit-wrapper">
                     <h1 class="title-form">Edit Note</h1>
@@ -193,6 +182,9 @@
                     </form>
                 </div>
             </section>
+            <!-- END EDIT NOTE OVERLAY -->
+
+            <!-- FOLDER OVERLAY -->
             <section class="folder-overlay">
                 <form data-submit="" autocomplete="off" id="create_folder_form" action="" class="form">
                     <div class="form-group">
@@ -204,20 +196,31 @@
                     </div>
                 </form>
             </section>
+            <!-- END FOLDER OVERLAY -->
+
+            <!-- CONFIRM DELETE OVERLAY -->
             <section class="confirm-delete-overlay">
                     <form id="confirm_delete_form" class="delete-wrapper" action="">
-                        <span>Are you sure wanna delete this ?</span>
+                        <span>Are you sure wanna delete ?</span>
                         <div class="form-group btn-group">
                             <input name="submit-delete" id="delete" type="submit" class="form-btn" value="Yes">
                             <input id="close_confirm_delete" type="button" class="form-btn" value="No">
                         </div>
                     </form>
             </section>
+            <!-- END CONFIRM DELETE OVERLAY -->
+
+            <!-- END OVERLAY -->
+            
         </div>
+        <!-- END MAIN WRAPPER -->
     </div>
-    <!-- <script src="js/demo.js"></script> -->
+    <!-- END MAIN -->
+
+    <!-- SCRIPT -->
+    <!-- MANSORY LAYOUT LIB -->
     <script src="js/isotope/isotope.js"></script>
-    <!-- <script src="js/main.js"></script> -->
+    <!-- MAIN SCRIPT -->
     <script src="js/optimize.js"></script>
 </body>
 </html>
