@@ -332,7 +332,7 @@ ul {
 
 
 /* LIST */
-.main-content .list-wrapper .list {
+.main-content .list {
     margin: 0; 
     transition: 0.4s ease-in-out;
 }
@@ -531,24 +531,52 @@ section[data-content="folder-section"] .folder-section__title {
     text-align: left;
     color: var(--cl-black);
 }
+.form-viewport  {
+    width: 100%;
+    overflow: hidden;
+}
+.form-input {
+    width: 400%;
+    display: flex;
+    transform: translateX(0%);
+    transition: transform 0.3s ease-in-out;
+}
 .form-group {
+    width: 100%;
     margin-bottom: 3vh;
     padding: 0 20px;
 }
-
+/* FORM TITLE */
 .title-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+.title-form > h1 {
     font-family: var(--ff-title);
     font-size: var(--fs-h3);
 }
+.title-form > .close-form {
+    font-size: var(--fs-logo);
+    cursor: pointer;
+}
+
+
 .form label,
 .form input,
 .form textarea {
     display: block;
     font-family: inherit;
+    text-align: center;
 }
 .form textarea {
-    height: 200px;
+    height: 100px;
     resize: none;
+    overflow: auto;
+}
+.form textarea::-webkit-scrollbar {
+    display: none;
 }
 .input-field {
     width: 100%;
@@ -576,7 +604,13 @@ section[data-content="folder-section"] .folder-section__title {
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
+    .btn-group > i {
+        font-size: var(--fs-logo);
+        cursor: pointer;
+        -webkit-tap-highlight-color:transparent;
+    }
 .form-btn {
     display: inline-block;
     padding: 10px 20px;
@@ -586,6 +620,7 @@ section[data-content="folder-section"] .folder-section__title {
     background-color: #f6b846;
     font-weight: var(--fw-extra-bold);
     transition: 0.3s ease-in-out;
+    cursor: pointer;
 }
 .form-btn-unactive {    
     background: var(--cl-bg);
@@ -686,13 +721,16 @@ section[data-content="folder-section"] .folder-section__title {
         width: 48%;
         margin-bottom: 3vh;
     }
+    .add-note-wrapper,
+    .edit-wrapper,
+    #create_folder_form,
+    #confirm_delete_form {
+        min-height: unset;
+    }
 }
 @media (min-width:800px) {
     .main-wrapper {
         max-width: 1000px;
-    }
-    .list-wrapper   {
-        width: 100%;
     }
     section[data-content="note"],
     section[data-content="folder-section"] {

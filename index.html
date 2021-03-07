@@ -56,11 +56,9 @@
                     </span>
                 </div>
                 <span class="message">There isn't any note yet !!!</span>
-                <section class="list-wrapper">
-                    <ul class="list">
-                        <li class="gutter-sizer"></li>
-                    </ul>
-                </section>
+                <ul class="list">
+                    <li class="gutter-sizer"></li>
+                </ul>
                 <div class="content_btn-group">
                     <a class="show-add-note"  href="#">
                         <i class="flaticon-add-file"></i>
@@ -83,49 +81,59 @@
             <!-- ADD NOTE OVERLAY -->
             <section class="add-note-overlay">
                 <div class="add-note-wrapper">
-                    <h1 class="title-form">Create Note</h1>
+                    <div class="title-form">
+                        <h1>Create Note</h1>
+                        <span id="close_add_note" class="close-form">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </span>
+                    </div>
                     <form id="add_note_form" action="" class="form" autocomplete="off">
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input required id="note-title" type="text" name="title" class="input-field">
+                        <div class="form-viewport">
+                            <div class="form-input">
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input required id="note-title" type="text" name="title" class="input-field">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">Content</label>
+                                    <textarea required id="note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tag">Tag</label>
+                                    <input required id="note-tag"  type="text" name="tag" class="input-field">
+                                </div>
+                                <div class="form-group color-wrapper">
+                                    <label>Note Color</label>
+                                    <ul class="color-picker">
+                                        <li class="active" data-color="white">
+                                            <span class="outline"></span>
+                                            <span class="circle"></span>
+                                        </li>
+                                        <li data-color="red">
+                                            <span class="outline"></span>
+                                            <span class="circle"></span>
+                                        </li>
+                                        <li data-color="yellow">
+                                            <span class="outline"></span>
+                                            <span class="circle"></span>
+                                        </li>
+                                        <li data-color="bluesky">
+                                            <span class="outline"></span>
+                                            <span class="circle"></span>
+                                        </li>
+                                        <li data-color="green">
+                                            <span class="outline"></span>
+                                            <span class="circle"></span>
+                                        </li>
+        
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="content">Content</label>
-                            <textarea required id="note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="tag">Tag</label>
-                            <input required id="note-tag"  type="text" name="tag" class="input-field">
-                        </div>
-                        <div class="form-group color-wrapper">
-                            <label>Note Color</label>
-                            <ul class="color-picker">
-                                <li class="active" data-color="white">
-                                    <span class="outline"></span>
-                                    <span class="circle"></span>
-                                </li>
-                                <li data-color="red">
-                                    <span class="outline"></span>
-                                    <span class="circle"></span>
-                                </li>
-                                <li data-color="yellow">
-                                    <span class="outline"></span>
-                                    <span class="circle"></span>
-                                </li>
-                                <li data-color="bluesky">
-                                    <span class="outline"></span>
-                                    <span class="circle"></span>
-                                </li>
-                                <li data-color="green">
-                                    <span class="outline"></span>
-                                    <span class="circle"></span>
-                                </li>
-
-                            </ul>
-                        </div>
-                        <div class="form-group btn-group">
+                        <div class="btn-group">
+                            <i class="fa fa-chevron-left prev" aria-hidden="true"></i>
                             <input id="add_note" type="submit" class="submit-content form-btn " value="Add">
-                            <input id="close_add_note" type="button" class="close-form form-btn" value="Cancel">
+                            <i class="fa fa-chevron-right next" aria-hidden="true"></i>
                         </div>
                     </form>
                 </div>
@@ -135,49 +143,59 @@
             <!-- EDIT NOTE OVERLAY -->
             <section class="edit-note-overlay">
                 <div class="edit-wrapper">
-                    <h1 class="title-form">Edit Note</h1>
+                    <div class="title-form">
+                        <h1>Edit Note</h1>
+                        <span id="close_edit_note"class="close-form">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </span>
+                    </div>
                     <form id="edit_note_form" action="" class="form" autocomplete="off">
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input required id="edit-note-title" type="text" name="title" class="input-field">
+                        <div class="form-viewport">
+                            <div class="form-input">
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input required id="edit-note-title" type="text" name="title" class="input-field">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">Content</label>
+                                    <textarea required id="edit-note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tag">Tag</label>
+                                    <input required id="edit-note-tag"  type="text" name="tag" class="input-field">
+                                </div>
+                                <div class="form-group color-wrapper">
+                                    <label>Note Color</label>
+                                    <ul class="color-picker">
+                                        <li class="active" data-color="white">
+                                            <span class="outline"></span>
+                                            <span class="circle"></span>
+                                        </li>
+                                        <li data-color="red">
+                                            <span class="outline"></span>
+                                            <span class="circle"></span>
+                                        </li>
+                                        <li data-color="yellow">
+                                            <span class="outline"></span>
+                                            <span class="circle"></span>
+                                        </li>
+                                        <li data-color="bluesky">
+                                            <span class="outline"></span>
+                                            <span class="circle"></span>
+                                        </li>
+                                        <li data-color="green">
+                                            <span class="outline"></span>
+                                            <span class="circle"></span>
+                                        </li>
+        
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="content">Content</label>
-                            <textarea required id="edit-note-content"  name="content" id="content" cols="30" rows="10" class="input-field"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="tag">Tag</label>
-                            <input required id="edit-note-tag"  type="text" name="tag" class="input-field">
-                        </div>
-                        <div class="form-group color-wrapper">
-                            <label>Note Color</label>
-                            <ul class="color-picker">
-                                <li class="active" data-color="white">
-                                    <span class="outline"></span>
-                                    <span class="circle"></span>
-                                </li>
-                                <li data-color="red">
-                                    <span class="outline"></span>
-                                    <span class="circle"></span>
-                                </li>
-                                <li data-color="yellow">
-                                    <span class="outline"></span>
-                                    <span class="circle"></span>
-                                </li>
-                                <li data-color="bluesky">
-                                    <span class="outline"></span>
-                                    <span class="circle"></span>
-                                </li>
-                                <li data-color="green">
-                                    <span class="outline"></span>
-                                    <span class="circle"></span>
-                                </li>
-
-                            </ul>
-                        </div>
-                        <div class="form-group btn-group">
+                        <div class="btn-group">
+                            <i class="fa fa-chevron-left prev" aria-hidden="true"></i>
                             <input id="add_edit" type="submit" class="submit-content form-btn" value="Edit">
-                            <input id="close_edit_note" type="button" class="close-form form-btn" value="Cancel">
+                            <i class="fa fa-chevron-right next" aria-hidden="true"></i>
                         </div>
                     </form>
                 </div>
