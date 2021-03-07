@@ -392,11 +392,11 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
 
             processOverlay(folderOverLay, 'yes');
 
-        }
+        };
         //show confirm delete overlay
         showDel.onclick = function () {
             processOverlay(confirmDelOverLay, 'yes');
-        
+        };
 
         // PICK NOTE TO ADD IN FOLDER 
         loadNoteToFolderBtn.addEventListener('click', function () {
@@ -426,7 +426,7 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
             }
 
 
-        })
+        });
 
  
         // CLOSE
@@ -440,7 +440,7 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
             addNoteInput.forEach(input => {
                 input.removeAttribute('placeholder');
             });
-        }
+        };
         // CLOSE EDIT NOTE 
         closeEditNote.onclick = function () {
             dis = 0;//reset position FORM CONTROL (***)
@@ -450,16 +450,16 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
             editNoteInput.forEach(input => {
                 input.removeAttribute('placeholder');
             });
-        }
+        };
         // CLOSE FOLDER OVER LAY
         closesubmitFolderBtn.onclick = function () {
             processOverlay(folderOverLay, 'no');
             folderInput.setAttribute('placeholder', "Folder Name");  
-        }
+        };
         //CLOSE CONFIRM DELETE
         closeConfirmDel.onclick = function () {
             processOverlay(confirmDelOverLay, 'no');
-        }
+        };
         // END OVERLAY
         // SELECT FOLDER 
         const selectMany = () => {
@@ -490,7 +490,7 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
                 }
                 isSelect = !isSelect; //toggle state
             }
-        }
+        };
         selectFolder.addEventListener('click', selectMany());
 
 
