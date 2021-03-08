@@ -158,7 +158,6 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
 
                 //edit at note section
                 if (editWhere == 'note') {
-                    console.log('edit in note');
                     var notearray = getNotesArray();
                     updateEditNote(notearray);
                 } else if (editWhere == 'folder-section') { //edit at folder section
@@ -372,13 +371,26 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
         // show add note overlay
         showAddNote.onclick = function () {
             processOverlay(addNoteOverLay, 'yes');
+
+
+            dis = 0; //reset position FORM CONTROL (***)
+            var overlayShowed = document.querySelector('.show_overlay .form-input');
+            overlayShowed.style.transform = "translateX(0%)";//reset position FORM CONTROL (***)
+
             addNoteForm.reset();
             // reset state for  BTN control form of ADD note
             nextBtnAdd.style.opacity = '1';
             prevBtnAdd.style.opacity = '0';
         }
         //show edit note overlay
-        showEdit.onclick = checkItemEdit;
+        showEdit.onclick = function () {
+
+            checkItemEdit();
+
+            dis = 0; //reset position FORM CONTROL (***)
+            var overlayShowed = document.querySelector('.show_overlay .form-input');
+            overlayShowed.style.transform = "translateX(0%)";//reset position FORM CONTROL (***)
+        }
         //show folder overlay
         showAddFolder.onclick = function () {
             folderInput.setAttribute('placeholder', "Folder Name");
