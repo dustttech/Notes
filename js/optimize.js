@@ -78,11 +78,17 @@
     var dis = 0;
 
 document.addEventListener('DOMContentLoaded',function(){//only run when dom is loaded
-
-
+    //HIDE MAIN 
+    document.querySelector('.main').style.opacity = '0';
     // INTIAL
     window.addEventListener('load',function () { //only run when the page has load all of it content
-
+        //PRELOAD ANIMATION
+        setTimeout(() => {
+            document.querySelector('.preload-wrapper').style.opacity = "0";
+            setTimeout(() => {
+                document.querySelector('.main').style.opacity = ''; 
+            }, 500);
+        }, 3000);
         // LOAD THEME
         var theme = localStorage.getItem('theme');
 
