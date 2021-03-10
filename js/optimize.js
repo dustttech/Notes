@@ -85,10 +85,11 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
         //PRELOAD ANIMATION
         setTimeout(() => {
             document.querySelector('.preload-wrapper').style.opacity = "0";
+            document.querySelector('.preload-wrapper').style.zIndex = "-1";
             setTimeout(() => {
                 document.querySelector('.main').style.opacity = ''; 
             }, 500);
-        }, 3000);
+        }, 100);
         // LOAD THEME
         var theme = localStorage.getItem('theme');
 

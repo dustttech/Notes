@@ -173,6 +173,13 @@ ul {
     padding: 0 20px;
     position: relative;
 }
+/* =============== BG IMG ==================== */
+.bg-img {
+    position: absolute;
+    top: 20%;
+    left: 0;
+}
+/* =============== END BG IMG ==================== */
 /* =============== PRELOAD ANIMATION ==================== */
 .preload-wrapper {
     width: 100%;
