@@ -1,8 +1,12 @@
 Note-to-self web app
 Description: 
+    This app using no server services , it's used browser localstorage as a server to store user note or folder.
+    This app were made using HTML,CSS and Javascript.
+    It's used isotope javascript library to display note and folder using mansory layout , fontawesome and flaticon for icon display .
 
 
-
+Inspiration from : https://dribbble.com/shots/14995291--Notes-App-Dark-Mode
+                   https://dribbble.com/shots/13966457-Mobile-Notes-App
 
 
 Demo link : https://dustttech.github.io/Notes/

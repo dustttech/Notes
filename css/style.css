@@ -105,7 +105,7 @@ body {
     --cl-content-unactive: #494554;
     --cl-nav-link:#f6b846;
     --btn-overlay: #74aaac;
-    --bs-item : 5px 5px 10px rgba(0,0,0,0.2);
+    --bs-item : 5px 5px 10px rgba(255,255,255,0.2);
 
     --cl-btn2-unactive: #3f3a47;
     --cl-btn2-active: #74aaac;
@@ -123,6 +123,7 @@ body {
     --cl-content-unactive: #d1cfd6;
     --cl-nav-link:#a35304;
     --btn-overlay: #08070d;
+    --bs-item : 5px 5px 10px rgba(0,0,0,0.2);
 
     --cl-btn2-unactive: white;
     --cl-btn2-active: #222;
@@ -183,10 +184,29 @@ ul {
     z-index: 1;
 }
 .bg-img {
-    width: 100px;
+    width: 70px;
     position: absolute;
     z-index: 1;
     animation: rolling 10s linear infinite;
+}
+.bg {
+    width: 100%;
+    position: absolute;
+    top: 70%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+.dark .bg-dark {
+    /* filter: drop-shadow(0px 0px 50px rgba(255,255,255,0.2) ); */
+    filter: drop-shadow(0px 0px 50px rgba(29, 233, 248, 0.493) );
+}
+.light .bg-light {
+    filter: drop-shadow(0px 0px 50px rgba(156, 42, 8, 0.7) );
+}
+.dark .bg-dark,
+.light .bg-light {
+    opacity: 1;
 }
 @keyframes rolling {
     from {
@@ -195,6 +215,26 @@ ul {
     to {
         transform: rotate(360deg);
     }
+}
+@media (min-width:600px) {
+    .bg-img {
+        width: 80px;
+    }
+    /* .dark .bg-dark,
+    .light .bg-light {
+        opacity: 0.4;
+    } */
+}
+@media (min-width:1200px) {
+    .bg {
+        top: 90%;
+    }
+}
+@media (min-width:1400px) {
+    .bg {
+        top: 100%;
+    }
+
 }
 /* =============== END BG IMG ==================== */
 /* =============== PRELOAD ANIMATION ==================== */
@@ -305,7 +345,7 @@ ul {
       transform: rotate(360deg);
     }
   }
-  
+
   
 /* =============== END PRELOAD ==================== */
 /* =============== HEADER ==================== */
@@ -487,7 +527,11 @@ ul {
         display: block;
         width: 100%;
         text-align: center;
-        color: #9695a7;
+        color: var(--cl-black);
+        background-color: #f6b846;
+        padding: 10px 20px;
+        border-radius: 20px;
+        transition: 0.3s ease-in-out;
     }
     section[data-content="note"] .gutter-sizer {
         width: 0;
@@ -539,7 +583,8 @@ ul {
     }
     .dark .selected {
         box-shadow: 0 0 30px rgba(255, 255, 255, 0.5),
-                    0 0 40px rgba(255, 255, 255, 0.2);
+                    0 0 40px rgba(255, 255, 255, 0.2),
+                    0 0 60px rgba(255, 255, 255, 0.1);
     }
 /* FOLDER STYLE (JS)*/
 section[data-content="folder"] {

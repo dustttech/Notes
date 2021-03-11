@@ -81,14 +81,14 @@
     // IMG BG WRAPPER
     const imgWrapper = document.querySelector('.img-wrapper');
 
-
+//ADJUST WIDTH AND HEIGHT FOR IMG WRAPPER
 function adjustImgWrapper() {
     imgWrapper.style.width = window.clientWidth + "px";
     imgWrapper.style.height = window.clientHeight + "px";
 }
+// MOVING IMG RANDOMlY 
 function movingBg() {
     const imgBg = document.querySelectorAll('.bg-img');
-
 
     imgBg.forEach(img => {     
         // INITIAL POSITION
@@ -105,9 +105,7 @@ function movingBg() {
         var h = wrapperHeight - img.offsetHeight;
 
 
-
-
-
+            // GET A RANDOM LOCATION INSIDE WRAPPER (W,H FOR TOP AND LEFT IN CSS POSITION)
                 var moveTop = Math.floor(Math.random()*h);
                 var moveLeft = Math.floor(Math.random()*w);
 
@@ -125,10 +123,10 @@ function movingBg() {
                 img.style.left = moveLeft + "px";
 
             setTimeout(() => {
-                loop();
-            }, speed*1000);
+                loop(); //repeat loop 
+            }, speed*1000); // after transition time 
         }
-        loop();
+        loop(); //trigger loop once
 
     });
 }
@@ -145,7 +143,7 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
             setTimeout(() => {
                 document.querySelector('.main').style.opacity = ''; 
             }, 500);
-        }, 100);
+        }, 1000);
         // END PRELOAD
         // MOVING BG
         movingBg();
@@ -177,7 +175,7 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
         function loop() {
             isoLayout();
             setTimeout(() => {
-                adjustImgWrapper();
+                adjustImgWrapper();//ADJUST WIDTH AND HEIGHT FOR IMG WRAPPER
             }, 3000);
             resize(loop);//REPEAT
         }
@@ -241,16 +239,16 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
             // FOLDER FORM
             submitFolderForm.addEventListener('submit', function (e) {
                 e.preventDefault();
+                var submitWhat = this.getAttribute('data-submit'); //check to see what kind of folder form
                 var isUnique = uniqueFolderName(); //check if user type valid name (not use before )
-                if (!isUnique) { //if duplicate
+                if (!isUnique && submitWhat != "edit") { //if duplicate (edit is okay to duplicate)
                     submitFolderForm.reset(); //reset form 
 
                     folderInput.setAttribute('placeholder', "You have use this name . Please type another one !!!"); 
 
                 } else { //if it's a new name
                     displayMsg("no");
-
-                    var submitWhat = this.getAttribute('data-submit'); //check to see what kind of folder form 
+ 
                     if (submitWhat == "create") { //if it's create then create new folder
                         createFolder();
                     } else if (submitWhat == "edit") { //else edit form
@@ -258,8 +256,8 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
                         selectFolder.classList.remove('active');
                     }
                     processOverlay(folderOverLay, 'no');
+                    checkSelect('no');
                 }
-                checkSelect('no');
             })
 
 
@@ -270,7 +268,6 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
                 if (showwhat == "note") { //if note then call removeALL (remove note and note in folder )
                     removeAll();
                 } else if (showwhat == "folder") { // folder then remove only folder
-                    selectFolder.classList.remove('active');
                     removeFolder();
                 } 
                 else { //remove only note save in folder (folder section)
@@ -455,10 +452,13 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
         showEdit.onclick = function () {
 
             checkItemEdit();
-
-            dis = 0; //reset position FORM CONTROL (***)
-            var overlayShowed = document.querySelector('.show_overlay .form-input');
-            overlayShowed.style.transform = "translateX(0%)";//reset position FORM CONTROL (***)
+            var showwhat = contentShow.getAttribute('data-content');
+            if (showwhat != 'folder') {
+                dis = 0; //reset position FORM CONTROL (***)
+                var overlayShowed = document.querySelector('.show_overlay .form-input');
+                
+                overlayShowed.style.transform = "translateX(0%)";//reset position FORM CONTROL (***)
+            }
         }
         //show folder overlay
         showAddFolder.onclick = function () {
@@ -544,12 +544,14 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
         // END OVERLAY
         // SELECT FOLDER 
         const selectMany = () => {
-            let isSelect = true;  
+            // let isSelect = true; 
+
             return () => {
+                selectFolder.classList.toggle('active'); //toggle state 
 
                 const folders = document.querySelectorAll('.list .folder');
-                if (isSelect) {//if select folder is click 
-                    selectFolder.classList.add('active'); //toggle state
+                if (selectFolder.classList.contains('active')) {//if select folder is click 
+
 
                     folders.forEach(folder => {
                         folder.removeEventListener('click', showFolderSection, true); // remove  showFolderSection as click handler
@@ -559,7 +561,7 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
 
 
                 } else { //reverse
-                    selectFolder.classList.remove('active');
+                    // selectFolder.classList.remove('active');
 
                     folders.forEach(folder => {
                         folder.classList.remove('selected');
@@ -569,7 +571,7 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
                     });
 
                 }
-                isSelect = !isSelect; //toggle state
+            //    isSelect = !isSelect; //toggle state
             }
         };
         selectFolder.addEventListener('click', selectMany());
@@ -1199,7 +1201,7 @@ function checkItemEdit() {
             }
         }
         localStorage.setItem('foldersArray', JSON.stringify(foldersArray));
-        // addFolderToDOM(folder);
+
         updateFolderDOM();
     }
     // CREATE FOLDER
