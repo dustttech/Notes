@@ -47,3 +47,59 @@
             // }
             // resz(loop);
             // END (*)
+
+
+
+
+
+
+
+        // MOVING BG
+        const imgBg = document.querySelectorAll('.bg-img');
+        const imgWrapper = document.querySelector('.img-wrapper');
+
+        var wrapperWidth = imgWrapper.offsetWidth;
+        var wrapperHeight = imgWrapper.offsetHeight;
+        var disLeft ;
+        var disTop ;
+        imgBg.forEach(img => {
+            var w = wrapperWidth - img.offsetWidth;
+            var h = wrapperHeight - img.offsetHeight;
+            disLeft = Math.floor(Math.random()*w);
+            disTop = Math.floor(Math.random()*h);
+    
+            function moveImg(disleft, distop) {
+                var disleft = disleft || 0;
+                var distop = distop || 0;
+    
+                var speedLeft = disLeft/2000;
+                var speedTop = disTop/2000;
+                console.log(speedLeft);
+                if (disleft < disLeft || distop < disTop) {
+                    var moveTop = speedTop + distop;
+
+                    var moveLeft = speedLeft + disleft;
+
+
+
+                    img.style.left = moveLeft + "px";
+
+                    img.style.top = moveTop + "px";
+
+                    setTimeout(() => {
+                        moveImg(moveLeft,moveTop);
+                    }, 4);
+                } else {
+                    img.style.top = disLeft + "px";
+                    img.style.left = disTop + "px";
+                }
+            }
+            window.onload = moveImg;
+        });
+    
+
+        // setInterval(() => {
+        //     movingBg();
+
+        // }, 3000);
+        // END MOVING BG

@@ -77,6 +77,62 @@
     // var for FORM CONTROL (***)
     var dis = 0;
 
+
+    // IMG BG WRAPPER
+    const imgWrapper = document.querySelector('.img-wrapper');
+
+
+function adjustImgWrapper() {
+    imgWrapper.style.width = window.clientWidth + "px";
+    imgWrapper.style.height = window.clientHeight + "px";
+}
+function movingBg() {
+    const imgBg = document.querySelectorAll('.bg-img');
+
+
+    imgBg.forEach(img => {     
+        // INITIAL POSITION
+        img.style.top = Math.floor(Math.random() * (imgWrapper.offsetHeight - img.offsetHeight)) + "px";
+        img.style.left = Math.floor(Math.random()* (imgWrapper.offsetWidth - img.offsetWidth)) + "px";
+
+        function loop() {
+        // WRAPPER WIDTH AND HEIGHT
+
+        var wrapperWidth = imgWrapper.offsetWidth;
+        var wrapperHeight = imgWrapper.offsetHeight;
+        // SUBTRACT IMG WIDTH AND HEIGHT SO IMG DON'T GO OUTSIDE WRAPPER
+        var w = wrapperWidth - img.offsetWidth;
+        var h = wrapperHeight - img.offsetHeight;
+
+
+
+
+
+                var moveTop = Math.floor(Math.random()*h);
+                var moveLeft = Math.floor(Math.random()*w);
+
+
+
+                //moving img below header (to not casue distract)
+                if (moveTop <= 150) {
+                    moveTop = 150;
+                }
+                // SPEED (TRANSITION TIME)
+                var speed = Math.floor(Math.random()*10) + 1;
+                img.style.transition = speed + "s ease-in-out";
+
+                img.style.top = moveTop + "px";
+                img.style.left = moveLeft + "px";
+
+            setTimeout(() => {
+                loop();
+            }, speed*1000);
+        }
+        loop();
+
+    });
+}
+
 document.addEventListener('DOMContentLoaded',function(){//only run when dom is loaded
     //HIDE MAIN 
     document.querySelector('.main').style.opacity = '0';
@@ -90,6 +146,9 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
                 document.querySelector('.main').style.opacity = ''; 
             }, 500);
         }, 100);
+        // END PRELOAD
+        // MOVING BG
+        movingBg();
         // LOAD THEME
         var theme = localStorage.getItem('theme');
 
@@ -117,6 +176,9 @@ document.addEventListener('DOMContentLoaded',function(){//only run when dom is l
 
         function loop() {
             isoLayout();
+            setTimeout(() => {
+                adjustImgWrapper();
+            }, 3000);
             resize(loop);//REPEAT
         }
         resize(loop);

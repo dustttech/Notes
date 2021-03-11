@@ -172,12 +172,29 @@ ul {
 
     padding: 0 20px;
     position: relative;
+    z-index: 10;
 }
 /* =============== BG IMG ==================== */
-.bg-img {
+.img-wrapper {
+    width: 100%;
+    height: 100%;
     position: absolute;
-    top: 20%;
-    left: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+.bg-img {
+    width: 100px;
+    position: absolute;
+    z-index: 1;
+    animation: rolling 10s linear infinite;
+}
+@keyframes rolling {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 /* =============== END BG IMG ==================== */
 /* =============== PRELOAD ANIMATION ==================== */
@@ -375,6 +392,7 @@ ul {
     width: 100%;
     position: relative;
     transition: 0.3s ;
+
 }
 
 /* BTN GROUP */
