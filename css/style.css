@@ -191,9 +191,11 @@ ul {
 }
 .bg {
     width: 100%;
+    max-width: 800px;
     position: absolute;
     top: 70%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
     opacity: 0;
     transition: opacity 0.4s ease-in-out;
 }
@@ -225,7 +227,7 @@ ul {
         opacity: 0.4;
     } */
 }
-@media (min-width:1200px) {
+/* @media (min-width:1200px) {
     .bg {
         top: 90%;
     }
@@ -235,7 +237,7 @@ ul {
         top: 100%;
     }
 
-}
+} */
 /* =============== END BG IMG ==================== */
 /* =============== PRELOAD ANIMATION ==================== */
 .preload-wrapper {
