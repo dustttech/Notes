@@ -1170,7 +1170,7 @@ function checkItemEdit() {
         folder.setAttribute('id', folderObj.title);
         folder.setAttribute('class', 'folder list-item');
         var img = document.createElement('img');
-        img.setAttribute('src' , "img/folder.png");
+        img.setAttribute('src' , "img/mobile/folder.png");
         img.setAttribute('alt' , "Folder");
         var title = document.createElement('span');
         title.setAttribute('class', 'folder__title');
